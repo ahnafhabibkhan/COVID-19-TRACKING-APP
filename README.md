@@ -1,1 +1,1 @@
-# SOEN-390-Winter-2022-Mini-Capstone
+# COVID-19-TRACKING-APP
