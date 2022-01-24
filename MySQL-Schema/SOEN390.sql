@@ -16,6 +16,37 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `accountrequest`
+--
+
+DROP TABLE IF EXISTS `accountrequest`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `accountrequest` (
+  `Email` varchar(45) NOT NULL,
+  `FirstName` varchar(45) NOT NULL,
+  `LastName` varchar(45) NOT NULL,
+  `Telephone` varchar(45) NOT NULL,
+  `Address` varchar(45) NOT NULL,
+  `Role` enum('Admin','Patient','Doctor','HealthOfficial','ImmigrationOfficer') NOT NULL,
+  `UserName` varchar(45) NOT NULL,
+  `Password` varchar(45) NOT NULL,
+  `Date` date NOT NULL,
+  `Time` time NOT NULL,
+  PRIMARY KEY (`UserName`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `accountrequest`
+--
+
+LOCK TABLES `accountrequest` WRITE;
+/*!40000 ALTER TABLE `accountrequest` DISABLE KEYS */;
+/*!40000 ALTER TABLE `accountrequest` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `appointment`
 --
 
@@ -125,4 +156,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-01-23 16:48:44
+-- Dump completed on 2022-01-24 14:25:48
