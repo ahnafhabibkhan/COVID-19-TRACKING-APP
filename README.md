@@ -1,5 +1,39 @@
 # COVID-19-TRACKING-APP
+This project is meant to be a Covid19 Tracker tool and was created for Concordia's SOEN 390 (Software Process) Course.
 
+Link to the website
+---------------------------------
+Written by:
+1-Manasoureh Edalati - mansiedi1980 - (40037283)
+2-
+3-
+4-
+5-
+6-
+7-
+8-
+-----------------------------------
+Objectives:
+
+Core features: 
+----------------------------------
+Acceptance Tests
+See the features directory of the project.
+
+Technology Stack
+Frontend:
+Vue.JS
+Backend:
+Java
+Database:
+Mysql
+Continuous Integration
+GitHub Actions
+
+Unit Testing:
+jUnit
+-------------------------------------------------------------
+Organizational Block Diagram
 ## Setup
 
 ### Server
