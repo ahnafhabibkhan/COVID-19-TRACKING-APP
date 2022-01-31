@@ -173,7 +173,8 @@ DROP TABLE IF EXISTS `passwordresetrequest`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `passwordresetrequest` (
   `UserID` int NOT NULL,
-  `Key` varchar(45) NOT NULL
+  `Key` varchar(45) NOT NULL,
+  PRIMARY KEY (`UserID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -213,7 +214,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (0,'first@gmail.com','John','Smith','4504664852','7458 Main','Patient','JSmith'),(1,'admin@gmail.com','Admin','Admin','5145556453','0 Admin','Admin','Admin');
+INSERT INTO `user` VALUES (0,'first@gmail.com','John','Smith','4504664852','7458 Main','Patient','JSmith0'),(1,'admin@gmail.com','Admin','Admin','5145556453','0 Admin','Admin','Admin');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -226,4 +227,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-01-24 19:41:45
+-- Dump completed on 2022-01-30 17:56:02
