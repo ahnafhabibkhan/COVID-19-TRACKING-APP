@@ -1,25 +1,22 @@
 <template>
   <div id="app">
-    <h1>NAFIS IS TRASH</h1>
+   <Doctor />
+
+   
   </div>
 </template>
 
 <script>
+import Doctor from "./doctor/Doctor"
 
 export default {
   name: 'App',
   components: {
+    Doctor
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+
 </style>
