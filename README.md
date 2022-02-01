@@ -4,6 +4,7 @@ This project is meant to be a Covid19 Tracker tool and was created for Concordia
 Link to the website
 ---------------------------------
 Written by:
+
 1-Manasoureh Edalati - mansiedi1980 - (40037283)
 2-
 3-
