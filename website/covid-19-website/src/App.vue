@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import Doctor from "./doctor/Doctor"
-
+//import Doctor from "./doctor/Doctor"
+import login from "./login/Login.vue"
 export default {
   name: 'App',
 
