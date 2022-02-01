@@ -1,11 +1,65 @@
 <template>
   <div class="login">
+    <!-- login modal -->
+    <v-dialog v-model="login_modal" width="500px">
+      <v-card class="">
+        <v-container>
+          <v-row>
+            <v-col cols="12" class="pa-5">
+              <h1>login</h1>
+
+              <v-select
+                :items="roles"
+                v-model="login.role"
+                item-text="title"
+                item-value="value"
+                label="role"
+                dense
+                hide-details
+              ></v-select>
+            </v-col>
+            <v-col cols="12">
+              <v-text-field
+                v-model="login.user_name"
+                label="Username"
+                dense
+                hide-details
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12">
+              <v-text-field
+                v-model="login.pass"
+                label="Password"
+                dense
+                hide-details
+                type="password"
+              ></v-text-field>
+            </v-col>
+
+            <v-col cols="6">
+              <v-btn
+                color="error"
+                block
+                @click="login_modal = false"
+                elevation="0"
+              >
+                cancel
+              </v-btn>
+            </v-col>
+            <v-col cols="6">
+              <v-btn block color="success" elevation="0"> login </v-btn>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-card>
+    </v-dialog>
+    <!-- login modal end -->
     <div class="navbar">
       <v-toolbar-items>
         <v-btn
           class="btn"
-          v-for="item in nav"
-          :key="item.icon"
+          v-for="(item,i) in nav"
+          :key="i"
           :title="item.title"
           text
           color="white"
@@ -20,7 +74,9 @@
         Stay Alert, Control the Virus, and Save Lives!
       </p>
       <center>
-        <v-btn class="main-btn">Sign In</v-btn>
+        <v-btn class="main-btn" @click="login_modal = !login_modal"
+          >Sign In</v-btn
+        >
       </center>
     </div>
   </div>
@@ -58,6 +114,19 @@ export default {
           active: true,
         },
       ],
+      roles: [
+        { title: "admin", value: 1 },
+        { title: "patient", value: 2 },
+        { title: "doctor", value: 3 },
+        { title: "health officer", value: 4 },
+        { title: "immigrant officer", value: 5 },
+      ],
+      login: {
+        user_name: null,
+        pass: null,
+        role: -1,
+      },
+      login_modal: false,
     };
   },
 };
