@@ -6,7 +6,7 @@ Link to the website
 Written by:
 
 1-Manasoureh Edalati - mansiedi1980 - (40037283)
-2-
+2-Tommy Soucy - TommySoucy - (40085762)
 3-
 4-
 5-
@@ -50,3 +50,15 @@ Organizational Block Diagram
 - In Import Options choose "Import from Self-contained File", choose the SOEN390.sql file.
 - In DefaultSchema to be Imported to, choose the schema you created above.
 - Click "Start Import"
+
+## Running
+
+Ensure MySQL Server is setup as described above, then run following commands:
+
+- cd COVID-19-TRACKING-APP/website/covid-19-website
+- npm install
+- npm run serve
+- cd COVID-19-TRACKING-APP/website/covid-19-website/src/backend
+- node index
+ 
+This will install dependencies, run the frontend, then the backend server.
