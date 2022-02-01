@@ -13,17 +13,20 @@ Written by:
 6-
 7-
 8-
+
 -----------------------------------
 Objectives:
 
+
 Core features: 
+
 ----------------------------------
 Acceptance Tests
 See the features directory of the project.
 
 Technology Stack
 Frontend:
-Vue.JS
+Vue.JS + Vuetify
 Backend:
 Java
 Database:
@@ -32,7 +35,8 @@ Continuous Integration
 GitHub Actions
 
 Unit Testing:
-jUnit
+junit
+
 -------------------------------------------------------------
 Organizational Block Diagram
 ## Setup
