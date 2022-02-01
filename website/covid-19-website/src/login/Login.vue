@@ -35,7 +35,8 @@
                 type="password"
               ></v-text-field>
             </v-col>
-
+            <v-col cols="6"> don't have an account ? Sign up </v-col>
+            <v-col cols="6"> forget your password? </v-col>
             <v-col cols="6">
               <v-btn
                 color="error"
@@ -47,7 +48,7 @@
               </v-btn>
             </v-col>
             <v-col cols="6">
-              <v-btn block color="success" elevation="0"> login </v-btn>
+              <v-btn block color="success" elevation="0"> Sign In </v-btn>
             </v-col>
           </v-row>
         </v-container>
@@ -58,7 +59,7 @@
       <v-toolbar-items>
         <v-btn
           class="btn"
-          v-for="(item,i) in nav"
+          v-for="(item, i) in nav"
           :key="i"
           :title="item.title"
           text
