@@ -8,7 +8,7 @@
 
 <script>
 //import Doctor from "./doctor/Doctor"
-import login from "./login/Login.vue"
+
 export default {
   name: 'App',
 

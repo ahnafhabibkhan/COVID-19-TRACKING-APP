@@ -1,8 +1,8 @@
 # See here for image contents: https://github.com/microsoft/vscode-dev-containers/tree/v0.209.6/containers/javascript-node/.devcontainer/base.Dockerfile
 
 # [Choice] Node.js version (use -bullseye variants on local arm64/Apple Silicon): 16, 14, 12, 16-bullseye, 14-bullseye, 12-bullseye, 16-buster, 14-buster, 12-buster
-ARG VARIANT="16-bullseye"
-FROM mcr.microsoft.com/vscode/devcontainers/javascript-node:0-${VARIANT}
+#ARG VARIANT="16-bullseye"
+#FROM mcr.microsoft.com/vscode/devcontainers/javascript-node:0-${VARIANT}
 
 # [Optional] Uncomment this section to install additional OS packages.
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
@@ -14,3 +14,20 @@ FROM mcr.microsoft.com/vscode/devcontainers/javascript-node:0-${VARIANT}
 
 # [Optional] Uncomment if you want to install more global node modules
 # RUN su node -c "npm install -g <your-package-list-here>"
+
+FROM node:12
+
+
+WORKDIR /covid-19-website
+
+COPY ["package.json", "package-lock.json*", "./"]
+
+RUN npm install 
+
+COPY . .
+
+
+
+EXPOSE 8080
+
+CMD [ "npm", "run", "serve"]
