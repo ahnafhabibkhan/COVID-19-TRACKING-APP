@@ -3,20 +3,24 @@ This project is meant to be a Covid19 Tracker tool and was created for Concordia
 
 Link to the website
 ---------------------------------
-Written by:
+W## Team Members :technologist:
 
-1-Manasoureh Edalati - mansiedi1980 - (40037283)
+| #   | Name                 | ID        | Github Username     | Role               |
+| --- | :------------------- | :-------- | :------------------ |:-------------------|
+| 1   | Mansoureh Edalati    | 40037283  |  MansiEdi2020       | UI Lead / Frontend |
+| 2   | Tommy Sussy          |           |                     | Database Management|
+| 3   |                      |           |                     | UI Lead / Frontend |
+| 4   |                      |           |                     | Frontend Lead      |
+| 5   |                      |           |                     | Backend Lead       |
+| 6   |                      |           |                     | Fullstack          |
+| 7   |                      |           |                     | Scrum Master       |
+| 8   |                      |           |                     | Fullstack          |
+| 9   |                      |           |                     | Documentation      |
 
-2-Tommy Soucy - TommySoucy - (40085762)
-3-
-4-
-5-
-6-
-7-
-8-
+F = Frontend B = Backend
 
 -----------------------------------
-Objectives:
+Objectives::trophy:
 
 
 Core features: 
