@@ -48,7 +48,7 @@
               </v-btn>
             </v-col>
             <v-col cols="6">
-              <v-btn block color="success" elevation="0"> Sign In </v-btn>
+              <v-btn block color="success" elevation="0" @click="loginUser(login.user_name, login.pass, login.role)"> Sign In </v-btn>
             </v-col>
           </v-row>
         </v-container>
@@ -84,6 +84,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "Login",
   components: {},
@@ -129,6 +131,31 @@ export default {
       },
       login_modal: false,
     };
+  },
+
+  methods:{
+    // Get All Products
+    async loginUser(email, password, role) {
+      console.log(`Login pressed`)
+      if(!email || !password || !role){
+        return;
+      }
+      try {
+        const response = await axios.get(`http://localhost:5000/users/${email}`);
+        console.log(`Got response, url: ${`http://localhost:5000/users/${email}`}`);
+        if(response.data.Password != null){
+          console.log(`Retrieved user password: ${response.data.Password}`);
+          if(password == response.data.Password){
+            console.log(`Login credentials valid`);
+            if(role == 0){
+              // TODO
+            }
+          }
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    },
   },
 };
 </script>
