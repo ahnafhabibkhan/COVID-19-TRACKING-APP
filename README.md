@@ -67,3 +67,17 @@ Ensure MySQL Server is setup as described above, then run following commands:
 - node index
  
 This will install dependencies, run the frontend, then the backend server.
+
+-------------------------------------------------------------
+
+# Sprint 1 
+                                                 |links
+|---|---
+|1. User Stories Backlog (USB)                   |[USB]()
+|2. Release Plan (Sprint #2 planning)            |[Release Plan]()
+|3. Software Architecture Document (SAD)         |[SAD]() <br> [Viewpoints]()
+|4. Risk Assessment & Risk Management Plan (RMP) |[RMP]()
+|5. UI prototypes for Sprint #2 user stories     |[UIP]()
+|6. Testing Plan                                 |
+|7. Running prototype                            |
+|8. Short sprint retrospective                   |
