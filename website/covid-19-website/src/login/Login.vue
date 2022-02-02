@@ -141,8 +141,8 @@ export default {
         return;
       }
       try {
-        const response = await axios.get(`http://localhost:5001/users/${email}`);
-        console.log(`Got response, url: ${`http://localhost:5001/users/${email}`}`);
+        const response = await axios.get(`http://localhost:5000/users/${email}`);
+        console.log(`Got response, url: ${`http://localhost:5000/users/${email}`}`);
         if(response.data.Password != null){
           console.log(`Retrieved user password: ${response.data.Password}`);
           if(password == response.data.Password){
