@@ -5,17 +5,17 @@ Link to the website
 ---------------------------------
 W## Team Members :technologist:
 
-| #   | Name                 | ID        | Github Username     | Role               |
-| --- | :------------------- | :-------- | :------------------ |:-------------------|
-| 1   | Mansoureh Edalati    | 40037283  |  MansiEdi2020       | UI Lead / Frontend |
-| 2   | Tommy Sussy          |           |                     | Database Management|
-| 3   |                      |           |                     | UI Lead / Frontend |
-| 4   |                      |           |                     | Frontend Lead      |
-| 5   |                      |           |                     | Backend Lead       |
-| 6   |                      |           |                     | Fullstack          |
-| 7   |                      |           |                     | Scrum Master       |
-| 8   |                      |           |                     | Fullstack          |
-| 9   |                      |           |                     | Documentation      |
+| #   | Name                 | ID        | Github Username     | Role                        |
+| --- | :------------------- | :-------- | :------------------ |:-------------------         |
+| 1   | Mansoureh Edalati    | 40037283  |  MansiEdi2020       | UI Lead / Frontend          |
+| 2   | Tommy Soucy          | 40085762  |  TommySoucy         | Backend /Database Management|
+| 3   |                      |           |                     | UI Lead / Frontend          |
+| 4   |                      |           |                     | Frontend Lead               |
+| 5   |                      |           |                     | Backend Lead                |
+| 6   |                      |           |                     | Fullstack                   |
+| 7   |                      |           |                     | Scrum Master                |
+| 8   |                      |           |                     | Fullstack                   |
+| 9   |                      |           |                     | Documentation               |
 
 F = Frontend B = Backend
 
