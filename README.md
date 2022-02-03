@@ -3,19 +3,24 @@ This project is meant to be a Covid19 Tracker tool and was created for Concordia
 
 Link to the website
 ---------------------------------
-Written by:
+W## Team Members :technologist:
 
-1-Manasoureh Edalati - mansiedi1980 - (40037283)
-2-Tommy Soucy - TommySoucy - (40085762)
-3-
-4-
-5-
-6-
-7-
-8-
+| #   | Name                 | ID        | Github Username     | Role                         |
+| --- | :------------------- | :-------- | :------------------ |:-----------------------------|
+| 1   | Mansoureh Edalati    | 40037283  |  MansiEdi2020       | UI Lead / Frontend           |
+| 2   | Tommy Soucy          | 40085762  |  TommySoucy         | Backend / Database Management|
+| 3   |         |   |             | UI Lead / Frontend           |
+| 4   |                      |           |                     | Frontend Lead                |
+| 5   |                      |           |                     | Backend Lead                 |
+| 6   |Yousha Hyatoolla      |40099559   |Yousha-hyat1999      | Fullstack                    |
+| 7   |                      |           |                     | Scrum Master                 |
+| 8   |Mohamed Abdul         |40098785   |  M-Dimbio           | Fullstack                    |
+| 9   |Nafis Md. Ali         |           |                     | Documentation                |
+
+F = Frontend B = Backend
 
 -----------------------------------
-Objectives:
+Objectives::trophy:
 
 
 Core features: 
@@ -62,3 +67,17 @@ Ensure MySQL Server is setup as described above, then run following commands:
 - node index
  
 This will install dependencies, run the frontend, then the backend server.
+
+-------------------------------------------------------------
+
+# Sprint 1 
+                                                 |links
+|---|---
+|1. User Stories Backlog (USB)                   |[USB]()
+|2. Release Plan (Sprint #2 planning)            |[Release Plan]()
+|3. Software Architecture Document (SAD)         |[SAD]() <br> [Viewpoints]()
+|4. Risk Assessment & Risk Management Plan (RMP) |[RMP]()
+|5. UI prototypes for Sprint #2 user stories     |[UIP]()
+|6. Testing Plan                                 |
+|7. Running prototype                            |
+|8. Short sprint retrospective                   |
