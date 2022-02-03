@@ -11,7 +11,7 @@ W## Team Members :technologist:
 | 2   | Tommy Soucy          | 40085762  |  TommySoucy         | Backend / Database Management|
 | 3   |                      |           |                     | UI Lead / Frontend           |
 | 4   |                      |           |                     | Frontend Lead                |
-| 5   |                      |           |                     | Backend Lead                 |
+| 5   | Ahnaf Habib Khan     | 40079665  |  ahnafhabibkhan     | Backend Lead                 |
 | 6   |                      |           |                     | Fullstack                    |
 | 7   |                      |           |                     | Scrum Master                 |
 | 8   |                      |           |                     | Fullstack                    |
