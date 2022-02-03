@@ -9,13 +9,13 @@ W## Team Members :technologist:
 | --- | :------------------- | :-------- | :------------------ |:-----------------------------|
 | 1   | Mansoureh Edalati    | 40037283  |  MansiEdi2020       | UI Lead / Frontend           |
 | 2   | Tommy Soucy          | 40085762  |  TommySoucy         | Backend / Database Management|
-| 3   |                      |           |                     | UI Lead / Frontend           |
+| 3   |         |   |             | UI Lead / Frontend           |
 | 4   |                      |           |                     | Frontend Lead                |
 | 5   |                      |           |                     | Backend Lead                 |
-| 6   |                      |           |                     | Fullstack                    |
+| 6   |Yousha Hyatoolla      |40099559   |Yousha-hyat1999      | Fullstack                    |
 | 7   |                      |           |                     | Scrum Master                 |
-| 8   |                      |           |                     | Fullstack                    |
-| 9   |                      |           |                     | Documentation                |
+| 8   |Mohamed Abdul         |40098785   |  M-Dimbio           | Fullstack                    |
+| 9   |Nafis Md. Ali         |           |                     | Documentation                |
 
 F = Frontend B = Backend
 
