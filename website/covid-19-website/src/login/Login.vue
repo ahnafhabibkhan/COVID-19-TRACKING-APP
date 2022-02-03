@@ -36,7 +36,7 @@
               ></v-text-field>
             </v-col>
             <v-col cols="6"> don't have an account ? Sign up </v-col>
-            <v-col cols="6"> forget your password? </v-col>
+            <v-col cols="6"> forgot your password? </v-col><a v-on:click="createPasswordResetRequest(login.user_name)">Click here</a>
             <v-col cols="6">
               <v-btn
                 color="error"
@@ -86,6 +86,17 @@
 <script>
 import axios from "axios";
 
+function makeKey(length) {
+  var result           = '';
+  var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  var charactersLength = characters.length;
+  for ( var i = 0; i < length; i++ ) {
+    result += characters.charAt(Math.floor(Math.random() *
+            charactersLength));
+  }
+  return result;
+}
+
 export default {
   name: "Login",
   components: {},
@@ -134,7 +145,7 @@ export default {
   },
 
   methods:{
-    // Get All Products
+    // Log the user in
     async loginUser(email, password) {
       console.log(`Login pressed`)
       if(!email || !password){
@@ -150,6 +161,49 @@ export default {
             if(response.data.Role == 0){
               // TODO
             }
+          }
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    },
+
+    // Create a password reset request
+    async createPasswordResetRequest(email) {
+      console.log(`Password reset pressed`)
+      if(!email){
+        return;
+      }
+      try {
+        const response = await axios.get(`http://localhost:5000/users/${email}`);
+        console.log(`Got response, url: ${`http://localhost:5000/users/${email}`}`);
+        if(response.data.UserID != null){
+          console.log(`Retrieved user ID: ${response.data.UserID}`);
+          // Check if a request already exists, if so just change the key to a new one
+          // If not, create a new one
+          const requestExistsResponse = await axios.get(`http://localhost:5000/passwordresetrequest/${response.data.UserID}`);
+          const newKey = makeKey(6);
+          if(requestExistsResponse.data.UserID != null){
+            console.log(`Request already exists for this user, updating key`);
+            // Update preexisting request
+            await axios.put(
+              `http://localhost:5000/passwordresetrequest/${requestExistsResponse.data.UserID}`,
+              {
+                Key: newKey,
+                Email: email,
+              }
+            );
+          }else{
+            console.log(`Request does not exist for this user, making new key`);
+            // Create new request
+            await axios.post(
+              `http://localhost:5000/passwordresetrequest/`,
+              {
+                UserID: response.data.UserID,
+                Key: newKey,
+                Email: email,
+              }
+            );
           }
         }
       } catch (err) {
