@@ -3,13 +3,18 @@ import App from "./App.vue";
 import vuetify from "./plugins/vuetify";
 import VueRouter from "vue-router";
 import Routes from "./router/index.js";
+import VueApexCharts from 'vue-apexcharts'
 
 Vue.use(VueRouter);
+Vue.use(VueApexCharts);
+
+Vue.component('apexchart', VueApexCharts)
 
 const router = new VueRouter({
   routes: Routes,
   mode: 'history',
 });
+
 
 Vue.config.productionTip = false;
 
