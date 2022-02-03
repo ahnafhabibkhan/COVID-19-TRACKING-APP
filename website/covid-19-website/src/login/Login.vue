@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <!-- login modal -->
-    <v-dialog v-model="login_modal" width="500px">
+    <v-dialog v-model="login_modal" width="600px">
       <v-card class="">
         <v-container>
           <v-row>
@@ -35,8 +35,8 @@
                 type="password"
               ></v-text-field>
             </v-col>
-            <v-col cols="6"> don't have an account ? Sign up </v-col>
-            <v-col cols="6"> forgot your password? </v-col><a v-on:click="createPasswordResetRequest(login.user_name)">Click here</a>
+            <v-col cols="6"> Don't have an account? <a v-on:click="signup_modal = !signup_modal; login_modal = !login_modal;">Sign up</a></v-col>
+            <v-col cols="6"> Forgot your password? <a v-on:click="createPasswordResetRequest(login.user_name)">Click here</a></v-col>
             <v-col cols="6">
               <v-btn
                 color="error"
@@ -55,6 +55,60 @@
       </v-card>
     </v-dialog>
     <!-- login modal end -->
+    <!-- sign-up modal -->
+    <v-dialog v-model="signup_modal" width="600px">
+      <v-card class="">
+        <v-container>
+          <v-row>
+            <v-col cols="12" class="pa-5">
+              <h1>Sign up</h1>
+
+              <v-select
+                :items="roles"
+                v-model="login.role"
+                item-text="title"
+                item-value="value"
+                label="role"
+                dense
+                hide-details
+              ></v-select>
+            </v-col>
+            <v-col cols="12">
+              <v-text-field
+                v-model="login.user_name"
+                label="Username"
+                dense
+                hide-details
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12">
+              <v-text-field
+                v-model="login.pass"
+                label="Password"
+                dense
+                hide-details
+                type="password"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="6"> Already have an account? <a v-on:click="signup_modal = !signup_modal; login_modal = !login_modal;">Log in</a></v-col>
+            <v-col cols="6">
+              <v-btn
+                color="error"
+                block
+                @click="login_modal = false"
+                elevation="0"
+              >
+                cancel
+              </v-btn>
+            </v-col>
+            <v-col cols="6">
+              <v-btn block color="success" elevation="0" @click="loginUser(login.user_name, login.pass)"> Sign In </v-btn>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-card>
+    </v-dialog>
+    <!-- sign-up modal end -->
     <div class="navbar">
       <v-toolbar-items>
         <v-btn
@@ -78,6 +132,9 @@
         <v-btn class="main-btn" @click="login_modal = !login_modal"
           >Sign In</v-btn
         >
+        <v-btn color="success" class="main-btn" @click="signup_modal = !signup_modal"
+        >Sign Up</v-btn
+        >
       </center>
     </div>
   </div>
@@ -86,6 +143,7 @@
 <script>
 import axios from "axios";
 
+// Makes a random length char key used for password reset
 function makeKey(length) {
   var result           = '';
   var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -141,6 +199,7 @@ export default {
         role: -1,
       },
       login_modal: false,
+      signup_modal: false,
     };
   },
 
