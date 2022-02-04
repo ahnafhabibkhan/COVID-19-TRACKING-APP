@@ -55,60 +55,6 @@
       </v-card>
     </v-dialog>
     <!-- login modal end -->
-    <!-- sign-up modal -->
-    <v-dialog v-model="signup_modal" width="600px">
-      <v-card class="">
-        <v-container>
-          <v-row>
-            <v-col cols="12" class="pa-5">
-              <h1>Sign up</h1>
-
-              <v-select
-                :items="roles"
-                v-model="login.role"
-                item-text="title"
-                item-value="value"
-                label="role"
-                dense
-                hide-details
-              ></v-select>
-            </v-col>
-            <v-col cols="12">
-              <v-text-field
-                v-model="login.user_name"
-                label="Username"
-                dense
-                hide-details
-              ></v-text-field>
-            </v-col>
-            <v-col cols="12">
-              <v-text-field
-                v-model="login.pass"
-                label="Password"
-                dense
-                hide-details
-                type="password"
-              ></v-text-field>
-            </v-col>
-            <v-col cols="6"> Already have an account? <a v-on:click="signup_modal = !signup_modal; login_modal = !login_modal;">Log in</a></v-col>
-            <v-col cols="6">
-              <v-btn
-                color="error"
-                block
-                @click="login_modal = false"
-                elevation="0"
-              >
-                cancel
-              </v-btn>
-            </v-col>
-            <v-col cols="6">
-              <v-btn block color="success" elevation="0" @click="loginUser(login.user_name, login.pass)"> Sign In </v-btn>
-            </v-col>
-          </v-row>
-        </v-container>
-      </v-card>
-    </v-dialog>
-    <!-- sign-up modal end -->
     <div class="navbar">
       <v-toolbar-items>
         <v-btn
@@ -131,9 +77,6 @@
       <center>
         <v-btn class="main-btn" @click="login_modal = !login_modal"
           >Sign In</v-btn
-        >
-        <v-btn color="success" class="main-btn" @click="signup_modal = !signup_modal"
-        >Sign Up</v-btn
         >
       </center>
     </div>
@@ -199,7 +142,6 @@ export default {
         role: -1,
       },
       login_modal: false,
-      signup_modal: false,
     };
   },
 
@@ -219,6 +161,69 @@ export default {
             console.log(`Login credentials valid`);
             if(response.data.Role == 0){
               // TODO
+            }
+          }
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    },
+
+    // Sign the user up
+    async signupUser(formStruct) {
+      console.log(`Login pressed`)
+      if(!formStruct.role || !formStruct.user_name || !formStruct.pass || !formStruct.pass_confirm || !formStruct.first_name || !formStruct.last_name ||
+         !formStruct.phone || !formStruct.address || (formStruct.pass != formStruct.pass_confirm)){
+        return;
+      }
+      try {
+        // Check if user with that email already exists
+        const response = await axios.get(`http://localhost:5000/users/${formStruct.user_name}`);
+        if(response.data.UserID == null){
+          // Make role into a string
+          let role;
+          if(formStruct.role == 1){
+            role = "Admin";
+          }else if(formStruct.role == 2){
+            role = "Patient";
+          }else if(formStruct.role == 3){
+            role = "Doctor";
+          }else if(formStruct.role == 4){
+            role = "HealthOfficial";
+          }else if(formStruct.role == 5){
+            role = "ImmigrationOfficer";
+          }
+          // In case of Patient, create account directly
+          if(role == "Patient"){
+            await axios.post(
+              `http://localhost:5000/users`,
+              {
+                Email: formStruct.user_name,
+                FirstName: formStruct.first_name,
+                LastName: formStruct.last_name,
+                Telephone: formStruct.phone,
+                Address: formStruct.address,
+                Role: role,
+                Password: formStruct.pass,
+              }
+            );
+          }else{
+            // If role not patient then need to make an account request instead
+            // Check if a request already exists
+            const requestExistResponse = await axios.get(`http://localhost:5000/accountRequest/${formStruct.user_name}`);
+            if(requestExistResponse == null){
+              await axios.post(
+                `http://localhost:5000/accountRequest`,
+                {
+                  Email: formStruct.user_name,
+                  FirstName: formStruct.first_name,
+                  LastName: formStruct.last_name,
+                  Telephone: formStruct.phone,
+                  Address: formStruct.address,
+                  Role: role,
+                  Password: formStruct.pass,
+                }
+              );
             }
           }
         }

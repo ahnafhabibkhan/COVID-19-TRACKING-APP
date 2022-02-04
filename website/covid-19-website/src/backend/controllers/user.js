@@ -1,4 +1,4 @@
-// Import function from Product Model
+// Import function from user Model
 import { getUserByEmail, insertUser, deleteUserById } from "../models/userModel.js";
 
 // Get Single User by Email
