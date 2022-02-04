@@ -27,7 +27,7 @@ export const insertUser = (data, result) => {
 
 // Delete User from Database
 export const deleteUserById = (id, result) => {
-    db.query("DELETE FROM user WHERE UrserID = ?", [id], (err, results) => {
+    db.query("DELETE FROM user WHERE UserID = ?", [id], (err, results) => {
         if(err) {
             console.log(err);
             result(err, null);
