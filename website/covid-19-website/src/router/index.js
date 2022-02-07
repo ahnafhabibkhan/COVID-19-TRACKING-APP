@@ -15,7 +15,9 @@ export default [
   {
     path: "/",
     component: authLayout,
-    children: [{ path: "", component: Login }],
+    children: [
+      { path: "", component: Login },
+    ],
   },
   {
     path: "",
