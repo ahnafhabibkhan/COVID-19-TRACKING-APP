@@ -162,7 +162,7 @@
           </v-row>
         </v-col>
       </div> -->
-      <div class="btn-container">
+      <div class="btn-container" style="margin-right: 65%; width: 25%">
         <v-row>
           <v-col cols="12">
             <div class="my-6 mx-3">
@@ -202,6 +202,7 @@
         </v-row>
         <v-col cols="12">
           <v-text-field
+            style="margin-top: 10px"
             :readonly="item.disable"
             v-for="(item, i) in statuses"
             :key="i"
@@ -295,9 +296,9 @@ th {
 }
 .btn-container {
   /* border: 5px solid red; */
-  margin-top: 100px;
+  /* margin-top: 100px;
   width: 30%;
   height: 40%;
-  margin-right: 63%;
+  margin-left: 100%; */
 }
 </style>
