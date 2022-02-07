@@ -152,14 +152,16 @@ export default {
         return;
       }
       try {
-        const response = await axios.get(`http://localhost:5000/users/${email}`);
-        console.log(`Got response, url: ${`http://localhost:5000/users/${email}`}`);
+        const response = await axios.get(`http://localhost:5001/users/${email}`);
+        console.log(`Got response, url: ${`http://localhost:5001/users/${email}`}`);
         if(response.data.Password != null){
           console.log(`Retrieved user password: ${response.data.Password}`);
           if(password == response.data.Password){
             console.log(`Login credentials valid`);
-            if(response.data.Role == 0){
+             console.log(response.data.Role);
+            if(response.data.Role == 'Admin'){
               // TODO
+              this.$router.push('/admin');
             }
           }
         }
@@ -197,7 +199,7 @@ export default {
             console.log(`Request does not exist for this user, making new key`);
             // Create new request
             await axios.post(
-              `http://localhost:5000/passwordresetrequest/`,
+              `http://localhost:5001/passwordresetrequest/`,
               {
                 UserID: response.data.UserID,
                 Key: newKey,

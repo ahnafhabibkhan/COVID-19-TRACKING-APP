@@ -70,7 +70,7 @@ export default {
 
 <style>
 .health-official {
-  background-image: url("../assets/Health-official.png");
+  background-image: url("../assets/HealthOfficial.png");
   background-size: cover;
   background-repeat: no-repeat;
   min-height: 100%;
@@ -104,7 +104,7 @@ export default {
   opacity: 90%;
 }
 .left-side {
-  border: 5px solid red;
+  /* border: 5px solid red; */
   width: 40%;
   height: 1000px;
 }
@@ -117,13 +117,13 @@ export default {
 }
 
 .right-side {
-  border: 5px solid red;
+  /* border: 5px solid red; */
   float: right;
   width: 50%;
   height: 1000px;
 }
 .top-right {
-  border: 5px solid red;
+  /* border: 5px solid red; */
   float: right;
   width: 40%;
   height: 50px;
@@ -140,7 +140,7 @@ export default {
   border: 1px;
 }
 .bottom-half {
-  border: 5px solid red;
+  /* border: 5px solid red; */
   margin-top: 34%;
   height: 1000px;
 }

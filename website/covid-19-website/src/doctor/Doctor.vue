@@ -1,7 +1,7 @@
 <template>
   <div class="doctor">
     <div class="right-side">
-      <div class="chatbox">
+      <div style="margin-top: 90%; margin-left: 80%">
         <v-btn @click="ChatboxClick" icon height="80px" width="80px">
           <v-icon color="blue darken-3" style="font-size: 80px">
             mdi-message-text
@@ -145,11 +145,5 @@ export default {
   float: right;
   width: 50%;
   height: 1000px;
-}
-
-.chatbox {
-  /* border: 5px solid red; */
-  /* margin-top: 10%; */
-  /* margin-left: 40%; */
 }
 </style>
