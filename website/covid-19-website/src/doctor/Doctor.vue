@@ -1,12 +1,13 @@
 <template>
   <div class="doctor">
-    <div class="icons-container">
-      <v-tab>
-        <v-badge class="mx-6" color="red" content="7" overlap>
-          <v-icon x-large color="blue darken-3">mdi-email</v-icon></v-badge
-        >
-        <v-icon class="mx-6" x-large color="blue darken-3">mdi-account</v-icon>
-      </v-tab>
+    <div class="right-side">
+      <div class="chatbox">
+        <v-btn @click="ChatboxClick" icon height="80px" width="80px">
+          <v-icon color="blue darken-3" style="font-size: 80px">
+            mdi-message-text
+          </v-icon>
+        </v-btn>
+      </div>
     </div>
     <div class="left-side">
       <div class="btn-container">
@@ -121,7 +122,7 @@ export default {
   /* border: 5px solid red; */
   width: 65%;
   height: 40%;
-  margin-top: 40px;
+  margin-top: 2%;
   margin-left: auto;
   margin-right: auto;
   opacity: 90%;
@@ -132,8 +133,23 @@ export default {
   height: 1000px;
 }
 .icons-container {
+  /* border: 5px solid red; */
   width: 10%;
   margin-top: 20px;
+  margin-right: 45px;
   float: right;
+}
+
+.right-side {
+  /* border: 5px solid red; */
+  float: right;
+  width: 50%;
+  height: 1000px;
+}
+
+.chatbox {
+  /* border: 5px solid red; */
+  /* margin-top: 10%; */
+  /* margin-left: 40%; */
 }
 </style>

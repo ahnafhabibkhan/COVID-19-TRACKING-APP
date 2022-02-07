@@ -175,19 +175,19 @@ export default {
         return;
       }
       try {
-        const response = await axios.get(`http://localhost:5000/users/${email}`);
-        console.log(`Got response, url: ${`http://localhost:5000/users/${email}`}`);
+        const response = await axios.get(`http://localhost:5001/users/${email}`);
+        console.log(`Got response, url: ${`http://localhost:5001/users/${email}`}`);
         if(response.data.UserID != null){
           console.log(`Retrieved user ID: ${response.data.UserID}`);
           // Check if a request already exists, if so just change the key to a new one
           // If not, create a new one
-          const requestExistsResponse = await axios.get(`http://localhost:5000/passwordresetrequest/${response.data.UserID}`);
+          const requestExistsResponse = await axios.get(`http://localhost:5001/passwordresetrequest/${response.data.UserID}`);
           const newKey = makeKey(6);
           if(requestExistsResponse.data.UserID != null){
             console.log(`Request already exists for this user, updating key`);
             // Update preexisting request
             await axios.put(
-              `http://localhost:5000/passwordresetrequest/${requestExistsResponse.data.UserID}`,
+              `http://localhost:5001/passwordresetrequest/${requestExistsResponse.data.UserID}`,
               {
                 Key: newKey,
                 Email: email,
