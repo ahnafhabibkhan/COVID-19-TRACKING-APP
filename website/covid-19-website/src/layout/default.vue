@@ -1,43 +1,32 @@
 <template>
-  <v-app >
+  <v-app>
     <v-app-bar
-    dark
+      dark
       app
       color="transparent"
       elevate-on-scroll
       scroll-target="#scrolling-techniques-7"
     >
-      <v-app-bar-nav-icon></v-app-bar-nav-icon>
-
-      <v-toolbar-title>Title</v-toolbar-title>
-
       <v-spacer></v-spacer>
 
-      <v-btn icon>
-        <v-icon>mdi-magnify</v-icon>
-      </v-btn>
-
-      <v-btn icon>
-        <v-icon>mdi-heart</v-icon>
-      </v-btn>
-
-      <v-btn icon>
-        <v-icon>mdi-dots-vertical</v-icon>
-      </v-btn>
+      <v-tab>
+        <v-badge class="mx-6" color="red" content="7" overlap>
+          <v-icon large color="blue darken-3">mdi-email</v-icon></v-badge
+        >
+        <v-icon class="mx-6" large color="blue darken-3">mdi-account</v-icon>
+      </v-tab>
     </v-app-bar>
-    <!-- <div id="app"> -->
-    <v-main class="bg-image">
+    <v-main>
       <v-container>
         <router-view></router-view>
       </v-container>
     </v-main>
-    <!-- </div> -->
   </v-app>
 </template>
 
 <script>
 export default {
-  name: "App",
+  name: "DefaultLayout",
 
   components: {},
 
@@ -46,5 +35,3 @@ export default {
   }),
 };
 </script>
-
-

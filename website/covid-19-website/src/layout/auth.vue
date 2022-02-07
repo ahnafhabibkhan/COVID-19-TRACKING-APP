@@ -2,7 +2,7 @@
   <v-app>
   
 
-    <v-main class="bg-image">
+    <v-main>
       <v-container>
         <router-view></router-view>
       </v-container>
@@ -12,7 +12,7 @@
 
 <script>
 export default {
-  name: "App",
+  name: "AuthLayout",
 
   components: {},
 

@@ -1,13 +1,5 @@
 <template>
   <div class="doctor">
-    <div class="icons-container">
-      <v-tab>
-        <v-badge class="mx-6" color="red" content="7" overlap>
-          <v-icon x-large color="blue darken-3">mdi-email</v-icon></v-badge
-        >
-        <v-icon class="mx-6" x-large color="blue darken-3">mdi-account</v-icon>
-      </v-tab>
-    </div>
     <div class="left-side">
       <div class="btn-container">
         <v-row align="center">
