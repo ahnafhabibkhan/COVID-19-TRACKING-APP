@@ -159,8 +159,10 @@ export default {
           console.log(`Retrieved user password: ${response.data.Password}`);
           if(password == response.data.Password){
             console.log(`Login credentials valid`);
-            if(response.data.Role == 0){
+             console.log(response.data.Role);
+            if(response.data.Role == 'Admin'){
               // TODO
+              this.$router.push('/admin');
             }
           }
         }

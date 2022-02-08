@@ -5,7 +5,7 @@ import defaultLayout from "../layout/default.vue";
 import Login from "../login/Login.vue";
 import Doctor from "../doctor/Doctor.vue";
 import Patient from "../patient/Patient.vue";
-import Profile from "../patient/profile-page.vue";
+import Profile from "../user-profile/profile-page.vue";
 
 import ImmigrationOfficer from "../immigration-officer/ImmigrationOfficer.vue";
 import HealthOfficial from "../health-official/HealthOfficial.vue";
@@ -13,7 +13,7 @@ import Admin from "../admin/Admin.vue";
 
 export default [
   {
-    path: "/auth",
+    path: "/",
     component: authLayout,
     children: [
       { path: "", component: Login },
@@ -29,7 +29,13 @@ export default [
       { path: "/immigration-officer", component: ImmigrationOfficer },
       { path: "/health-official", component: HealthOfficial },
       { path: "/admin", component: Admin },
-      { path: "", component: Admin },
     ],
   },
+  // {path: '/', component: Login},
+  // {path: '/doctor', component: Doctor},
+  // {path: '/patient', component: Patient},
+  // {path: '/immigration-officer', component: ImmigrationOfficer},
+  // {path: '/health-official', component: HealthOfficial},
+  // {path: '/admin', component: Admin},
+
 ];
