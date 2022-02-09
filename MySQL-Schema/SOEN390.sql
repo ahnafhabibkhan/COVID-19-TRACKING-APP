@@ -161,6 +161,34 @@ INSERT INTO `healthstatus` VALUES (1,'2022-02-04','13:54:00',85.00,'None',35,0,0
 UNLOCK TABLES;
 
 --
+-- Table structure for table `message`
+--
+
+DROP TABLE IF EXISTS `message`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `message` (
+  `SendUserID` int NOT NULL,
+  `ReceiveUserID` int NOT NULL,
+  `Text` varchar(250) NOT NULL,
+  `Location` varchar(45) NOT NULL,
+  `MessageType` enum('Notification','Chat') NOT NULL,
+  `State` enum('Sending','Sent','Read') NOT NULL,
+  `Date` date NOT NULL,
+  `Time` time NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `message`
+--
+
+LOCK TABLES `message` WRITE;
+/*!40000 ALTER TABLE `message` DISABLE KEYS */;
+/*!40000 ALTER TABLE `message` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `passwordresetrequest`
 --
 
@@ -227,4 +255,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-02-09 14:47:50
+-- Dump completed on 2022-02-09 14:54:55
