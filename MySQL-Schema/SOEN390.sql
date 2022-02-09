@@ -60,10 +60,7 @@ CREATE TABLE `appointment` (
   `LevelOfEmergency` int NOT NULL,
   `Priority` int NOT NULL,
   `Date` date NOT NULL,
-  `Time` time NOT NULL,
-  UNIQUE KEY `AID_UNIQUE` (`AID`),
-  UNIQUE KEY `PID_UNIQUE` (`PID`),
-  UNIQUE KEY `DID_UNIQUE` (`DID`)
+  `Time` time NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -87,7 +84,8 @@ CREATE TABLE `appointmentrequest` (
   `PID` int NOT NULL,
   `DID` int NOT NULL,
   `Date` date NOT NULL,
-  `Time` time NOT NULL
+  `Time` time NOT NULL,
+  `RequestedBy` enum('P','D') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -135,13 +133,10 @@ DROP TABLE IF EXISTS `healthstatus`;
 CREATE TABLE `healthstatus` (
   `PID` int unsigned NOT NULL,
   `fillOutDate` date NOT NULL,
-  `Age` int unsigned NOT NULL,
-  `Weight` decimal(5,2) unsigned NOT NULL,
-  `Height` decimal(5,2) unsigned NOT NULL,
   `lastUpdateTime` time NOT NULL,
+  `Weight` decimal(5,2) unsigned NOT NULL,
   `SympDescription` varchar(100) NOT NULL,
   `Temperature` int NOT NULL,
-  `Fever` tinyint NOT NULL,
   `BreathingIssues` tinyint NOT NULL,
   `Cough` tinyint NOT NULL,
   `LostTasteSmell` tinyint NOT NULL,
@@ -161,6 +156,7 @@ CREATE TABLE `healthstatus` (
 
 LOCK TABLES `healthstatus` WRITE;
 /*!40000 ALTER TABLE `healthstatus` DISABLE KEYS */;
+INSERT INTO `healthstatus` VALUES (1,'2022-02-04','13:54:00',85.00,'None',35,0,0,0,0,0,0,0,1,0),(1,'2022-02-05','21:23:00',85.00,'None',37,0,1,0,1,1,0,1,1,1);
 /*!40000 ALTER TABLE `healthstatus` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -184,6 +180,7 @@ CREATE TABLE `passwordresetrequest` (
 
 LOCK TABLES `passwordresetrequest` WRITE;
 /*!40000 ALTER TABLE `passwordresetrequest` DISABLE KEYS */;
+INSERT INTO `passwordresetrequest` VALUES (1,'BE7CUI');
 /*!40000 ALTER TABLE `passwordresetrequest` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -195,7 +192,7 @@ DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user` (
-  `UserID` int unsigned NOT NULL,
+  `UserID` int unsigned NOT NULL AUTO_INCREMENT,
   `Email` varchar(45) NOT NULL,
   `FirstName` varchar(45) NOT NULL,
   `LastName` varchar(45) NOT NULL,
@@ -203,9 +200,12 @@ CREATE TABLE `user` (
   `Address` varchar(45) NOT NULL,
   `Role` enum('Admin','Patient','Doctor','HealthOfficial','ImmigrationOfficer') NOT NULL,
   `Password` varchar(64) NOT NULL,
+  `Doctor` int unsigned DEFAULT NULL,
+  `City` varchar(45) NOT NULL,
+  `Country` varchar(45) NOT NULL,
   PRIMARY KEY (`UserID`),
   UNIQUE KEY `Email_UNIQUE` (`Email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -214,7 +214,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (0,'first@gmail.com','John','Smith','4504664852','7458 Main','Patient','JSmith0'),(1,'admin@gmail.com','Admin','Admin','5145556453','0 Admin','Admin','Admin');
+INSERT INTO `user` VALUES (1,'first@gmail.com','John','Smith','4504664852','7458 Main','Patient','JSmith0',NULL,'',''),(2,'admin@gmail.com','Admin','Admin','5144768016','0 Admin','Admin','Admin',NULL,'',''),(3,'test@gmail.com','Tester','Mann','5148758221','436 street montreal','Patient','password',NULL,'','');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -227,4 +227,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-01-30 17:56:02
+-- Dump completed on 2022-02-09 14:47:50
