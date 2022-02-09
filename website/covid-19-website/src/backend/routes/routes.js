@@ -4,7 +4,7 @@ import express from "express";
 // import function from controller
 import { showUserByEmail, createUser, deleteUser } from "../controllers/user.js";
 import { showPasswordResetRequestByID, createPasswordResetRequest, deletePasswordResetRequest, updatePasswordResetRequest } from "../controllers/passwordResetRequest.js";
-import { createAccountRequest, deleteAccountRequest, showAccountRequestByEmail} from "../controllers/accountRequest";
+import { createAccountRequest, deleteAccountRequest, showAccountRequestByEmail} from "../controllers/accountRequest.js";
 import {
     createHealthStatus,
     deleteHealthStatus, deleteHealthStatuses,
