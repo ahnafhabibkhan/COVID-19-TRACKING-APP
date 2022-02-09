@@ -11,6 +11,9 @@ import {
     showHealthStatuses,
     showLatestHealthStatus, updateHealthStatus
 } from "../controllers/healthStatus.js";
+import {showAppointmentRequests, createAppointmentRequest, removeAppointmentRequest} from "../controllers/appointmentRequest.js";
+import {createAppointment, removeAppointment, showAppointments} from "../controllers/appointment.js";
+import {createAvailability, removeAvailability, showAvailabilities} from "../controllers/doctorAvailability.js";
 
 // init express router
 const router = express.Router();
@@ -24,6 +27,36 @@ router.post('/users', createUser);
 
 // Delete User
 router.delete('/users/:id', deleteUser);
+
+////////////DOCTOR AVAILABILITY
+// Get availabilities
+router.get('/availability', showAvailabilities);
+
+// Create New availability
+router.post('/availability', createAvailability);
+
+// Delete availability
+router.delete('/availability', removeAvailability);
+
+////////////APPOINTMENT REQUEST
+// Get appointment requests
+router.get('/appointmentrequest', showAppointmentRequests);
+
+// Create New appointment request
+router.post('/appointmentrequest', createAppointmentRequest);
+
+// Delete appointment request
+router.delete('/appointmentrequest', removeAppointmentRequest);
+
+////////////APPOINTMENT
+// Get appointments
+router.get('/appointment', showAppointments);
+
+// Create New appointment
+router.post('/appointment', createAppointment);
+
+// Delete appointment
+router.delete('/appointment', removeAppointment);
 
 ////////////ACCOUNT REQUEST
 // Get Single account request
