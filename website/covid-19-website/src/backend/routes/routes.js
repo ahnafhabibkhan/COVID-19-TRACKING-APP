@@ -10,7 +10,7 @@ import {
     deleteHealthStatus, deleteHealthStatuses,
     showHealthStatuses,
     showLatestHealthStatus, updateHealthStatus
-} from "../controllers/healthStatus";
+} from "../controllers/healthStatus.js";
 
 // init express router
 const router = express.Router();
