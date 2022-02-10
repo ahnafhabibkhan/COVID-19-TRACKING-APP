@@ -36,3 +36,15 @@ export const deleteUserById = (id, result) => {
         }
     });
 }
+
+// Update User
+export const modifyUser = (data, id, result) => {
+    db.query("UPDATE user SET ? WHERE UserID = ?", [data, id], (err, results) => {
+        if(err) {
+            console.log(err);
+            result(err, null);
+        } else {
+            result(null, results);
+        }
+    });
+}

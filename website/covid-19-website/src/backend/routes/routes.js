@@ -2,7 +2,7 @@
 import express from "express";
 
 // import function from controller
-import { showUserByEmail, createUser, deleteUser } from "../controllers/user.js";
+import { showUserByEmail, createUser, deleteUser, updateUser } from "../controllers/user.js";
 import { showPasswordResetRequestByID, createPasswordResetRequest, deletePasswordResetRequest, updatePasswordResetRequest } from "../controllers/passwordResetRequest.js";
 import { createAccountRequest, deleteAccountRequest, showAccountRequestByEmail} from "../controllers/accountRequest.js";
 import {
@@ -27,6 +27,9 @@ router.post('/users', createUser);
 
 // Delete User
 router.delete('/users/:id', deleteUser);
+
+// Update a User
+router.put('/users/:id', updateUser)
 
 ////////////DOCTOR AVAILABILITY
 // Get availabilities
