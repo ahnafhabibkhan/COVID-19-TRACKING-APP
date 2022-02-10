@@ -35,3 +35,16 @@ export const deleteUser = (req, res) => {
         }
     });
 }
+
+// Update user
+export const updateUser = (req, res) => {
+    const id = req.params.id;
+    const data = req.body;
+    modifyUser(data, id, (err, results) => {
+        if (err){
+            res.send(err);
+        }else{
+            res.json(results);
+        }
+    });
+}
