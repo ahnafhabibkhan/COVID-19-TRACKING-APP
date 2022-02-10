@@ -15,6 +15,7 @@
           style="display: inline-table;"
           width="25%"
           height="10%"
+          @click="onPatientClick()"
           ><h3 class="my-2">{{ item.firstName }} {{ item.lastName }}</h3>
           <p>Covid: {{item.covidStatus}}</p>
           <p>Age: {{item.age}}</p>
@@ -76,6 +77,11 @@ export default {
   mounted() {
     console.log(this.patientList);
   },
+  methods: {
+    onPatientClick() {
+      this.$router.push('/')
+    },
+  }
 };
 </script>
 
