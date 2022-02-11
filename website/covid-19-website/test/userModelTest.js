@@ -1,7 +1,7 @@
 // const assert = require('chai').assert;
 //const sinon=require("sinon");
 import { assert } from 'chai';
-import { getUserByEmail, insertUser, deleteUserById } from"../src/backend/models/userModel.js";
+import { getUserByEmail, insertUser, deleteUserById, modifyUser } from"../src/backend/models/userModel.js";
 
 describe('GET USER BY EMAIL TEST',function(){
 
@@ -41,18 +41,33 @@ describe('insert and delete test',function(){
         getUserByEmail("testOnly@gmail.com",(err, results) => {
             assert.equal(results['Email'], "testOnly@gmail.com");
             const id=results['UserID'];
-            console.log("checking id after adding: ",id);
+            // console.log("checking id after adding: ",id);
             
-            console.log("checking id out side: ",id);
+            // console.log("checking id out side: ",id);
             
+            modifyUser({Email: "testModified@gmail.com"},id,(err, results) => {
+                // console.log("checking delete by id: ",id);
+            });
+            getUserByEmail("testOnly@gmail.com",(err, results) => {
+                assert.equal(results, undefined);
+            });
+            getUserByEmail("testModified@gmail.com",(err, results) => {
+                assert.equal(results['FirstName'], "testFirst");
+            });
+
             deleteUserById(id,(err, results) => {
-                console.log("checking delete by id: ",id);
-             });
+                // console.log("checking delete by id: ",id);
+            });
+            
+            getUserByEmail("testOnly@gmail.com",(err, results) => {
+                assert.equal(results, undefined);
+            });
+            getUserByEmail("testModified@gmail.com",(err, results) => {
+                assert.equal(results, undefined);
+            });
         });
         
-        getUserByEmail("testOnly@gmail.com",(err, results) => {
-            assert.equal(results, undefined);
-        });
+        
     });
     
 });
