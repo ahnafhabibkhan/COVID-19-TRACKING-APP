@@ -1,5 +1,5 @@
 // Import function from user Model
-import { getUserByEmail, insertUser, deleteUserById } from "../models/userModel.js";
+import { getUserByEmail, insertUser, deleteUserById, modifyUser } from "../models/userModel.js";
 
 // Get Single User by Email
 export const showUserByEmail = (req, res) => {
