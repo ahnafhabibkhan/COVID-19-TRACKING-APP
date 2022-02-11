@@ -1,4 +1,5 @@
 <template>
+<!--Profile-->
   <div class="bg-image">
     <v-btn small color="accent" elevation="0" @click="back"> back</v-btn>
     <h1>Profile page</h1>
