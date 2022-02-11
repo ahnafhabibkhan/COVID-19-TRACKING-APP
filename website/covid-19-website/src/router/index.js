@@ -3,6 +3,8 @@ import authLayout from "../layout/auth.vue";
 import defaultLayout from "../layout/default.vue";
 import HealthOfficialLayout from "../layout/HealthOfficialLayout.vue";
 import DoctorLayout from "../layout/DoctorLayout.vue";
+import AdminLayout from "../layout/AdminLayout.vue";
+import PatientLayout from "../layout/PatientLayout.vue";
 // pages
 import Login from "../login/Login.vue";
 import Doctor from "../doctor/Doctor.vue";
@@ -14,6 +16,7 @@ import ImmigrationOfficer from "../immigration-officer/ImmigrationOfficer.vue";
 import HealthOfficial from "../health-official/HealthOfficial.vue";
 import HealthOfficialListOfPatients from "../health-official/ListOfHOPatients.vue";
 import Admin from "../admin/Admin.vue";
+import AdminListOfPatients from "../admin/ListOfAdminPatients.vue";
 
 export default [
   {
@@ -25,13 +28,19 @@ export default [
     path: "",
     component: defaultLayout,
     children: [
-      { path: "/doctor-layout", component: DoctorLayout, children: [
-        
+      {
+        path: "/doctor-layout",
+        component: DoctorLayout,
+        children: [
           { path: "/doctor", component: Doctor },
           { path: "/doctor-patients-list", component: DoctorListOfPatients },
-        
-      ] },
-      { path: "/patient", component: Patient },
+        ],
+      },
+      {
+        path: "/patient-layout",
+        component: PatientLayout,
+        children: [{ path: "/patient", component: Patient }],
+      },
       { path: "/profile", component: Profile },
       { path: "/immigration-officer", component: ImmigrationOfficer },
       {
@@ -45,7 +54,14 @@ export default [
           },
         ],
       },
-      { path: "/admin", component: Admin },
+      {
+        path: "/admin-layout",
+        component: AdminLayout,
+        children: [
+          { path: "/admin", component: Admin },
+          { path: "/admin-patients-list", component: AdminListOfPatients },
+        ],
+      },
     ],
   },
   // {path: '/', component: Login},

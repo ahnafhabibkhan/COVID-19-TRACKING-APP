@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 style="margin-top: 50px; font-size: 50px; text-align: center; color: white;">{{title}}</h1>
+    <h1 style="margin-top: 50px; font-size: 50px; text-align: center; color: black;">{{title}}</h1>
     <v-card class="patients-list-container" outlined color="transparent">
       <v-card
         v-for="(item, i) in patientList"

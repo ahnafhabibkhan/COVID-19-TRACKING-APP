@@ -21,6 +21,7 @@
                 color="blue lighten-2"
                 width="400px"
                 height="75px"
+                @click="onPatientsClick()"
                 >List Of Patients</v-btn
               >
             </div>
@@ -59,55 +60,85 @@
       </v-row>
     </div>
     <div class="right-side-admin">
-      <v-container>
-        <v-row>
-          <v-col cols="12" md="6">
-            <v-text-field
-              v-model="form.firstName"
-              label="firstname"
-              :autocomplete="false"
-            />
-          </v-col>
-          <v-col cols="12" md="6">
-            <v-text-field v-model="form.lastName" label="lastName" />
-          </v-col>
-          <v-col cols="12" md="6">
-            <v-text-field v-model="form.email" label="email" type="email" />
-          </v-col>
-          <v-col cols="12" md="6">
-            <v-text-field v-model="form.telephone" label="phone" />
-          </v-col>
-          <v-col cols="12" md="6">
-            <v-text-field
-              v-model="form.bithDate"
-              label="birthDate"
-              type="date"
-            />
-          </v-col>
-          <v-col cols="12" md="6">
-            <v-select
-              item-text="title"
-              item-value="value"
-              :items="roles"
-              label="role"
-            ></v-select>
-          </v-col>
-          <v-col cols="12" md="6">
-            <v-text-field
-              v-model="form.password"
-              label="password"
-              type="password"
-            />
-          </v-col>
+      <v-card
+        elevation="15"
+        width="500"
+        color="blue lighten-2"
+        style="border-radius: 20px; opacity: 95%; margin: auto"
+      >
+        <v-container>
+          <center>
+            <h1
+              class="white--text"
+              style="margin-left: auto; margin-right: auto; margin-bottom: 10px;"
+            >
+              Create an Account
+            </h1>
+          </center>
+          <v-row justify="center">
+            <v-col md="7">
+              <v-text-field
+                style="margin-left: auto; margin-right: auto"
+                label="First Name"
+                v-model="form.firstName"
+                solo
+                :autocomplete="false"
+                full-width
+              ></v-text-field>
 
-          <v-col cols="12">
-            <div class="d-flex justify-center">
-              <v-btn @click="save" width="150px" class="mx-2">save</v-btn>
-              <v-btn @click="back" width="150px">cancel</v-btn>
-            </div>
-          </v-col>
-        </v-row>
-      </v-container>
+              <v-text-field
+                label="Last Name"
+                v-model="form.lastName"
+                solo
+                :autocomplete="false"
+              ></v-text-field>
+
+              <v-text-field
+                label="Email"
+                v-model="form.email"
+                type="email"
+                solo
+                :autocomplete="false"
+              ></v-text-field>
+
+              <v-text-field
+                label="Telephone Number"
+                v-model="form.telephone"
+                type="phone"
+                solo
+                :autocomplete="false"
+              ></v-text-field>
+
+              <v-text-field
+                label="BirthDate"
+                v-model="form.bithDate"
+                type="date"
+                solo
+              ></v-text-field>
+
+              <v-select
+                item-text="title"
+                item-value="value"
+                :items="roles"
+                label="role"
+                solo
+              ></v-select>
+
+              <v-text-field
+                v-model="form.password"
+                label="password"
+                type="password"
+                solo
+              />
+
+              <div class="d-flex justify-center">
+                <v-btn @click="save" width="150px" class="mx-2">save</v-btn>
+                <v-btn @click="back" width="150px">cancel</v-btn>
+              </div>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-card>
     </div>
   </div>
 </template>
@@ -162,6 +193,9 @@ export default {
         console.log("error ; save profile", err);
       }
     },
+    onPatientsClick() {
+      this.$router.push("/admin-patients-list")
+    }
   },
   mounted() {
     this.get();
@@ -171,12 +205,6 @@ export default {
 
 <style>
 .admin {
-  background-image: url("../assets/Admin.png");
-  min-height: 100%;
-  min-width: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
 }
 .left-side-admin {
   width: 50%;
@@ -194,11 +222,18 @@ export default {
   height: 40%;
 }
 .right-side-admin {
-  margin-top: 150px;
+  margin-top: 100px;
   padding-right: 70px;
   float: right;
   height: 1000px;
   width: 50%;
+}
+
+.mx-auto {
+  /* height: 65%;
+  width: 85%;
+
+  opacity: 80%; */
 
   /* border: 5px solid red; */
 }
