@@ -29,7 +29,7 @@ router.post('/users', createUser);
 router.delete('/users/:id', deleteUser);
 
 // Update a User
-router.put('/users/:id', updateUser)
+router.put('/users/:id', updateUser);
 
 ////////////DOCTOR AVAILABILITY
 // Get availabilities
