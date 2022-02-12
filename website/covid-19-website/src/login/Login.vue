@@ -1,5 +1,10 @@
 <template>
   <div class="login">
+    <!-- Sign Up modal -->
+    <v-dialog v-model="signUp_modal" width="500px">
+      <SignUpDialog />
+    </v-dialog>
+    <!-- End of Sign Up modal -->
     <!-- login modal -->
     <v-dialog v-model="login_modal" width="600px">
       <v-card class="">
@@ -35,8 +40,22 @@
                 type="password"
               ></v-text-field>
             </v-col>
-            <v-col cols="6"> Don't have an account? <a v-on:click="signup_modal = !signup_modal; login_modal = !login_modal;">Sign up</a></v-col>
-            <v-col cols="6"> Forgot your password? <a v-on:click="createPasswordResetRequest(login.user_name)">Click here</a></v-col>
+            <v-col cols="6">
+              Don't have an account?
+              <a
+                v-on:click="
+                  signup_modal = !signup_modal;
+                  login_modal = !login_modal;
+                "
+                >Sign up</a
+              ></v-col
+            >
+            <v-col cols="6">
+              Forgot your password?
+              <a v-on:click="createPasswordResetRequest(login.user_name)"
+                >Click here</a
+              ></v-col
+            >
             <v-col cols="6">
               <v-btn
                 color="error"
@@ -48,7 +67,14 @@
               </v-btn>
             </v-col>
             <v-col cols="6">
-              <v-btn block color="success" elevation="0" @click="loginUser(login.user_name, login.pass)"> Sign In </v-btn>
+              <v-btn
+                block
+                color="success"
+                elevation="0"
+                @click="loginUser(login.user_name, login.pass)"
+              >
+                Sign In
+              </v-btn>
             </v-col>
           </v-row>
         </v-container>
@@ -65,6 +91,7 @@
           text
           color="white"
           x-large
+          @click="onNavClick(item.text)"
           >{{ item.text }}</v-btn
         >
       </v-toolbar-items>
@@ -84,23 +111,24 @@
 </template>
 
 <script>
+import SignUpDialog from '../components/SignUpDialog.vue'
+
 import axios from "axios";
 
 // Makes a random length char key used for password reset
 function makeKey(length) {
-  var result           = '';
-  var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  var result = "";
+  var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
   var charactersLength = characters.length;
-  for ( var i = 0; i < length; i++ ) {
-    result += characters.charAt(Math.floor(Math.random() *
-            charactersLength));
+  for (var i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
   }
   return result;
 }
 
 export default {
   name: "Login",
-  components: {},
+  components: {SignUpDialog},
   data() {
     return {
       nav: [
@@ -142,27 +170,32 @@ export default {
         role: -1,
       },
       login_modal: false,
+      signUp_modal: false,
     };
   },
 
-  methods:{
+  methods: {
     // Log the user in
     async loginUser(email, password) {
-      console.log(`Login pressed`)
-      if(!email || !password){
+      console.log(`Login pressed`);
+      if (!email || !password) {
         return;
       }
       try {
-        const response = await axios.get(`http://localhost:5000/users/${email}`);
-        console.log(`Got response, url: ${`http://localhost:5000/users/${email}`}`);
-        if(response.data.Password != null){
+        const response = await axios.get(
+          `http://localhost:5000/users/${email}`
+        );
+        console.log(
+          `Got response, url: ${`http://localhost:5000/users/${email}`}`
+        );
+        if (response.data.Password != null) {
           console.log(`Retrieved user password: ${response.data.Password}`);
-          if(password == response.data.Password){
+          if (password == response.data.Password) {
             console.log(`Login credentials valid`);
-             console.log(response.data.Role);
-            if(response.data.Role == 'Admin'){
+            console.log(response.data.Role);
+            if (response.data.Role == "Admin") {
               // TODO
-              this.$router.push('/admin');
+              this.$router.push("/admin");
             }
           }
         }
@@ -173,33 +206,58 @@ export default {
 
     // Sign the user up
     async signupUser(formStruct) {
-      console.log(`Login pressed`)
-      if(!formStruct.role || !formStruct.user_name || !formStruct.pass || !formStruct.pass_confirm || !formStruct.first_name || !formStruct.last_name ||
-         !formStruct.phone || !formStruct.address || (formStruct.pass != formStruct.pass_confirm)){
+      console.log(`Login pressed`);
+      if (
+        !formStruct.role ||
+        !formStruct.user_name ||
+        !formStruct.pass ||
+        !formStruct.pass_confirm ||
+        !formStruct.first_name ||
+        !formStruct.last_name ||
+        !formStruct.phone ||
+        !formStruct.address ||
+        formStruct.pass != formStruct.pass_confirm
+      ) {
         return;
       }
       try {
         // Check if user with that email already exists
-        const response = await axios.get(`http://localhost:5000/users/${formStruct.user_name}`);
-        if(response.data.UserID == null){
+        const response = await axios.get(
+          `http://localhost:5000/users/${formStruct.user_name}`
+        );
+        if (response.data.UserID == null) {
           // Make role into a string
           let role;
-          if(formStruct.role == 1){
+          if (formStruct.role == 1) {
             role = "Admin";
-          }else if(formStruct.role == 2){
+          } else if (formStruct.role == 2) {
             role = "Patient";
-          }else if(formStruct.role == 3){
+          } else if (formStruct.role == 3) {
             role = "Doctor";
-          }else if(formStruct.role == 4){
+          } else if (formStruct.role == 4) {
             role = "HealthOfficial";
-          }else if(formStruct.role == 5){
+          } else if (formStruct.role == 5) {
             role = "ImmigrationOfficer";
           }
           // In case of Patient, create account directly
-          if(role == "Patient"){
-            await axios.post(
-              `http://localhost:5000/users`,
-              {
+          if (role == "Patient") {
+            await axios.post(`http://localhost:5000/users`, {
+              Email: formStruct.user_name,
+              FirstName: formStruct.first_name,
+              LastName: formStruct.last_name,
+              Telephone: formStruct.phone,
+              Address: formStruct.address,
+              Role: role,
+              Password: formStruct.pass,
+            });
+          } else {
+            // If role not patient then need to make an account request instead
+            // Check if a request already exists
+            const requestExistResponse = await axios.get(
+              `http://localhost:5000/accountRequest/${formStruct.user_name}`
+            );
+            if (requestExistResponse == null) {
+              await axios.post(`http://localhost:5000/accountRequest`, {
                 Email: formStruct.user_name,
                 FirstName: formStruct.first_name,
                 LastName: formStruct.last_name,
@@ -207,25 +265,7 @@ export default {
                 Address: formStruct.address,
                 Role: role,
                 Password: formStruct.pass,
-              }
-            );
-          }else{
-            // If role not patient then need to make an account request instead
-            // Check if a request already exists
-            const requestExistResponse = await axios.get(`http://localhost:5000/accountRequest/${formStruct.user_name}`);
-            if(requestExistResponse == null){
-              await axios.post(
-                `http://localhost:5000/accountRequest`,
-                {
-                  Email: formStruct.user_name,
-                  FirstName: formStruct.first_name,
-                  LastName: formStruct.last_name,
-                  Telephone: formStruct.phone,
-                  Address: formStruct.address,
-                  Role: role,
-                  Password: formStruct.pass,
-                }
-              );
+              });
             }
           }
         }
@@ -236,20 +276,26 @@ export default {
 
     // Create a password reset request
     async createPasswordResetRequest(email) {
-      console.log(`Password reset pressed`)
-      if(!email){
+      console.log(`Password reset pressed`);
+      if (!email) {
         return;
       }
       try {
-        const response = await axios.get(`http://localhost:5000/users/${email}`);
-        console.log(`Got response, url: ${`http://localhost:5000/users/${email}`}`);
-        if(response.data.UserID != null){
+        const response = await axios.get(
+          `http://localhost:5000/users/${email}`
+        );
+        console.log(
+          `Got response, url: ${`http://localhost:5000/users/${email}`}`
+        );
+        if (response.data.UserID != null) {
           console.log(`Retrieved user ID: ${response.data.UserID}`);
           // Check if a request already exists, if so just change the key to a new one
           // If not, create a new one
-          const requestExistsResponse = await axios.get(`http://localhost:5000/passwordresetrequest/${response.data.UserID}`);
+          const requestExistsResponse = await axios.get(
+            `http://localhost:5000/passwordresetrequest/${response.data.UserID}`
+          );
           const newKey = makeKey(6);
-          if(requestExistsResponse.data.UserID != null){
+          if (requestExistsResponse.data.UserID != null) {
             console.log(`Request already exists for this user, updating key`);
             // Update preexisting request
             await axios.put(
@@ -259,21 +305,26 @@ export default {
                 Email: email,
               }
             );
-          }else{
+          } else {
             console.log(`Request does not exist for this user, making new key`);
             // Create new request
-            await axios.post(
-              `http://localhost:5000/passwordresetrequest/`,
-              {
-                UserID: response.data.UserID,
-                Key: newKey,
-                Email: email,
-              }
-            );
+            await axios.post(`http://localhost:5000/passwordresetrequest/`, {
+              UserID: response.data.UserID,
+              Key: newKey,
+              Email: email,
+            });
           }
         }
       } catch (err) {
         console.log(err);
+      }
+    },
+    onNavClick(text) {
+      if (text == "Sign Up") {
+        this.signUp_modal = !this.signUp_modal;
+      }
+      if (text == "Sign In") {
+        this.login_modal = !this.login_modal;
       }
     },
   },

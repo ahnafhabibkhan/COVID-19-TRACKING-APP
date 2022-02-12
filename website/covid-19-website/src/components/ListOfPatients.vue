@@ -1,9 +1,19 @@
 <template>
   <div>
-    <h1 style="margin-top: 50px; font-size: 50px; text-align: center; color: black;">{{title}}</h1>
+    <h1
+      style="
+        margin-top: 50px;
+        font-size: 50px;
+        text-align: center;
+        color: black;
+      "
+    >
+      {{ title }}
+    </h1>
+    <v-text-field style="width: 50%; margin-left: auto; margin-right: auto;" v-model="search" placeholder="Search Patients"></v-text-field>
     <v-card class="patients-list-container" outlined color="transparent">
       <v-card
-        v-for="(item, i) in patientList"
+        v-for="(item, i) in filteredPatients"
         :key="i"
         :title="item.title"
         class="pa-2 mx-8 my-8"
@@ -86,11 +96,24 @@ export default {
           assignedDoctor: "Tony-Tony Chopper",
         },
       ],
+      search: "",
     };
   },
   methods: {
     onPatientClick() {
       this.$router.push("/");
+    },
+  },
+  computed: {
+    filteredPatients: function () {
+      return this.patientList.filter((patient) => {
+        return (
+          patient.firstName.toLowerCase().match(this.search.toLowerCase()) ||
+          patient.lastName.toLowerCase().match(this.search.toLowerCase()) ||
+          patient.email.toLowerCase().match(this.search.toLowerCase()) ||
+          patient.phoneNumber.match(this.search.toLowerCase())
+        );
+      });
     },
   },
 };

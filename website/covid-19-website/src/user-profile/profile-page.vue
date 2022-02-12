@@ -1,4 +1,5 @@
 <template>
+<!--Profile-->
   <div class="bg-image">
     <v-btn small color="accent" elevation="0" @click="back"> back</v-btn>
     <h1>Profile page</h1>
@@ -113,6 +114,7 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
+  opacity :1;
 }
 .btn-container {
   /* border: 5px solid red; */
