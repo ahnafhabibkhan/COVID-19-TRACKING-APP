@@ -59,6 +59,8 @@
 </template>
 
 <script>
+  import axios from "axios";
+
 export default {
   name: "Doctor",
 
@@ -66,6 +68,7 @@ export default {
 
   data: function () {
     return {
+      patients : [],
       series: [44, 55],
       chartOptions: {
         chart: {
@@ -88,6 +91,72 @@ export default {
         ],
       },
     };
+  },
+
+  created() {
+    this.getPatients();
+  },
+
+  methods:{
+
+    // Get all patients assigned to this doctor
+    async getPatients() {
+      try {
+        let DID = 0; // TODO: LOGGED IN Doctor ID MUST BE ACCESSIBLE FROM HERE
+        // Check if user with that email already exists
+        const response = await axios.get(`http://localhost:5000/users/${formStruct.user_name}`);
+        if(response.data.UserID == null){
+          // Make role into a string
+          let role;
+          if(formStruct.role == 1){
+            role = "Admin";
+          }else if(formStruct.role == 2){
+            role = "Patient";
+          }else if(formStruct.role == 3){
+            role = "Doctor";
+          }else if(formStruct.role == 4){
+            role = "HealthOfficial";
+          }else if(formStruct.role == 5){
+            role = "ImmigrationOfficer";
+          }
+          // In case of Patient, create account directly
+          if(role == "Patient"){
+            await axios.post(
+                    `http://localhost:5000/users`,
+                    {
+                      Email: formStruct.user_name,
+                      FirstName: formStruct.first_name,
+                      LastName: formStruct.last_name,
+                      Telephone: formStruct.phone,
+                      Address: formStruct.address,
+                      Role: role,
+                      Password: formStruct.pass,
+                    }
+            );
+          }else{
+            // If role not patient then need to make an account request instead
+            // Check if a request already exists
+            const requestExistResponse = await axios.get(`http://localhost:5000/accountRequest/${formStruct.user_name}`);
+            if(requestExistResponse == null){
+              await axios.post(
+                      `http://localhost:5000/accountRequest`,
+                      {
+                        Email: formStruct.user_name,
+                        FirstName: formStruct.first_name,
+                        LastName: formStruct.last_name,
+                        Telephone: formStruct.phone,
+                        Address: formStruct.address,
+                        Role: role,
+                        Password: formStruct.pass,
+                      }
+              );
+            }
+          }
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    },
   },
 };
 </script>

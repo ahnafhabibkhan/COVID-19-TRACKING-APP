@@ -2,7 +2,7 @@
 import express from "express";
 
 // import function from controller
-import { showUserByEmail, createUser, deleteUser, updateUser } from "../controllers/user.js";
+import { showUserByEmail, showUsersByData, createUser, deleteUser, updateUser } from "../controllers/user.js";
 import { showPasswordResetRequestByID, createPasswordResetRequest, deletePasswordResetRequest, updatePasswordResetRequest } from "../controllers/passwordResetRequest.js";
 import { createAccountRequest, deleteAccountRequest, showAccountRequestByEmail} from "../controllers/accountRequest.js";
 import {
@@ -21,6 +21,9 @@ const router = express.Router();
 ////////////USER
 // Get Single User
 router.get('/users/:email', showUserByEmail);
+
+// Get Users by data
+router.get('/users/', showUsersByData);
 
 // Create New User
 router.post('/users', createUser);

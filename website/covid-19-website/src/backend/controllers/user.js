@@ -1,9 +1,20 @@
 // Import function from user Model
-import { getUserByEmail, insertUser, deleteUserById, modifyUser } from "../models/userModel.js";
+import { getUserByEmail, getUsersByData, insertUser, deleteUserById, modifyUser } from "../models/userModel.js";
 
 // Get Single User by Email
 export const showUserByEmail = (req, res) => {
     getUserByEmail(req.params.email, (err, results) => {
+        if (err){
+            res.send(err);
+        }else{
+            res.json(results);
+        }
+    });
+}
+
+// Get Users by data
+export const showUsersByData = (req, res) => {
+    getUsersByData(req.body, (err, results) => {
         if (err){
             res.send(err);
         }else{
