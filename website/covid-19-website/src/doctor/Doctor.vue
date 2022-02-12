@@ -69,6 +69,15 @@ export default {
   data: function () {
     return {
       patients : [],
+      appointmentRequestForm: {
+        PID: -1,
+        Day: -1,
+        Month: -1,
+        Year: -1,
+        Hour: -1,
+        Minute: -1,
+      },
+
       series: [44, 55],
       chartOptions: {
         chart: {
@@ -94,7 +103,7 @@ export default {
   },
 
   created() {
-    this.getPatients();
+    this.getPatients(); // Call getPatients on page creation
   },
 
   methods:{
@@ -107,6 +116,28 @@ export default {
         this.patients = await axios.get(`http://localhost:5000/users`,
                                          {
                                            Doctor: DID,
+                                         }
+                                        );
+      } catch (err) {
+        console.log(err);
+      }
+    },
+
+    // Request appointment with patient
+    async requestAppointment() {
+      try {
+        const Date = this.appointmentRequestForm.Year.toString().concat('-',this.appointmentRequestForm.Month.toString()).concat('-',this.appointmentRequestForm.Day.toString());
+        const Time = this.appointmentRequestForm.Hour.toString().concat(':',this.appointmentRequestForm.Minute.toString());
+        const RequestedBy = 'D';
+        const DID = 0; // TODO: LOGGED IN Doctor ID MUST BE ACCESSIBLE FROM HERE
+        // Check if user with that email already exists
+        this.patients = await axios.post(`http://localhost:5000/appointmentrequest`,
+                                         {
+                                           PID: this.appointmentRequestForm.PID,
+                                           DID: DID,
+                                           Date: Date,
+                                           Time: Time,
+                                           RequestedBy: RequestedBy,
                                          }
                                         );
       } catch (err) {
