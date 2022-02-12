@@ -111,7 +111,7 @@ export default {
           patient.firstName.toLowerCase().match(this.search.toLowerCase()) ||
           patient.lastName.toLowerCase().match(this.search.toLowerCase()) ||
           patient.email.toLowerCase().match(this.search.toLowerCase()) ||
-          patient.phoneNumber.match(this.search.toLowerCase())
+          patient.phoneNumber.toLowerCase().match(this.search.toLowerCase())
         );
       });
     },
