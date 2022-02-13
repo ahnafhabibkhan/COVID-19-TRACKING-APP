@@ -111,7 +111,7 @@
 </template>
 
 <script>
-import SignUpDialog from '../components/SignUpDialog.vue'
+import SignUpDialog from "../components/SignUpDialog.vue";
 
 import axios from "axios";
 
@@ -128,7 +128,7 @@ function makeKey(length) {
 
 export default {
   name: "Login",
-  components: {SignUpDialog},
+  components: { SignUpDialog },
   data() {
     return {
       nav: [
@@ -189,6 +189,10 @@ export default {
           `Got response, url: ${`http://localhost:5000/users/${email}`}`
         );
         if (response.data.Password != null) {
+          // added by mansi
+          this.$store.commit("setUser", response.data);
+          this.login_modal = false;
+          // end
           console.log(`Retrieved user password: ${response.data.Password}`);
           if (password == response.data.Password) {
             console.log(`Login credentials valid`);
@@ -197,6 +201,11 @@ export default {
               // TODO
               this.$router.push("/admin");
             }
+            // mansi added
+            else if (response.data.Role == "Patient") {
+              this.$router.push("/Patient");
+            }
+            // end
           }
         }
       } catch (err) {

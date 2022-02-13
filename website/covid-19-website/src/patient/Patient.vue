@@ -48,18 +48,28 @@
             <v-row>
               <v-col cols="12" class="pa-5">
                 <h1>update status</h1>
-                <v-switch
+                <!-- <v-switch
                   v-model="form.i_have_covid"
                   label="I have covid 19"
-                ></v-switch>
+                ></v-switch> -->
                 <div>
                   <v-row>
                     <v-col cols="6">
                       <v-text-field
-                        label="Fever"
+                        label="Temperature :"
                         filled
                         flat
-                        v-model.number="form.fever"
+                        v-model.number="form.Temperature"
+                        dense
+                        hide-details
+                      ></v-text-field
+                    ></v-col>
+                    <v-col cols="6">
+                      <v-text-field
+                        label="Weight :"
+                        filled
+                        flat
+                        v-model.number="form.Weight"
                         dense
                         hide-details
                       ></v-text-field
@@ -69,30 +79,100 @@
                         dense
                         hide-details
                         label="Headache"
-                        v-model="form.headache"
+                        true-value="1"
+                        false-value="0"
+                        v-model.number="form.Headache"
                       ></v-checkbox
                     ></v-col>
                     <v-col cols="6">
                       <v-checkbox
                         dense
                         hide-details
-                        label="Runny Nose"
-                        v-model="form.runny_nose"
+                        label="BreathingIssues"
+                        true-value="1"
+                        false-value="0"
+                        v-model.number="form.BreathingIssues"
                       ></v-checkbox
                     ></v-col>
                     <v-col cols="6">
                       <v-checkbox
                         dense
                         hide-details
-                        label="Breath Problem"
-                        v-model="form.breath_problem"
+                        label="Cough"
+                        true-value="1"
+                        false-value="0"
+                        v-model.number="form.Cough"
+                      ></v-checkbox
+                    ></v-col>
+                    <v-col cols="6">
+                      <v-checkbox
+                        dense
+                        hide-details
+                        label="LostTasteSmell"
+                        true-value="1"
+                        false-value="0"
+                        v-model.number="form.LostTasteSmell"
+                      ></v-checkbox
+                    ></v-col>
+                    <v-col cols="6">
+                      <v-checkbox
+                        dense
+                        hide-details
+                        label="MusclePain"
+                        true-value="1"
+                        false-value="0"
+                        v-model.number="form.MusclePain"
+                      ></v-checkbox
+                    ></v-col>
+                    <v-col cols="6">
+                      <v-checkbox
+                        dense
+                        hide-details
+                        label="Diarrhea"
+                        true-value="1"
+                        false-value="0"
+                        v-model.number="form.Diarrhea"
+                      ></v-checkbox
+                    ></v-col>
+                    <v-col cols="6">
+                      <v-checkbox
+                        dense
+                        hide-details
+                        label="Vomitting"
+                        true-value="1"
+                        false-value="0"
+                        v-model.number="form.Vomitting"
+                      ></v-checkbox
+                    ></v-col>
+                    <v-col cols="6">
+                      <v-checkbox
+                        dense
+                        hide-details
+                        label="Nausea"
+                        true-value="1"
+                        false-value="0"
+                        v-model.number="form.Nausea"
+                      ></v-checkbox
+                    ></v-col>
+                    <v-col cols="6">
+                      <v-checkbox
+                        dense
+                        hide-details
+                        label="SoreThroat"
+                        true-value="1"
+                        false-value="0"
+                        v-model.number="form.SoreThroat"
                       ></v-checkbox
                     ></v-col>
                   </v-row>
                 </div>
               </v-col>
               <v-col cols="12">
-                <v-textarea rows="3" v-model="form.note" label="note">
+                <v-textarea
+                  rows="3"
+                  v-model="form.SympDescription"
+                  label="SympDescription :"
+                >
                 </v-textarea>
               </v-col>
 
@@ -168,7 +248,7 @@
             <v-expansion-panels>
               <v-expansion-panel v-for="(item, i) in statusesFiltered" :key="i">
                 <v-expansion-panel-header>
-                  <span> Date: {{ item.date }} </span>
+                  <span> Date: {{ item.fillOutDate }} </span>
                   <v-checkbox
                     label="i have Covid"
                     dense
@@ -245,8 +325,11 @@
         </v-row>
       </v-col>
       <!-- apppointments -->
-      <v-col cols="12" md="6"  class="d-flex align-center">
-        <div style="width: 70%; background-color:rgba(256,256,256,0.5);" class="pa-4 rounded-2">
+      <v-col cols="12" md="6" class="d-flex align-center">
+        <div
+          style="width: 70%; background-color: rgba(256, 256, 256, 0.5)"
+          class="pa-4 rounded-2"
+        >
           <h2>Appointments :</h2>
           <div v-for="(item, i) in appointments" :key="i">
             {{ item.date }}
@@ -261,6 +344,7 @@
   </v-container>
 </template>
 <script>
+import axios from "axios";
 export default {
   name: "Patient",
 
@@ -274,17 +358,22 @@ export default {
       date: null,
       statuses: [],
       form_default: {
-        id: null,
-        date: null,
-        i_have_covid: false,
-        headache: false,
-        breath_problem: false,
-        fever: 36,
-        runny_nose: false,
+        fillOutDate: "2022-02-14",
+        lastUpdateTime: "13:30:30",
+        Weight: null,
+        SympDescription: null,
+        Temperature: null,
+        BreathingIssues: 0,
+        Cough: 0,
+        LostTasteSmell: 0,
+        MusclePain: 0,
+        Diarrhea: 0,
+        Vomitting: 0,
+        Nausea: 0,
+        Headache: 0,
+        SoreThroat: 0,
       },
-      appointments: [
-        {id: 1 ,date:'2021-02-14' }
-      ],
+      appointments: [{ id: 1, date: "2021-02-14" }],
       form: null,
     };
   },
@@ -324,35 +413,40 @@ export default {
     },
     async getStatuses() {
       try {
-        const res = await this.$axios.get(this.url + "statuses");
+        console.log("request fired");
+        const res = await axios.get(this.url + `healthstatuses/${this.userId}`);
         console.log(res);
-        this.statuses = res.data;
+        // this.statuses = res.data;
       } catch (err) {
-        alert("error ; get statuses");
+        // alert("error ; get statuses");
         console.log("err", err);
       }
     },
     async addStatus() {
+      let d = new Date();
+      this.form.fillOutDate = d.toDateString().substr(0,10);
+      this.form.lastUpdateTime = d.getTime();
       try {
-        await this.$axios.post(this.url + "statuses", this.form);
-        alert("statuse added successfully");
+        this.form.PID = this.userId;
+        await axios.post(this.url + "healthstatus", this.form);
+        // alert("statuse added successfully");
         this.getStatuses();
         this.status_dialoge = false;
       } catch (err) {
         console.log("err", err);
-        alert("Failed ; add new status");
+        // alert("Failed ; add new status");
       }
     },
     async updateStatus() {
       try {
         await this.$axios.put(this.url + "statuses", this.form);
-        alert("statuse updated successfully");
+        // alert("statuse updated successfully");
         this.status_dialoge = false;
         this.edit_mode = false;
         this.getStatuses();
       } catch (err) {
         console.log("err", err);
-        alert("Failed ; add new status");
+        // alert("Failed ; add new status");
       }
     },
     async deleteStatus(id) {
@@ -402,9 +496,12 @@ export default {
       }
       return this.statuses;
     },
+    userId() {
+      return this.$store.state.user.UserID;
+    },
   },
   mounted() {
-    // this.getStatuses();
+    this.getStatuses();
     // this.getAppointments();
     this.form = Object.assign({}, this.form_default);
   },
