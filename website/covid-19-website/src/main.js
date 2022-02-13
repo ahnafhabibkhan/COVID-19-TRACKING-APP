@@ -4,6 +4,8 @@ import vuetify from "./plugins/vuetify";
 import VueRouter from "vue-router";
 import Routes from "./router/index.js";
 import VueApexCharts from 'vue-apexcharts'
+// import store - added by mansi
+import store from './store/index'
 
 Vue.use(VueRouter);
 Vue.use(VueApexCharts);
@@ -19,6 +21,8 @@ const router = new VueRouter({
 Vue.config.productionTip = false;
 
 new Vue({
+  // added by mansi
+  store,
   vuetify,
   router,
   render: (h) => h(App),
