@@ -139,7 +139,7 @@ export default {
   methods: {
     // Sign the user up
     async signupUser(formStruct) {
-      console.log(`Login pressed`);
+      console.log(`Signup pressed`);
       if (
               !formStruct.role ||
               !formStruct.email ||
@@ -153,14 +153,17 @@ export default {
               !formStruct.country ||
               formStruct.password != formStruct.passwordConfirm
       ) {
+        console.log(`Form invalid`);
         return;
       }
       try {
+        console.log(`Form valid, checking if user already exists`);
         // Check if user with that email already exists
         const response = await axios.get(
                 `http://localhost:5000/users/${formStruct.email}`
         );
         if (response.data.UserID == null) {
+          console.log(`User does not exist yet`);
           // Make role into a string
           let role;
           if (formStruct.role == 1) {
@@ -174,8 +177,10 @@ export default {
           } else if (formStruct.role == 5) {
             role = "ImmigrationOfficer";
           }
+          console.log(`Role: `+role);
           // In case of Patient, create account directly
           if (role == "Patient") {
+            console.log(`Patient, creating new user`);
             await axios.post(`http://localhost:5000/users`, {
               Email: formStruct.email,
               FirstName: formStruct.firstName,
@@ -188,12 +193,14 @@ export default {
               Country: formStruct.country,
             });
           } else {
+            console.log(`Role not patient, checking is account request already exists`);
             // If role not patient then need to make an account request instead
             // Check if a request already exists
             const requestExistResponse = await axios.get(
                     `http://localhost:5000/accountRequest/${formStruct.email}`
             );
-            if (requestExistResponse == null) {
+            if (requestExistResponse.data.Email == null) {
+              console.log(`Account request does not already exist, creating`);
               const currentDate = new Date();
               const year = currentDate.getFullYear();
               const month = currentDate.getMonth()+1;
