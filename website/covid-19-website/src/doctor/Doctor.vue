@@ -104,28 +104,7 @@ export default {
     };
   },
 
-  created() { // Call all these on page creation
-    this.getPatients();
-    this.getMessages();
-  },
-
   methods:{
-
-    // Get all patients assigned to this doctor
-    async getPatients() {
-      try {
-        let DID = 0; // TODO: LOGGED IN Doctor ID MUST BE ACCESSIBLE FROM HERE
-        // Check if user with that email already exists
-        this.patients = await axios.get(`http://localhost:5000/users`,
-                                         {
-                                           Doctor: DID,
-                                         }
-                                        );
-      } catch (err) {
-        console.log(err);
-      }
-    },
-
     // Get all messages to and from this doctor's botchat
     async getMessages() {
       try {

@@ -34,6 +34,7 @@
   </div>
 </template>
 <script>
+import axios from "axios";
 export default {
   name: "ListOfPatients",
 
@@ -99,7 +100,30 @@ export default {
       search: "",
     };
   },
+  created() { // Call all these on page creation
+    this.getPatients();
+  },
   methods: {
+    // Get all patients assigned to this doctor
+    async getPatients() {
+      console.log("getPatients called");
+      try {
+        console.log("$store null?: "+(this.$store == null));
+        console.log("state null?: "+(this.$store.state == null));
+        console.log("user null?: "+(this.user.state == null));
+        let DID = this.$store.state.user.UserID;
+        console.log("logged in doctor ID: "+DID);
+        // Check if user with that email already exists
+        this.patientList = await axios.get(`http://localhost:5000/users`,
+                {
+                  Doctor: DID,
+                }
+        );
+      } catch (err) {
+        console.log(err);
+      }
+    },
+
     onPatientClick() {
       this.$router.push("/");
     },
