@@ -158,7 +158,7 @@ export default {
       try {
         // Check if user with that email already exists
         const response = await axios.get(
-                `http://localhost:5000/users/${formStruct.user_name}`
+                `http://localhost:5000/users/${formStruct.email}`
         );
         if (response.data.UserID == null) {
           // Make role into a string
@@ -191,9 +191,15 @@ export default {
             // If role not patient then need to make an account request instead
             // Check if a request already exists
             const requestExistResponse = await axios.get(
-                    `http://localhost:5000/accountRequest/${formStruct.user_name}`
+                    `http://localhost:5000/accountRequest/${formStruct.email}`
             );
             if (requestExistResponse == null) {
+              const currentDate = new Date();
+              const year = currentDate.getFullYear();
+              const month = currentDate.getMonth()+1;
+              const day = currentDate.getDate();
+              const hour = currentDate.getHours();
+              const minute = currentDate.getMinutes();
               await axios.post(`http://localhost:5000/accountRequest`, {
                 Email: formStruct.email,
                 FirstName: formStruct.firstName,
@@ -204,6 +210,8 @@ export default {
                 Password: formStruct.password,
                 City: formStruct.city,
                 Country: formStruct.country,
+                Date: ""+year+"-"+(month < 10 ? "0" : "")+month+"-"+(day < 10 ? "0" : "")+day,
+                Time: ""+(hour < 10 ? "0" : "")+hour+":"+(minute < 10 ? "0" : "")+minute,
               });
             }
           }

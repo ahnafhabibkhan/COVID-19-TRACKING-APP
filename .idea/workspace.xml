@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="919974f6-8424-47de-8da9-cb2b0a20b30f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/website/covid-19-website/src/components/SignUpDialog.vue" beforeDir="false" afterPath="$PROJECT_DIR$/website/covid-19-website/src/components/SignUpDialog.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/covid-19-website/src/login/Login.vue" beforeDir="false" afterPath="$PROJECT_DIR$/website/covid-19-website/src/login/Login.vue" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/website/covid-19-website/node_modules/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -22,23 +21,20 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/login/Login.vue">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="340">
               <caret line="126" column="1" lean-forward="true" selection-start-line="126" selection-start-column="1" selection-end-line="126" selection-end-column="1" />
-              <folding>
-                <element signature="e#3025#3083#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/components/SignUpDialog.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="728">
-              <caret line="205" column="44" lean-forward="true" selection-start-line="205" selection-start-column="44" selection-end-line="205" selection-end-column="44" />
+            <state relative-caret-position="527">
+              <caret line="217" column="9" lean-forward="true" selection-start-line="217" selection-start-column="9" selection-end-line="217" selection-end-column="9" />
             </state>
           </provider>
         </entry>
@@ -55,7 +51,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/backend/models/userModel.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="901">
+            <state relative-caret-position="697">
               <caret line="53" column="60" selection-start-line="53" selection-start-column="58" selection-end-line="53" selection-end-column="60" />
             </state>
           </provider>
@@ -91,8 +87,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/doctor/Doctor.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2074">
-              <caret line="125" column="7" selection-start-line="125" selection-start-column="7" selection-end-line="125" selection-end-column="7" />
+            <state relative-caret-position="2771">
+              <caret line="166" column="7" selection-start-line="166" selection-start-column="7" selection-end-line="166" selection-end-column="7" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#v-btn#0;n#div#0;n#v-col#0;n#v-row#0;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
@@ -383,13 +379,13 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="37554000" />
+    <option name="totallyTimeSpent" value="38265000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1874" height="1096" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.27783903" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17420067" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -406,7 +402,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
-      <window_info anchor="bottom" id="Terminal" order="10" weight="0.32917964" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="10" visible="true" weight="0.20872274" />
       <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
       <window_info anchor="bottom" id="TypeScript" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -545,7 +541,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/backend/models/userModel.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="901">
+        <state relative-caret-position="697">
           <caret line="53" column="60" selection-start-line="53" selection-start-column="58" selection-end-line="53" selection-end-column="60" />
         </state>
       </provider>
@@ -583,8 +579,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/doctor/Doctor.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2074">
-          <caret line="125" column="7" selection-start-line="125" selection-start-column="7" selection-end-line="125" selection-end-column="7" />
+        <state relative-caret-position="2771">
+          <caret line="166" column="7" selection-start-line="166" selection-start-column="7" selection-end-line="166" selection-end-column="7" />
           <folding>
             <element signature="n#style#0;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#v-btn#0;n#div#0;n#v-col#0;n#v-row#0;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
@@ -603,8 +599,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/components/SignUpDialog.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="728">
-          <caret line="205" column="44" lean-forward="true" selection-start-line="205" selection-start-column="44" selection-end-line="205" selection-end-column="44" />
+        <state relative-caret-position="527">
+          <caret line="217" column="9" lean-forward="true" selection-start-line="217" selection-start-column="9" selection-end-line="217" selection-end-column="9" />
         </state>
       </provider>
     </entry>
@@ -612,9 +608,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="340">
           <caret line="126" column="1" lean-forward="true" selection-start-line="126" selection-start-column="1" selection-end-line="126" selection-end-column="1" />
-          <folding>
-            <element signature="e#3025#3083#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
