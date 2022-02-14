@@ -14,7 +14,8 @@ export const showUserByEmail = (req, res) => {
 
 // Get Users by data
 export const showUsersByData = (req, res) => {
-    getUsersByData(req.body, (err, results) => {
+    const data = req.body;
+    getUsersByData(data, (err, results) => {
         if (err){
             res.send(err);
         }else{

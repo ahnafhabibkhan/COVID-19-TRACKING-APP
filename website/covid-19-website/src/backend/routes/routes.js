@@ -23,7 +23,7 @@ const router = express.Router();
 router.get('/users/:email', showUserByEmail);
 
 // Get Users by data
-router.get('/users/', showUsersByData);
+router.post('/users', showUsersByData);
 
 // Create New User
 router.post('/users', createUser);

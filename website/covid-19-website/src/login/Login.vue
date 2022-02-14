@@ -189,12 +189,10 @@ export default {
           `Got response, url: ${`http://localhost:5000/users/${email}`}`
         );
         if (response.data.Password != null) {
-          // added by mansi
-          this.$store.commit("setUser", response.data);
-          this.login_modal = false;
-          // end
           console.log(`Retrieved user password: ${response.data.Password}`);
           if (password == response.data.Password) {
+            this.$store.commit("setUser", response.data);
+            this.login_modal = false;
             console.log(`Login credentials valid`);
             console.log(response.data.Role);
             if (response.data.Role == "Admin") {
