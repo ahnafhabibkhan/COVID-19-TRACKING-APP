@@ -44,7 +44,7 @@
               Don't have an account?
               <a
                 v-on:click="
-                  signup_modal = !signup_modal;
+                  signUp_modal = !signUp_modal;
                   login_modal = !login_modal;
                 "
                 >Sign up</a
@@ -198,14 +198,20 @@ export default {
             console.log(`Login credentials valid`);
             console.log(response.data.Role);
             if (response.data.Role == "Admin") {
-              // TODO
               this.$router.push("/admin");
             }
-            // mansi added
             else if (response.data.Role == "Patient") {
               this.$router.push("/Patient");
             }
-            // end
+            else if (response.data.Role == "Doctor") {
+              this.$router.push("/Doctor");
+            }
+            else if (response.data.Role == "HealthOfficial") {
+              this.$router.push("/health-official");
+            }
+            else if (response.data.Role == "ImmigrationOfficer") {
+              this.$router.push("/immigration-officer");
+            }
           }
         }
       } catch (err) {
