@@ -1,16 +1,16 @@
 <template>
-  <div class="immigration-officer"></div>
+  <div class="immigration-officer">
+      <ListOfPatients user="immigration-officer" title="List of Patients"/>
+  </div>
 </template>
 
 <script>
+import ListOfPatients from '../components/ListOfPatients.vue'
 export default {
   name: "ImmigrationOfficer",
 
-  components: {},
+  components: {ListOfPatients},
 
-  data: () => ({
-    
-  }),
 };
 </script>
 
@@ -25,4 +25,5 @@ export default {
   top: 0;
   left: 0;
 }
+
 </style>
