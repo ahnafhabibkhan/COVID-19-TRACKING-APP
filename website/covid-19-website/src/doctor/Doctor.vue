@@ -10,7 +10,7 @@
       </div>
     </div>
     <div class="left-side">
-      <div class="btn-container">
+      <div class="btn-container" style="margin-left: auto; margin-right: auto">
         <v-row align="center">
           <v-col cols="12" sm="6">
             <div class="my-6 mx-3">
@@ -20,6 +20,7 @@
                 color="blue lighten-2"
                 width="400px"
                 height="75px"
+                @click="onPatientsClick()"
                 >List Of Patients</v-btn
               >
             </div>
@@ -89,19 +90,16 @@ export default {
       },
     };
   },
+  methods: {
+    onPatientsClick(){
+      this.$router.push("/doctor-patients-list");
+    }
+  }
 };
 </script>
 
 <style>
 .doctor {
-  background-image: url("../assets/doctorImage2.jpg");
-  background-size: cover;
-  background-repeat: no-repeat;
-  min-height: 100%;
-  min-width: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
 }
 /* .btn {
   display: block;
@@ -111,8 +109,8 @@ export default {
   /* border: 5px solid red; */
   padding-top: 25px;
   margin-top: 100px;
-  margin-left: auto;
-  margin-right: auto;
+  /* margin-left: 300px; */
+  /* margin-right: auto; */
   width: 58%;
   height: 40%;
 }
@@ -131,6 +129,7 @@ export default {
   /* border: 5px solid red; */
   width: 40%;
   height: 1000px;
+  float: left;
 }
 .icons-container {
   /* border: 5px solid red; */
