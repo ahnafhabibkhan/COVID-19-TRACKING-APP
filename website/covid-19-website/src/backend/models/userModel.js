@@ -13,6 +13,18 @@ export const getUserByEmail = (email, result) => {
     });
 }
 
+// Get all Users
+export const getUsers = (result) => {
+    db.query("SELECT * FROM user", (err, results) => {
+        if(err) {
+            console.log(err);
+            result(err, null);
+        } else {
+            result(null, results);
+        }
+    });
+}
+
 // Get Users by data
 export const getUsersByData = (data, result) => {
     db.query("SELECT * FROM user WHERE ?", [data], (err, results) => {

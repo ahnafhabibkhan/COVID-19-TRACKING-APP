@@ -41,6 +41,7 @@ export default {
     return {
       patientList: [],
       search: "",
+      userRole: this.user,
     };
   },
   created() { // Call all these on page creation
@@ -51,14 +52,18 @@ export default {
     async getPatients() {
       console.log("getPatients called");
       try {
-        const DID = this.$store.state.user.UserID;
-        console.log("logged in doctor ID: "+DID);
-        // Check if user with that email already exists
-        const response = await axios.post(`http://localhost:5000/users`, {
+        if(this.userRole == "doctor"){
+          const DID = this.$store.state.user.UserID;
+          console.log("logged in doctor ID: "+DID);
+          // Check if user with that email already exists
+          const response = await axios.post(`http://localhost:5000/users`, {
             Doctor: DID,
-        });
-        this.patientList = response.data;
-        console.log(JSON.stringify(this.patientList));
+          });
+          this.patientList = response.data;
+        }else{ // Health official and Immigration officer
+          const response = await axios.get(`http://localhost:5000/users`);
+          this.patientList = response.data;
+        }
       } catch (err) {
         console.log(err);
       }
