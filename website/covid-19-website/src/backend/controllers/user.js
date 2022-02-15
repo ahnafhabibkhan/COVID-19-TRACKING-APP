@@ -1,5 +1,5 @@
 // Import function from user Model
-import { getUserByEmail, getUsers, getUsersByData, insertUser, deleteUserById, modifyUser } from "../models/userModel.js";
+import { getUserByEmail, getUsers, getUsersByData, getLatestPositiveUsers, insertUser, deleteUserById, modifyUser } from "../models/userModel.js";
 
 // Get Single User by Email
 export const showUserByEmail = (req, res) => {
@@ -27,6 +27,17 @@ export const showUsers = (req, res) => {
 export const showUsersByData = (req, res) => {
     const data = req.body;
     getUsersByData(data, (err, results) => {
+        if (err){
+            res.send(err);
+        }else{
+            res.json(results);
+        }
+    });
+}
+
+// Get basic data for Users that were covid positive in their latest health status
+export const showLatestPositiveUsers = (req, res) => {
+    getLatestPositiveUsers((err, results) => {
         if (err){
             res.send(err);
         }else{

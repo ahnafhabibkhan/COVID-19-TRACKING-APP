@@ -2,7 +2,7 @@
 import express from "express";
 
 // import function from controller
-import { showUserByEmail, showUsers, showUsersByData, createUser, deleteUser, updateUser } from "../controllers/user.js";
+import { showUserByEmail, showUsers, showUsersByData, showLatestPositiveUsers, createUser, deleteUser, updateUser } from "../controllers/user.js";
 import { showPasswordResetRequestByID, createPasswordResetRequest, deletePasswordResetRequest, updatePasswordResetRequest } from "../controllers/passwordResetRequest.js";
 import { createAccountRequest, deleteAccountRequest, showAccountRequestByEmail} from "../controllers/accountRequest.js";
 import {
@@ -24,6 +24,9 @@ router.get('/users/:email', showUserByEmail);
 
 // Get all Users
 router.get('/users', showUsers);
+
+// Get all Users
+router.get('/usersByCovid', showLatestPositiveUsers);
 
 // Get Users by data
 router.post('/users', showUsersByData);

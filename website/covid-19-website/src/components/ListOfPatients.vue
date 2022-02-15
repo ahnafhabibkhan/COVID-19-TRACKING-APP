@@ -18,7 +18,7 @@
         :title="item.title"
         class="pa-2 mx-8 my-8"
         style="display: inline-table; opacity: 95%"
-        width="25%"
+        width="30%"
         height="10%"
         @click="onPatientClick()"
         ><h2 class="my-2">{{ item.FirstName }} {{ item.LastName }}</h2>
@@ -60,8 +60,11 @@ export default {
             Doctor: DID,
           });
           this.patientList = response.data;
-        }else{ // Health official and Immigration officer
+        }else if(this.userRole == "health-official"){
           const response = await axios.get(`http://localhost:5000/users`);
+          this.patientList = response.data;
+        }else if(this.userRole == "immigration-officer"){
+          const response = await axios.get(`http://localhost:5000/usersByCovid`);
           this.patientList = response.data;
         }
       } catch (err) {
