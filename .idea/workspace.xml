@@ -2,8 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="919974f6-8424-47de-8da9-cb2b0a20b30f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/website/covid-19-website/src/backend/config/db.js" beforeDir="false" afterPath="$PROJECT_DIR$/website/covid-19-website/src/backend/config/db.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/website/covid-19-website/src/backend/controllers/accountRequest.js" beforeDir="false" afterPath="$PROJECT_DIR$/website/covid-19-website/src/backend/controllers/accountRequest.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/website/covid-19-website/src/backend/controllers/doctorAvailability.js" beforeDir="false" afterPath="$PROJECT_DIR$/website/covid-19-website/src/backend/controllers/doctorAvailability.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/website/covid-19-website/src/backend/models/accountRequestModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/website/covid-19-website/src/backend/models/accountRequestModel.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/website/covid-19-website/src/backend/models/appointmentModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/website/covid-19-website/src/backend/models/appointmentModel.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/website/covid-19-website/src/backend/models/appointmentRequestModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/website/covid-19-website/src/backend/models/appointmentRequestModel.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/website/covid-19-website/src/backend/models/doctorAvailabilityModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/website/covid-19-website/src/backend/models/doctorAvailabilityModel.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/website/covid-19-website/src/backend/models/messageModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/website/covid-19-website/src/backend/models/messageModel.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/website/covid-19-website/src/backend/models/passwordResetRequestModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/website/covid-19-website/src/backend/models/passwordResetRequestModel.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/website/covid-19-website/src/backend/models/userModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/website/covid-19-website/src/backend/models/userModel.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/website/covid-19-website/src/backend/routes/routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/website/covid-19-website/src/backend/routes/routes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/website/covid-19-website/src/components/ListOfPatients.vue" beforeDir="false" afterPath="$PROJECT_DIR$/website/covid-19-website/src/components/ListOfPatients.vue" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/website/covid-19-website/node_modules/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -23,82 +33,103 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/login/Login.vue">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2720">
-              <caret line="160" column="51" selection-start-line="160" selection-start-column="51" selection-end-line="160" selection-end-column="51" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/backend/models/passwordResetRequestModel.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="629">
-              <caret line="37" column="1" selection-start-line="37" selection-start-column="1" selection-end-line="49" selection-end-column="1" />
+            <state relative-caret-position="136">
+              <caret line="21" column="16" lean-forward="true" selection-start-line="21" selection-start-column="16" selection-end-line="21" selection-end-column="16" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/backend/controllers/passwordResetRequest.js">
+        <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/backend/models/healthStatusModel.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="884">
-              <caret line="52" column="30" selection-start-line="52" selection-start-column="30" selection-end-line="52" selection-end-column="30" />
+            <state relative-caret-position="1190">
+              <caret line="70" column="34" lean-forward="true" selection-start-line="70" selection-start-column="34" selection-end-line="70" selection-end-column="34" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/backend/controllers/user.js">
+        <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/backend/models/messageModel.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="340">
-              <caret line="20" column="14" selection-start-line="20" selection-start-column="14" selection-end-line="20" selection-end-column="14" />
+            <state relative-caret-position="493">
+              <caret line="29" column="48" lean-forward="true" selection-start-line="29" selection-start-column="48" selection-end-line="31" selection-end-column="53" />
+              <folding>
+                <element signature="e#21#54#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/backend/models/appointmentRequestModel.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="510">
+              <caret line="31" column="59" lean-forward="true" selection-start-line="31" selection-start-column="59" selection-end-line="33" selection-end-column="64" />
+              <folding>
+                <element signature="e#21#54#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/backend/models/appointmentModel.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="68">
+              <caret line="5" column="50" lean-forward="true" selection-start-line="5" selection-start-column="50" selection-end-line="7" selection-end-column="59" />
+              <folding>
+                <element signature="e#21#54#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/backend/routes/routes.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="102">
+              <caret line="6" column="37" selection-start-line="6" selection-start-column="37" selection-end-line="6" selection-end-column="38" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/backend/models/accountRequestModel.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="272">
+              <caret line="16" column="31" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="31" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/backend/routes/routes.js">
+        <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/backend/controllers/accountRequest.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="5" column="170" selection-start-line="5" selection-start-column="170" selection-end-line="5" selection-end-column="170" />
+            <state relative-caret-position="408">
+              <caret line="25" column="29" lean-forward="true" selection-start-line="25" selection-start-column="29" selection-end-line="25" selection-end-column="29" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/backend/index.js">
+        <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/backend/models/doctorAvailabilityModel.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="15" selection-start-line="15" selection-end-line="15" />
+            <state relative-caret-position="442">
+              <caret line="28" column="36" lean-forward="true" selection-start-line="28" selection-start-column="36" selection-end-line="28" selection-end-column="36" />
+              <folding>
+                <element signature="e#21#54#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/backend/config/db.js">
+        <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/backend/controllers/doctorAvailability.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="10" column="18" selection-start-line="10" selection-start-column="18" selection-end-line="10" selection-end-column="18" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/backend/config/email.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="14" column="27" selection-start-line="14" selection-start-column="27" selection-end-line="14" selection-end-column="27" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/backend/models/userModel.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="476">
-              <caret line="28" column="27" selection-start-line="28" selection-start-column="13" selection-end-line="28" selection-end-column="27" />
+            <state relative-caret-position="493">
+              <caret line="29" column="15" lean-forward="true" selection-start-line="29" selection-start-column="15" selection-end-line="29" selection-end-column="15" />
             </state>
           </provider>
         </entry>
@@ -116,6 +147,7 @@
     <findStrings>
       <find>main</find>
       <find>sign in</find>
+      <find>get</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -144,20 +176,37 @@
         <option value="$PROJECT_DIR$/website/covid-19-website/routes/routes.js" />
         <option value="$PROJECT_DIR$/website/covid-19-website/controllers/user.js" />
         <option value="$PROJECT_DIR$/website/covid-19-website/package.json" />
-        <option value="$PROJECT_DIR$/website/covid-19-website/src/backend/config/db.js" />
-        <option value="$PROJECT_DIR$/website/covid-19-website/src/backend/models/userModel.js" />
-        <option value="$PROJECT_DIR$/website/covid-19-website/src/backend/controllers/user.js" />
         <option value="$PROJECT_DIR$/website/covid-19-website/src/backend/index.js" />
+        <option value="$PROJECT_DIR$/website/covid-19-website/src/immigration-officer/ImmigrationOfficer.vue" />
+        <option value="$PROJECT_DIR$/website/covid-19-website/src/components/SignUpDialog.vue" />
+        <option value="$PROJECT_DIR$/website/covid-19-website/src/doctor/ListOfDoctorPatients.vue" />
+        <option value="$PROJECT_DIR$/website/covid-19-website/src/store/index.js" />
+        <option value="$PROJECT_DIR$/website/covid-19-website/src/backend/config/axios.d.ts" />
         <option value="$PROJECT_DIR$/website/covid-19-website/src/login/Login.vue" />
+        <option value="$PROJECT_DIR$/website/covid-19-website/src/backend/controllers/user.js" />
+        <option value="$PROJECT_DIR$/website/covid-19-website/src/backend/controllers/message.js" />
+        <option value="$PROJECT_DIR$/website/covid-19-website/src/doctor/Doctor.vue" />
+        <option value="$PROJECT_DIR$/website/covid-19-website/src/backend/models/healthStatusModel.js" />
+        <option value="$PROJECT_DIR$/website/covid-19-website/src/backend/config/db.js" />
+        <option value="$PROJECT_DIR$/website/covid-19-website/src/components/ListOfPatients.vue" />
+        <option value="$PROJECT_DIR$/website/covid-19-website/src/backend/models/userModel.js" />
+        <option value="$PROJECT_DIR$/website/covid-19-website/src/backend/models/passwordResetRequestModel.js" />
+        <option value="$PROJECT_DIR$/website/covid-19-website/src/backend/models/messageModel.js" />
+        <option value="$PROJECT_DIR$/website/covid-19-website/src/backend/models/doctorAvailabilityModel.js" />
+        <option value="$PROJECT_DIR$/website/covid-19-website/src/backend/controllers/doctorAvailability.js" />
+        <option value="$PROJECT_DIR$/website/covid-19-website/src/backend/models/appointmentRequestModel.js" />
+        <option value="$PROJECT_DIR$/website/covid-19-website/src/backend/models/appointmentModel.js" />
+        <option value="$PROJECT_DIR$/website/covid-19-website/src/backend/models/accountRequestModel.js" />
+        <option value="$PROJECT_DIR$/website/covid-19-website/src/backend/controllers/accountRequest.js" />
         <option value="$PROJECT_DIR$/website/covid-19-website/src/backend/routes/routes.js" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-8" />
+    <option name="x" value="-543" />
     <option name="y" value="-8" />
-    <option name="width" value="1874" />
-    <option name="height" value="1096" />
+    <option name="width" value="1870" />
+    <option name="height" value="1085" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -188,6 +237,14 @@
               <item name="website" type="462c0819:PsiDirectoryNode" />
               <item name="covid-19-website" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="COVID-19-TRACKING-APP" type="b2602c69:ProjectViewProjectNode" />
+              <item name="COVID-19-TRACKING-APP" type="462c0819:PsiDirectoryNode" />
+              <item name="website" type="462c0819:PsiDirectoryNode" />
+              <item name="covid-19-website" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="admin" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="COVID-19-TRACKING-APP" type="b2602c69:ProjectViewProjectNode" />
@@ -233,12 +290,86 @@
               <item name="backend" type="462c0819:PsiDirectoryNode" />
               <item name="routes" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="COVID-19-TRACKING-APP" type="b2602c69:ProjectViewProjectNode" />
+              <item name="COVID-19-TRACKING-APP" type="462c0819:PsiDirectoryNode" />
+              <item name="website" type="462c0819:PsiDirectoryNode" />
+              <item name="covid-19-website" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="COVID-19-TRACKING-APP" type="b2602c69:ProjectViewProjectNode" />
+              <item name="COVID-19-TRACKING-APP" type="462c0819:PsiDirectoryNode" />
+              <item name="website" type="462c0819:PsiDirectoryNode" />
+              <item name="covid-19-website" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="doctor" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="COVID-19-TRACKING-APP" type="b2602c69:ProjectViewProjectNode" />
+              <item name="COVID-19-TRACKING-APP" type="462c0819:PsiDirectoryNode" />
+              <item name="website" type="462c0819:PsiDirectoryNode" />
+              <item name="covid-19-website" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="health-official" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="COVID-19-TRACKING-APP" type="b2602c69:ProjectViewProjectNode" />
+              <item name="COVID-19-TRACKING-APP" type="462c0819:PsiDirectoryNode" />
+              <item name="website" type="462c0819:PsiDirectoryNode" />
+              <item name="covid-19-website" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="immigration-officer" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="COVID-19-TRACKING-APP" type="b2602c69:ProjectViewProjectNode" />
+              <item name="COVID-19-TRACKING-APP" type="462c0819:PsiDirectoryNode" />
+              <item name="website" type="462c0819:PsiDirectoryNode" />
+              <item name="covid-19-website" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="layout" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="COVID-19-TRACKING-APP" type="b2602c69:ProjectViewProjectNode" />
+              <item name="COVID-19-TRACKING-APP" type="462c0819:PsiDirectoryNode" />
+              <item name="website" type="462c0819:PsiDirectoryNode" />
+              <item name="covid-19-website" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="login" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="COVID-19-TRACKING-APP" type="b2602c69:ProjectViewProjectNode" />
+              <item name="COVID-19-TRACKING-APP" type="462c0819:PsiDirectoryNode" />
+              <item name="website" type="462c0819:PsiDirectoryNode" />
+              <item name="covid-19-website" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="patient" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="COVID-19-TRACKING-APP" type="b2602c69:ProjectViewProjectNode" />
+              <item name="COVID-19-TRACKING-APP" type="462c0819:PsiDirectoryNode" />
+              <item name="website" type="462c0819:PsiDirectoryNode" />
+              <item name="covid-19-website" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="router" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="Scope">
+        <subPane subId="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope">
+          <expand>
+            <path>
+              <item name="COVID-19-TRACKING-APP" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="E:\School\SOEN 390\GitHub Project\COVID-19-TRACKING-APP" type="442cc68d:ScopeViewTreeModel$RootNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -246,15 +377,16 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.0" />
-    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="preferences.fileTypes" />
     <property name="ts.external.directory.path" value="K:\Program Files\JetBrains\IntelliJ IDEA 2018.3.2\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
   </component>
@@ -291,18 +423,21 @@
       <workItem from="1643405473395" duration="3740000" />
       <workItem from="1643423749926" duration="23000" />
       <workItem from="1643423789365" duration="12794000" />
-      <workItem from="1644381754846" duration="105000" />
+      <workItem from="1644521699943" duration="2128000" />
+      <workItem from="1644694811014" duration="7149000" />
+      <workItem from="1644703507670" duration="82000" />
+      <workItem from="1644865899970" duration="2575000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="25557000" />
+    <option name="totallyTimeSpent" value="59056000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1874" height="1096" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.13506064" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17420067" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -319,9 +454,9 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
-      <window_info anchor="bottom" id="Terminal" order="10" visible="true" weight="0.25337487" />
+      <window_info anchor="bottom" id="Terminal" order="10" visible="true" weight="0.20872274" />
       <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
-      <window_info anchor="bottom" id="TypeScript" order="12" />
+      <window_info anchor="bottom" id="TypeScript" order="12" weight="0.32917964" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -336,6 +471,10 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="antWorkspaceConfiguration">
+    <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
+    <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/website/covid-19-website/index.php" />
@@ -367,26 +506,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/doctor/Doctor.vue">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/health-official/HealthOfficial.vue">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/immigration-officer/ImmigrationOfficer.vue">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/components/SignUpDialog.vue">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/website/covid-19-website/config/db.js" />
     <entry file="file://$PROJECT_DIR$/website/covid-19-website/routes/routes.js" />
     <entry file="file://$PROJECT_DIR$/website/covid-19-website/models/usermodel.js" />
     <entry file="file://$PROJECT_DIR$/website/covid-19-website/controllers/user.js" />
     <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/admin/Admin.vue">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/router/index.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/website/covid-19-website/package.json">
@@ -396,24 +520,34 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/website/covid-19-website/node_modules/vue-router/src/util/route.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="199">
-          <caret line="26" column="4" selection-start-line="26" selection-start-column="4" selection-end-line="26" selection-end-column="4" />
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/website/covid-19-website/vue.config.cjs">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/website/covid-19-website/node_modules/eslint/lib/cli-engine/config-array/config-dependency.js">
+    <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/backend/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="207">
-          <caret line="68" column="8" selection-start-line="68" selection-start-column="8" selection-end-line="68" selection-end-column="8" />
+        <state relative-caret-position="323">
+          <caret line="19" column="79" selection-start-line="19" selection-start-column="79" selection-end-line="19" selection-end-column="79" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/website/covid-19-website/node_modules/@types/express-serve-static-core/index.d.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="207">
+        <state relative-caret-position="10421">
           <caret line="625" column="4" selection-start-line="625" selection-start-column="4" selection-end-line="625" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/covid-19-website/node_modules/eslint/lib/cli-engine/config-array/config-dependency.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1156">
+          <caret line="68" column="8" selection-start-line="68" selection-start-column="8" selection-end-line="68" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/covid-19-website/node_modules/vue-router/src/util/route.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="26" column="4" selection-start-line="26" selection-start-column="4" selection-end-line="26" selection-end-column="4" />
         </state>
       </provider>
     </entry>
@@ -424,69 +558,239 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/website/covid-19-website/vue.config.cjs">
-      <provider selected="true" editor-type-id="text-editor" />
+    <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/router/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="493">
+          <caret line="44" column="35" selection-start-line="44" selection-start-column="15" selection-end-line="44" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/components/SignUpDialog.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="201" column="47" selection-start-line="201" selection-start-column="47" selection-end-line="201" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/admin/ListOfAdminPatients.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="18" column="8" selection-start-line="18" selection-start-column="8" selection-end-line="18" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/backend/config/axios.d.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="22" lean-forward="true" selection-start-column="22" selection-end-column="22" />
+        </state>
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/login/Login.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2720">
-          <caret line="160" column="51" selection-start-line="160" selection-start-column="51" selection-end-line="160" selection-end-column="51" />
+        <state relative-caret-position="448">
+          <caret line="249" column="14" selection-start-line="249" selection-start-column="14" selection-end-line="249" selection-end-column="14" />
+          <folding>
+            <element signature="e#3025#3083#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/backend/models/passwordResetRequestModel.js">
+    <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/store/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="629">
-          <caret line="37" column="1" selection-start-line="37" selection-start-column="1" selection-end-line="49" selection-end-column="1" />
+        <state relative-caret-position="153">
+          <caret line="9" column="75" selection-start-line="9" selection-start-column="75" selection-end-line="9" selection-end-column="75" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/backend/controllers/passwordResetRequest.js">
+    <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/doctor/ListOfDoctorPatients.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="884">
-          <caret line="52" column="30" selection-start-line="52" selection-start-column="30" selection-end-line="52" selection-end-column="30" />
+        <state relative-caret-position="102">
+          <caret line="6" column="8" selection-start-line="6" selection-start-column="8" selection-end-line="6" selection-end-column="8" />
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/immigration-officer/ImmigrationOfficer.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="13" column="2" selection-start-line="13" selection-start-column="2" selection-end-line="13" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/patient/Patient.vue">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/backend/controllers/user.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="20" column="14" selection-start-line="20" selection-start-column="14" selection-end-line="20" selection-end-column="14" />
+        <state relative-caret-position="646">
+          <caret line="38" column="45" selection-start-line="38" selection-start-column="45" selection-end-line="38" selection-end-column="45" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/backend/index.js">
+    <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/backend/controllers/appointmentRequest.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/backend/controllers/appointment.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/backend/controllers/message.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="15" selection-start-line="15" selection-end-line="15" />
+        <state relative-caret-position="408">
+          <caret line="24" column="1" lean-forward="true" selection-start-line="24" selection-start-column="1" selection-end-line="24" selection-end-column="1" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/backend/config/db.js">
+    <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/doctor/Doctor.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="18" selection-start-line="10" selection-start-column="18" selection-end-line="10" selection-end-column="18" />
+        <state relative-caret-position="561">
+          <caret line="270" column="35" lean-forward="true" selection-start-line="270" selection-start-column="35" selection-end-line="270" selection-end-column="35" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#v-btn#0;n#div#0;n#v-col#0;n#v-row#0;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#v-btn#0;n#div#1;n#v-col#0;n#v-row#0;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#v-btn#0;n#div#2;n#v-col#0;n#v-row#0;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="e#2979#4053#0" />
+            <element signature="e#4121#5165#0" />
+            <element signature="e#4675#5166#0" />
+            <element signature="e#5088#5370#0" />
+            <element signature="e#5417#5699#0" />
+            <element signature="e#4660#5151#0" />
+            <element signature="e#5264#5748#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/health-official/ListOfHOPatients.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="71" lean-forward="true" selection-start-line="2" selection-start-column="71" selection-end-line="2" selection-end-column="71" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/health-official/HealthOfficial.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-663" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/backend/controllers/healthStatus.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="49" selection-start-line="49" selection-end-line="57" selection-end-column="1" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/backend/config/email.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/backend/config/db.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="27" selection-start-line="14" selection-start-column="27" selection-end-line="14" selection-end-column="27" />
+        <state relative-caret-position="476">
+          <caret line="28" column="36" lean-forward="true" selection-start-line="28" selection-start-column="36" selection-end-line="28" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/components/ListOfPatients.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="68" column="114" selection-start-line="68" selection-start-column="114" selection-end-line="68" selection-end-column="114" />
+          <folding>
+            <element signature="n#style#0;n#v-card#0;n#v-card#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/backend/models/userModel.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="28" column="27" selection-start-line="28" selection-start-column="13" selection-end-line="28" selection-end-column="27" />
+        <state relative-caret-position="-660">
+          <caret line="14" column="1" lean-forward="true" selection-start-line="14" selection-start-column="1" selection-end-line="14" selection-end-column="1" />
+          <folding>
+            <element signature="e#21#54#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/backend/models/passwordResetRequestModel.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="21" column="16" lean-forward="true" selection-start-line="21" selection-start-column="16" selection-end-line="21" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/backend/models/messageModel.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="493">
+          <caret line="29" column="48" lean-forward="true" selection-start-line="29" selection-start-column="48" selection-end-line="31" selection-end-column="53" />
+          <folding>
+            <element signature="e#21#54#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/backend/models/healthStatusModel.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1190">
+          <caret line="70" column="34" lean-forward="true" selection-start-line="70" selection-start-column="34" selection-end-line="70" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/backend/models/doctorAvailabilityModel.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="28" column="36" lean-forward="true" selection-start-line="28" selection-start-column="36" selection-end-line="28" selection-end-column="36" />
+          <folding>
+            <element signature="e#21#54#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/backend/controllers/doctorAvailability.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="493">
+          <caret line="29" column="15" lean-forward="true" selection-start-line="29" selection-start-column="15" selection-end-line="29" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/backend/models/appointmentRequestModel.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="31" column="59" lean-forward="true" selection-start-line="31" selection-start-column="59" selection-end-line="33" selection-end-column="64" />
+          <folding>
+            <element signature="e#21#54#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/backend/models/appointmentModel.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="5" column="50" lean-forward="true" selection-start-line="5" selection-start-column="50" selection-end-line="7" selection-end-column="59" />
+          <folding>
+            <element signature="e#21#54#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/backend/models/accountRequestModel.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="16" column="31" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="31" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/backend/routes/routes.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="170" selection-start-line="5" selection-start-column="170" selection-end-line="5" selection-end-column="170" />
+        <state relative-caret-position="102">
+          <caret line="6" column="37" selection-start-line="6" selection-start-column="37" selection-end-line="6" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/covid-19-website/src/backend/controllers/accountRequest.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="25" column="29" lean-forward="true" selection-start-line="25" selection-start-column="29" selection-end-line="25" selection-end-column="29" />
         </state>
       </provider>
     </entry>
@@ -545,7 +849,6 @@
             <option name="proportions">
               <list>
                 <option value="0.2" />
-                <option value="0.6" />
               </list>
             </option>
           </splitter-proportions>

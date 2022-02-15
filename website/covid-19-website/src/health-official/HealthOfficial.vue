@@ -5,7 +5,7 @@
         <v-tab> </v-tab>
       </div>
       <div class="bottom-half">
-        <div class="my-6 mx-3">
+        <div class="my-4 mx-3">
           <v-btn
             class="white--text"
             style="
@@ -17,10 +17,11 @@
             color="blue lighten-2"
             width="400px"
             height="75px"
+            @click="onPatientsClick()"
             >LIST OF PATIENTS</v-btn
           >
         </div>
-        <div class="chart" style="margin-top: 100px; margin-left: 300px">
+        <div class="chart" style="margin-top: 10%; margin-left: 25%">
           <apexchart
             type="pie"
             width="480"
@@ -65,19 +66,24 @@ export default {
       },
     };
   },
+  methods: {
+    onPatientsClick(){
+      this.$router.push('/health-official-patients-list');
+    }
+  }
 };
 </script>
 
 <style>
 .health-official {
-  background-image: url("../assets/HealthOfficial.png");
+  /* background-image: url("../assets/HealthOfficial.png");
   background-size: cover;
   background-repeat: no-repeat;
   min-height: 100%;
   min-width: 100%;
   position: fixed;
   top: 0;
-  left: 0;
+  left: 0; */
 }
 /* .btn {
   display: block;
@@ -141,7 +147,7 @@ export default {
 }
 .bottom-half {
   /* border: 5px solid red; */
-  margin-top: 34%;
+  margin-top: 30%;
   height: 1000px;
 }
 </style>

@@ -39,7 +39,7 @@ export const insertHealthStatus = (data, result) => {
 
 // Delete healthstatus from Database
 export const deleteHealthStatusByPK = (args, result) => {
-    db.query("DELETE FROM healthstatus WHERE PID = ? AND fillOutDate = ?", [args.PID, args.fillOutDate], (err, results) => {
+    db.query("DELETE FROM healthstatus WHERE PID = ? and fillOutDate = ?", [args.pid, args.fillOutDate], (err, results) => {
         if(err) {
             console.log(err);
             result(err, null);
@@ -63,7 +63,7 @@ export const deleteHealthStatusByID = (pid, result) => {
 
 // Update a health status
 export const updateHealthStatusByPK = (data, pid, fillOutDate, result) => {
-    db.query("UPDATE healthstatus SET ? WHERE PID = ? AND fillOutDate = ?", [data, pid, fillOutDate], (err, results) => {
+    db.query("UPDATE healthstatus SET ? WHERE PID = ? and fillOutDate = ?", [data, pid, fillOutDate], (err, results) => {
         if(err) {
             console.log(err);
             result(err, null);
