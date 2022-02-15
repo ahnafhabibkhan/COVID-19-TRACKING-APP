@@ -69,8 +69,8 @@ export default {
 
   data: function () {
     return {
-      patients : [],
       messages : [],
+      appointments : [],
       appointmentRequestForm: {
         PID: -1,
         Day: -1,
@@ -79,6 +79,7 @@ export default {
         Hour: -1,
         Minute: -1,
       },
+      chatBotMessages: [],
 
       series: [44, 55],
       chartOptions: {
@@ -104,17 +105,19 @@ export default {
     };
   },
 
+  created(){
+    this.getMessages();
+    this.getAppointments();
+    this.getOwnAppointmentRequests();
+    this.getAppointmentRequests();
+  },
+
   methods:{
     // Get all messages to and from this doctor's botchat
     async getMessages() {
       try {
-        let DID = 0; // TODO: LOGGED IN Doctor ID MUST BE ACCESSIBLE FROM HERE
-        // Check if user with that email already exists
-        this.patients = await axios.get(`http://localhost:5000/users`,
-                                         {
-                                           Doctor: DID,
-                                         }
-                                        );
+        const DID = this.$store.state.user.UserID;
+        this.messages = await axios.get(`http://localhost:5000/message/${DID}`);
       } catch (err) {
         console.log(err);
       }
@@ -126,9 +129,8 @@ export default {
         const Date = this.appointmentRequestForm.Year.toString().concat('-',this.appointmentRequestForm.Month.toString()).concat('-',this.appointmentRequestForm.Day.toString());
         const Time = this.appointmentRequestForm.Hour.toString().concat(':',this.appointmentRequestForm.Minute.toString());
         const RequestedBy = 'D';
-        const DID = 0; // TODO: LOGGED IN Doctor ID MUST BE ACCESSIBLE FROM HERE
-        // Check if user with that email already exists
-        this.patients = await axios.post(`http://localhost:5000/appointmentrequest`,
+        const DID = this.$store.state.user.UserID;
+        await axios.post(`http://localhost:5000/appointmentrequest`,
                                          {
                                            PID: this.appointmentRequestForm.PID,
                                            DID: DID,
@@ -137,6 +139,139 @@ export default {
                                            RequestedBy: RequestedBy,
                                          }
                                         );
+      } catch (err) {
+        console.log(err);
+      }
+    },
+
+    // Cancel an appointment request
+    async cancelAppointmentRequest(PID, DID, Date, Time) {
+      try {
+        await axios.post(`http://localhost:5000/deleteappointmentrequest`,
+                                         {
+                                           PID: PID,
+                                           DID: DID,
+                                           Date: Date,
+                                           Time: Time,
+                                         }
+                                        );
+      } catch (err) {
+        console.log(err);
+      }
+    },
+
+    // Get appointment requests made by this doctor
+    async getOwnAppointmentRequests() {
+      try {
+        await axios.post(`http://localhost:5000/appointmentrequests`,
+                {
+                  DID: this.$store.state.user.UserID,
+                  RequestedBy: "D",
+                }
+        );
+      } catch (err) {
+        console.log(err);
+      }
+    },
+
+    // Get appointment requests
+    async getAppointmentRequests() {
+      try {
+        await axios.post(`http://localhost:5000/appointmentrequests`,
+                {
+                  DID: this.$store.state.user.UserID,
+                  RequestedBy: "P",
+                }
+        );
+      } catch (err) {
+        console.log(err);
+      }
+    },
+
+    // Get appointments
+    async getAppointments() {
+      try {
+        await axios.post(`http://localhost:5000/appointments`,
+                {
+                  DID: this.$store.state.user.UserID,
+                }
+        );
+      } catch (err) {
+        console.log(err);
+      }
+    },
+
+    // Cancel an appointment
+    async cancelAppointment(PID, DID, Date, Time) {
+      try {
+        await axios.post(`http://localhost:5000/deleteappointment`,
+                                         {
+                                           PID: PID,
+                                           DID: DID,
+                                           Date: Date,
+                                           Time: Time,
+                                         }
+                                        );
+      } catch (err) {
+        console.log(err);
+      }
+    },
+
+    // Approve an appointment
+    async approveAppointment(PID, DID, Date, Time) {
+      try {
+        this.cancelAppointmentRequest(PID, DID, Date, Time);
+        await axios.post(`http://localhost:5000/appointment`,
+                                         {
+                                           PID: PID,
+                                           DID: DID,
+                                           Date: Date,
+                                           Time: Time,
+                                         }
+                                        );
+      } catch (err) {
+        console.log(err);
+      }
+    },
+
+    // Get availabilities
+    async getAvailabilities() {
+      try {
+        await axios.get(`http://localhost:5000/availability/${this.$store.state.user.UserID}`);
+      } catch (err) {
+        console.log(err);
+      }
+    },
+
+    // Add availability
+    async addAvailability(DayOfWeek, StartTime, EndTime, SpecificDay) {
+      try {
+        await axios.post(`http://localhost:5000/availability`,
+                {
+                  DID: this.$store.state.user.UserID,
+                  DayOfWeek: DayOfWeek,
+                  StartTime: StartTime,
+                  EndTime: EndTime,
+                  SpecificDay: SpecificDay,
+                }
+        );
+      } catch (err) {
+        console.log(err);
+      }
+    },
+
+    // Remove availability
+    async removeAvailability(DayOfWeek, StartTime, EndTime, SpecificDay) {
+      try {
+        await axios.post(`http://localhost:5000/deleteavailability`,
+                {
+                  DID: this.$store.state.user.UserID,
+                  DayOfWeek: DayOfWeek,
+                  StartTime: StartTime,
+                  EndTime: EndTime,
+                  SpecificDay: SpecificDay,
+                }
+        );
       } catch (err) {
         console.log(err);
       }

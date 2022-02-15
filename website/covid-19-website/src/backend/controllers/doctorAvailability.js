@@ -3,7 +3,7 @@ import { getAvailabilities, insertAvailability, deleteAvailiability } from "../m
 
 // Get availabilites
 export const showAvailabilities = (req, res) => {
-    getAvailabilities(req.body, (err, results) => {
+    getAvailabilities(req.params.id, (err, results) => {
         if (err){
             res.send(err);
         }else{

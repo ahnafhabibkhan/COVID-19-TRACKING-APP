@@ -14,6 +14,7 @@ import {
 import {showAppointmentRequests, createAppointmentRequest, removeAppointmentRequest} from "../controllers/appointmentRequest.js";
 import {createAppointment, removeAppointment, showAppointments} from "../controllers/appointment.js";
 import {createAvailability, removeAvailability, showAvailabilities} from "../controllers/doctorAvailability.js";
+import {createMessage, removeMessage, showMessagesByID} from "../controllers/message.js";
 
 // init express router
 const router = express.Router();
@@ -42,33 +43,43 @@ router.put('/users/:id', updateUser);
 
 ////////////DOCTOR AVAILABILITY
 // Get availabilities
-router.get('/availability', showAvailabilities);
+router.get('/availability/:id', showAvailabilities);
 
 // Create New availability
 router.post('/availability', createAvailability);
 
 // Delete availability
-router.delete('/availability', removeAvailability);
+router.post('/deleteavailability', removeAvailability);
+
+////////////MESSAGE
+// Get messages by receiver ID
+router.get('/messages/:id', showMessagesByID);
+
+// Create New availability
+router.post('/messages', createMessage);
+
+// Delete availability
+router.delete('/messages', removeMessage);
 
 ////////////APPOINTMENT REQUEST
 // Get appointment requests
-router.get('/appointmentrequest', showAppointmentRequests);
+router.post('/appointmentrequests', showAppointmentRequests);
 
 // Create New appointment request
 router.post('/appointmentrequest', createAppointmentRequest);
 
 // Delete appointment request
-router.delete('/appointmentrequest', removeAppointmentRequest);
+router.post('/deleteappointmentrequest', removeAppointmentRequest);
 
 ////////////APPOINTMENT
 // Get appointments
-router.get('/appointment', showAppointments);
+router.post('/appointments', showAppointments);
 
 // Create New appointment
 router.post('/appointment', createAppointment);
 
 // Delete appointment
-router.delete('/appointment', removeAppointment);
+router.post('/deleteappointment', removeAppointment);
 
 ////////////ACCOUNT REQUEST
 // Get Single account request

@@ -2,8 +2,8 @@
 import db from "../config/db.js";
 
 // Get availabilities by data
-export const getAvailabilities = (data, result) => {
-    db.query("SELECT * FROM doctoravailability WHERE ?", [data], (err, results) => {
+export const getAvailabilities = (id, result) => {
+    db.query("SELECT * FROM doctoravailability WHERE DID = ?", [id], (err, results) => {
         if(err) {
             console.log(err);
             result(err, null);
