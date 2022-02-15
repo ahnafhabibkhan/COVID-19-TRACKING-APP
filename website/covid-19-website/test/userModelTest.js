@@ -31,7 +31,8 @@ describe('insert modify and delete user test',function(){
             Role: "Patient", 
             Password: "TestPass", 
             City: "Montreal", 
-            Country: "Canada"},(err, results) => {
+            Country: "Canada",
+            Travelled:0},(err, results) => {
 
         });
         

@@ -5,13 +5,13 @@ describe('GET health status TEST',function(){
 
     it('test getHealthStatus',function(){
         getLatestHealthStatusByID(1,(err, results) => {
-            assert.equal(results['fillOutDate'].toISOString(), "2022-02-05T05:00:00.000Z");
+            assert.equal(results['fillOutDate'].toISOString(), "2022-02-06T05:00:00.000Z");
         });
         getHealthStatusesByID(1,(err, results) => {
             assert.equal(results[1]['fillOutDate'].toISOString(), "2022-02-05T05:00:00.000Z");
         });
 
-        getLatestHealthStatusByID(5,(err, results) => {
+        getLatestHealthStatusByID(11,(err, results) => {
             assert.equal(results, undefined);
         });
     });
@@ -40,7 +40,8 @@ describe('insert modify and delete health test',function(){
             Vomitting: "0",
             Nausea: "0",
             Headache: "0",
-            SoreThroat: "0"},(err, results) => {
+            SoreThroat: "0",
+            Covid:"0"},(err, results) => {
 
         });
         
@@ -55,7 +56,7 @@ describe('insert modify and delete health test',function(){
         });
 
         deleteHealthStatusByPK({
-            PID: 10,
+            pid: 10,
             fillOutDate: new Date("2022-02-06T05:00:00.000Z").toJSON().slice(0, 10)
         },(err,results)=>{
         });
