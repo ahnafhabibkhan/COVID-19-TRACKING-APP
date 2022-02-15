@@ -1,9 +1,12 @@
 // import connection
 import db from "../config/db.js";
+import {formatWhere} from "../config/db";
 
 // Get appointment requests by data
 export const getAppointmentRequests = (data, result) => {
-    db.query("SELECT * FROM appointmentrequest WHERE ?", [data], (err, results) => {
+    const where = formatWhere(data);
+    const query = "SELECT * FROM appointmentrequest WHERE "+where;
+    db.query(query, (err, results) => {
         if(err) {
             console.log(err);
             result(err, null);
@@ -27,7 +30,9 @@ export const insertAppointmentRequest = (data, result) => {
 
 // Delete appointment request from Database
 export const deleteAppointmentRequest = (data, result) => {
-    db.query("DELETE FROM appointmentrequest WHERE ?", [data], (err, results) => {
+    const where = formatWhere(data);
+    const query = "DELETE FROM appointmentrequest WHERE "+where;
+    db.query(query, [data], (err, results) => {
         if(err) {
             console.log(err);
             result(err, null);

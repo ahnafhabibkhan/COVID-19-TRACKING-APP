@@ -15,7 +15,7 @@ export const getPasswordResetRequestByID = (id, result) => {
 
 // Insert Request to Database
 export const insertPasswordResetRequest = (data, result) => {
-    db.query("INSERT INTO passwordresetrequest SET UserID = ?, `Key` = ?", [data.UserID, data.Key], (err, results) => {
+    db.query("INSERT INTO passwordresetrequest SET UserID = ? and `Key` = ?", [data.UserID, data.Key], (err, results) => {
         if(err) {
             console.log(err);
             result(err, null);
