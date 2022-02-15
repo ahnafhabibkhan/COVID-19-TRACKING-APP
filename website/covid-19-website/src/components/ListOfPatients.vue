@@ -66,6 +66,8 @@ export default {
         }else if(this.userRole == "immigration-officer"){
           const response = await axios.get(`http://localhost:5000/usersByCovid`);
           this.patientList = response.data;
+          const travelResponse = await axios.post(`http://localhost:5000/users`, {Role: 'Patient', Travelled: 1});
+          this.patientList = this.patientList.concat(travelResponse.data);
         }
       } catch (err) {
         console.log(err);

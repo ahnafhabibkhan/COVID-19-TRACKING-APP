@@ -1,5 +1,6 @@
 // import connection
 import db from "../config/db.js";
+import {formatWhere} from "../config/db.js";
 
 // Get Single User by Email
 export const getUserByEmail = (email, result) => {
@@ -27,7 +28,9 @@ export const getUsers = (result) => {
 
 // Get Users by data
 export const getUsersByData = (data, result) => {
-    db.query("SELECT * FROM user WHERE ?", [data], (err, results) => {
+    const where = formatWhere(data);
+    const query = "SELECT * FROM user WHERE "+where;
+    db.query(query, (err, results) => {
         if(err) {
             console.log(err);
             result(err, null);

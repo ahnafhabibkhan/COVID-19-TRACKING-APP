@@ -1,5 +1,6 @@
 // import connection
 import db from "../config/db.js";
+import {formatWhere} from "../config/db";
 
 // Get messages by receiverID
 export const getMessagesByID = (id, result) => {
@@ -27,7 +28,9 @@ export const insertMessage = (data, result) => {
 
 // Delete message from Database
 export const deleteMessage = (data, result) => {
-    db.query("DELETE FROM message WHERE ?", [data], (err, results) => {
+    const where = formatWhere(data);
+    const query = "DELETE FROM message WHERE "+where;
+    db.query(query, (err, results) => {
         if(err) {
             console.log(err);
             result(err, null);

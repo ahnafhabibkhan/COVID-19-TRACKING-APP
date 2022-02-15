@@ -1,5 +1,6 @@
 // import connection
 import db from "../config/db.js";
+import {formatWhere} from "../config/db";
 
 // Get availabilities by data
 export const getAvailabilities = (id, result) => {
@@ -26,8 +27,10 @@ export const insertAvailability = (data, result) => {
 }
 
 // Delete availability from Database
-export const deleteAvailiability = (data, result) => {
-    db.query("DELETE FROM doctoravailability WHERE ?", [data], (err, results) => {
+export const deleteAvailability = (data, result) => {
+    const where = formatWhere(data);
+    const query = "DELETE FROM doctoravailability WHERE "+where;
+    db.query(query, (err, results) => {
         if(err) {
             console.log(err);
             result(err, null);

@@ -4,7 +4,7 @@ import express from "express";
 // import function from controller
 import { showUserByEmail, showUsers, showUsersByData, showLatestPositiveUsers, createUser, deleteUser, updateUser } from "../controllers/user.js";
 import { showPasswordResetRequestByID, createPasswordResetRequest, deletePasswordResetRequest, updatePasswordResetRequest } from "../controllers/passwordResetRequest.js";
-import { createAccountRequest, deleteAccountRequest, showAccountRequestByEmail} from "../controllers/accountRequest.js";
+import { createAccountRequest, showAccountRequests, deleteAccountRequest, showAccountRequestByEmail} from "../controllers/accountRequest.js";
 import {
     createHealthStatus,
     deleteHealthStatus, deleteHealthStatuses,
@@ -84,6 +84,9 @@ router.post('/deleteappointment', removeAppointment);
 ////////////ACCOUNT REQUEST
 // Get Single account request
 router.get('/accountrequest/:email', showAccountRequestByEmail);
+
+// Get all account requests
+router.get('/accountrequests', showAccountRequests);
 
 // Create New account request
 router.post('/accountrequest', createAccountRequest);

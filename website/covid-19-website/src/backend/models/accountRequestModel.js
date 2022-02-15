@@ -13,6 +13,18 @@ export const getAccountRequestByEmail = (email, result) => {
     });
 }
 
+// Get all account requests
+export const getAccountRequests = (result) => {
+    db.query("SELECT * FROM accountrequest", (err, results) => {
+        if(err) {
+            console.log(err);
+            result(err, null);
+        } else {
+            result(null, results[0]);
+        }
+    });
+}
+
 // Insert account request into Database
 export const insertAccountRequest = (data, result) => {
     db.query("INSERT INTO accountrequest SET ?", [data], (err, results) => {

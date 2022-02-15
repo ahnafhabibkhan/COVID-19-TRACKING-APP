@@ -1,5 +1,5 @@
 // Import function from doctor availability Model
-import { getAvailabilities, insertAvailability, deleteAvailiability } from "../models/doctorAvailabilityModel.js";
+import { getAvailabilities, insertAvailability, deleteAvailability } from "../models/doctorAvailabilityModel.js";
 
 // Get availabilites
 export const showAvailabilities = (req, res) => {
@@ -27,7 +27,7 @@ export const createAvailability = (req, res) => {
 // Delete availability
 export const removeAvailability = (req, res) => {
     const data = req.body;
-    deleteAvailiability(data, (err, results) => {
+    deleteAvailability(data, (err, results) => {
         if (err){
             res.send(err);
         }else{
