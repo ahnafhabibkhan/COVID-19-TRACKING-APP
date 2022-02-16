@@ -1,6 +1,6 @@
 // import connection
 import db from "../config/db.js";
-import {formatWhere} from "../config/db";
+import {formatWhere} from "../config/db.js";
 
 // Get appointment requests by data
 export const getAppointmentRequests = (data, result) => {

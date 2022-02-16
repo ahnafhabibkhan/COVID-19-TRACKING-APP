@@ -1,6 +1,6 @@
 // import connection
 import db from "../config/db.js";
-import {formatWhere} from "../config/db";
+import {formatWhere} from "../config/db.js";
 
 // Get availabilities by data
 export const getAvailabilities = (id, result) => {
