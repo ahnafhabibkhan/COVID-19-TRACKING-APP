@@ -88,11 +88,6 @@ export default {
           type: "pie",
         },
         labels: ["Infected", "Non-Infected"],
-        dataLabels: {
-          style: {
-            colors: ["white"],
-          },
-        },
         responsive: [
           {
             breakpoint: 580,
@@ -101,7 +96,7 @@ export default {
                 width: 400,
               },
               legend: {
-                position: 'bottom',
+                position: "bottom",
               },
             },
           },
