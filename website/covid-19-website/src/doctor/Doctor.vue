@@ -1,7 +1,7 @@
 <template>
   <div class="doctor">
-    <div class="right-side">
-      <div style="margin-top: 90%; margin-left: 80%">
+    <div class="right-side-doctor">
+      <div style="margin-top: 95%; margin-left: 85%">
         <v-btn @click="ChatboxClick" icon height="80px" width="80px">
           <v-icon color="blue darken-3" style="font-size: 80px">
             mdi-message-text
@@ -9,11 +9,11 @@
         </v-btn>
       </div>
     </div>
-    <div class="left-side">
-      <div class="btn-container" style="margin-left: auto; margin-right: auto">
+    <div class="left-side-doctor">
+      <div class="btn-container-doctor" style="margin: auto">
         <v-row align="center">
           <v-col cols="12" sm="6">
-            <div class="my-6 mx-3">
+            <div>
               <v-btn
                 class="white--text"
                 style="font-size: 18px; opacity: 90%"
@@ -24,7 +24,7 @@
                 >List Of Patients</v-btn
               >
             </div>
-            <div class="my-6 mx-3">
+            <div class="my-6">
               <v-btn
                 class="white--text"
                 style="font-size: 18px; opacity: 90%"
@@ -34,7 +34,7 @@
                 >List of Appointments</v-btn
               >
             </div>
-            <div class="my-6 mx-3">
+            <div class="my-6">
               <v-btn
                 class="white--text"
                 style="font-size: 18px; opacity: 90%"
@@ -60,7 +60,7 @@
 </template>
 
 <script>
-  import axios from "axios";
+import axios from "axios";
 
 export default {
   name: "Doctor",
@@ -69,8 +69,8 @@ export default {
 
   data: function () {
     return {
-      messages : [],
-      appointments : [],
+      messages: [],
+      appointments: [],
       appointmentRequestForm: {
         PID: -1,
         Day: -1,
@@ -88,6 +88,11 @@ export default {
           type: "pie",
         },
         labels: ["Infected", "Non-Infected"],
+        dataLabels: {
+          style: {
+            colors: ["white"],
+          },
+        },
         responsive: [
           {
             breakpoint: 580,
@@ -96,7 +101,7 @@ export default {
                 width: 400,
               },
               legend: {
-                position: "bottom",
+                position: 'bottom',
               },
             },
           },
@@ -105,14 +110,14 @@ export default {
     };
   },
 
-  created(){
+  created() {
     this.getMessages();
     this.getAppointments();
     this.getOwnAppointmentRequests();
     this.getAppointmentRequests();
   },
 
-  methods:{
+  methods: {
     // Get all messages to and from this doctor's botchat
     async getMessages() {
       try {
@@ -126,19 +131,22 @@ export default {
     // Request appointment with patient
     async requestAppointment() {
       try {
-        const Date = this.appointmentRequestForm.Year.toString().concat('-',this.appointmentRequestForm.Month.toString()).concat('-',this.appointmentRequestForm.Day.toString());
-        const Time = this.appointmentRequestForm.Hour.toString().concat(':',this.appointmentRequestForm.Minute.toString());
-        const RequestedBy = 'D';
+        const Date = this.appointmentRequestForm.Year.toString()
+          .concat("-", this.appointmentRequestForm.Month.toString())
+          .concat("-", this.appointmentRequestForm.Day.toString());
+        const Time = this.appointmentRequestForm.Hour.toString().concat(
+          ":",
+          this.appointmentRequestForm.Minute.toString()
+        );
+        const RequestedBy = "D";
         const DID = this.$store.state.user.UserID;
-        await axios.post(`http://localhost:5000/appointmentrequest`,
-                                         {
-                                           PID: this.appointmentRequestForm.PID,
-                                           DID: DID,
-                                           Date: Date,
-                                           Time: Time,
-                                           RequestedBy: RequestedBy,
-                                         }
-                                        );
+        await axios.post(`http://localhost:5000/appointmentrequest`, {
+          PID: this.appointmentRequestForm.PID,
+          DID: DID,
+          Date: Date,
+          Time: Time,
+          RequestedBy: RequestedBy,
+        });
       } catch (err) {
         console.log(err);
       }
@@ -147,14 +155,12 @@ export default {
     // Cancel an appointment request
     async cancelAppointmentRequest(PID, DID, Date, Time) {
       try {
-        await axios.post(`http://localhost:5000/deleteappointmentrequest`,
-                                         {
-                                           PID: PID,
-                                           DID: DID,
-                                           Date: Date,
-                                           Time: Time,
-                                         }
-                                        );
+        await axios.post(`http://localhost:5000/deleteappointmentrequest`, {
+          PID: PID,
+          DID: DID,
+          Date: Date,
+          Time: Time,
+        });
       } catch (err) {
         console.log(err);
       }
@@ -163,12 +169,10 @@ export default {
     // Get appointment requests made by this doctor
     async getOwnAppointmentRequests() {
       try {
-        await axios.post(`http://localhost:5000/appointmentrequests`,
-                {
-                  DID: this.$store.state.user.UserID,
-                  RequestedBy: "D",
-                }
-        );
+        await axios.post(`http://localhost:5000/appointmentrequests`, {
+          DID: this.$store.state.user.UserID,
+          RequestedBy: "D",
+        });
       } catch (err) {
         console.log(err);
       }
@@ -177,12 +181,10 @@ export default {
     // Get appointment requests
     async getAppointmentRequests() {
       try {
-        await axios.post(`http://localhost:5000/appointmentrequests`,
-                {
-                  DID: this.$store.state.user.UserID,
-                  RequestedBy: "P",
-                }
-        );
+        await axios.post(`http://localhost:5000/appointmentrequests`, {
+          DID: this.$store.state.user.UserID,
+          RequestedBy: "P",
+        });
       } catch (err) {
         console.log(err);
       }
@@ -191,11 +193,9 @@ export default {
     // Get appointments
     async getAppointments() {
       try {
-        await axios.post(`http://localhost:5000/appointments`,
-                {
-                  DID: this.$store.state.user.UserID,
-                }
-        );
+        await axios.post(`http://localhost:5000/appointments`, {
+          DID: this.$store.state.user.UserID,
+        });
       } catch (err) {
         console.log(err);
       }
@@ -204,14 +204,12 @@ export default {
     // Cancel an appointment
     async cancelAppointment(PID, DID, Date, Time) {
       try {
-        await axios.post(`http://localhost:5000/deleteappointment`,
-                                         {
-                                           PID: PID,
-                                           DID: DID,
-                                           Date: Date,
-                                           Time: Time,
-                                         }
-                                        );
+        await axios.post(`http://localhost:5000/deleteappointment`, {
+          PID: PID,
+          DID: DID,
+          Date: Date,
+          Time: Time,
+        });
       } catch (err) {
         console.log(err);
       }
@@ -221,14 +219,12 @@ export default {
     async approveAppointment(PID, DID, Date, Time) {
       try {
         this.cancelAppointmentRequest(PID, DID, Date, Time);
-        await axios.post(`http://localhost:5000/appointment`,
-                                         {
-                                           PID: PID,
-                                           DID: DID,
-                                           Date: Date,
-                                           Time: Time,
-                                         }
-                                        );
+        await axios.post(`http://localhost:5000/appointment`, {
+          PID: PID,
+          DID: DID,
+          Date: Date,
+          Time: Time,
+        });
       } catch (err) {
         console.log(err);
       }
@@ -237,7 +233,9 @@ export default {
     // Get availabilities
     async getAvailabilities() {
       try {
-        await axios.get(`http://localhost:5000/availability/${this.$store.state.user.UserID}`);
+        await axios.get(
+          `http://localhost:5000/availability/${this.$store.state.user.UserID}`
+        );
       } catch (err) {
         console.log(err);
       }
@@ -246,15 +244,13 @@ export default {
     // Add availability
     async addAvailability(DayOfWeek, StartTime, EndTime, SpecificDay) {
       try {
-        await axios.post(`http://localhost:5000/availability`,
-                {
-                  DID: this.$store.state.user.UserID,
-                  DayOfWeek: DayOfWeek,
-                  StartTime: StartTime,
-                  EndTime: EndTime,
-                  SpecificDay: SpecificDay,
-                }
-        );
+        await axios.post(`http://localhost:5000/availability`, {
+          DID: this.$store.state.user.UserID,
+          DayOfWeek: DayOfWeek,
+          StartTime: StartTime,
+          EndTime: EndTime,
+          SpecificDay: SpecificDay,
+        });
       } catch (err) {
         console.log(err);
       }
@@ -263,21 +259,19 @@ export default {
     // Remove availability
     async removeAvailability(DayOfWeek, StartTime, EndTime, SpecificDay) {
       try {
-        await axios.post(`http://localhost:5000/deleteavailability`,
-                {
-                  DID: this.$store.state.user.UserID,
-                  DayOfWeek: DayOfWeek,
-                  StartTime: StartTime,
-                  EndTime: EndTime,
-                  SpecificDay: SpecificDay,
-                }
-        );
+        await axios.post(`http://localhost:5000/deleteavailability`, {
+          DID: this.$store.state.user.UserID,
+          DayOfWeek: DayOfWeek,
+          StartTime: StartTime,
+          EndTime: EndTime,
+          SpecificDay: SpecificDay,
+        });
       } catch (err) {
         console.log(err);
       }
     },
-	
-	onPatientsClick(){
+
+    onPatientsClick() {
       this.$router.push("/doctor-patients-list");
     },
   },
@@ -291,10 +285,11 @@ export default {
   display: block;
   margin-top: 35px;
 } */
-.btn-container {
+.btn-container-doctor {
   /* border: 5px solid red; */
-  padding-top: 25px;
-  margin-top: 100px;
+  /* padding-top: 25px;
+  margin-top: auto;
+  margin-bottom: auto; */
   /* margin-left: 300px; */
   /* margin-right: auto; */
   width: 58%;
@@ -306,15 +301,15 @@ export default {
   /* border: 5px solid red; */
   width: 65%;
   height: 40%;
-  margin-top: 2%;
+  margin-top: 5%;
   margin-left: auto;
   margin-right: auto;
   opacity: 90%;
 }
-.left-side {
+.left-side-doctor {
   /* border: 5px solid red; */
   width: 40%;
-  height: 1000px;
+  height: 100%;
   float: left;
 }
 .icons-container {
@@ -325,10 +320,10 @@ export default {
   float: right;
 }
 
-.right-side {
+.right-side-doctor {
   /* border: 5px solid red; */
   float: right;
   width: 50%;
-  height: 1000px;
+  height: 100%;
 }
 </style>
