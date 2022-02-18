@@ -1,7 +1,7 @@
 <template>
   <v-card
     elevation="15"
-    width="500"
+    width="500px"
     color="blue lighten-2"
     style="border-radius: 20px; opacity: 95%; margin: auto"
   >
@@ -17,12 +17,11 @@
       <v-row justify="center">
         <v-col md="7">
           <v-text-field
-            style="margin-left: auto; margin-right: auto"
             label="First Name"
             v-model="form.firstName"
             solo
             :autocomplete="false"
-            full-width
+            
           ></v-text-field>
 
           <v-text-field
@@ -55,12 +54,12 @@
             :autocomplete="false"
           ></v-text-field>
 
-          <v-text-field
+          <!-- <v-text-field
             label="City"
             v-model="form.city"
             solo
             :autocomplete="false"
-          ></v-text-field>
+          ></v-text-field> -->
 
           <v-text-field
             label="Country"
@@ -130,7 +129,7 @@ export default {
         birthDate: null,
         telephone: null,
         address: null,
-        city: null,
+        // city: null,
         country: null,
       },
     };
@@ -149,7 +148,7 @@ export default {
               !formStruct.lastName ||
               !formStruct.telephone ||
               !formStruct.address ||
-              !formStruct.city ||
+              // !formStruct.city ||
               !formStruct.country ||
               formStruct.password != formStruct.passwordConfirm
       ) {
@@ -189,7 +188,7 @@ export default {
               Address: formStruct.address,
               Role: role,
               Password: formStruct.password,
-              City: formStruct.city,
+              // City: formStruct.city,
               Country: formStruct.country,
             });
           } else {
@@ -215,7 +214,7 @@ export default {
                 Address: formStruct.address,
                 Role: role,
                 Password: formStruct.password,
-                City: formStruct.city,
+                // City: formStruct.city,
                 Country: formStruct.country,
                 Date: ""+year+"-"+(month < 10 ? "0" : "")+month+"-"+(day < 10 ? "0" : "")+day,
                 Time: ""+(hour < 10 ? "0" : "")+hour+":"+(minute < 10 ? "0" : "")+minute,
