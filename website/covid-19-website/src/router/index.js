@@ -34,6 +34,7 @@ export default [
         children: [
           { path: "/doctor", component: Doctor },
           { path: "/doctor-patients-list", component: DoctorListOfPatients },
+          
         ],
       },
       {
