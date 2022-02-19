@@ -1,22 +1,7 @@
+
 <template>
   <v-container class="bg-image">
     <v-row>
-      <!-- confirm modal for delete status -->
-      <v-dialog v-model="confirm_modal" width="500px">
-        <v-card>
-          <v-card-title> are you sure to delete item ? </v-card-title>
-          <v-container>
-            <v-row>
-              <v-col cols="6">
-                <v-btn @click="confirm_modal = false">no</v-btn>
-              </v-col>
-              <v-col cols="6">
-                <!-- <v-btn color="error" @click="">yes</v-btn> -->
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-card>
-      </v-dialog>
       <!-- date modal start -->
       <v-dialog v-model="date_dialoge" width="500px">
         <v-card>
@@ -36,6 +21,11 @@
                   <v-radio
                     v-for="(item, i) in filteredAvailability"
                     :key="i"
+                    :color="disAvail(item) ? 'error' : ''"
+                    :disabled="disAvail(item)"
+                    :class="{
+                      'text-decoration-line-through red--text': disAvail(item),
+                    }"
                     :label="
                       item.SpecificDay.substr(0, 10) +
                       ' -- ' +
@@ -88,6 +78,7 @@
                   <v-row>
                     <v-col cols="6">
                       <v-text-field
+                        :rules="[rules.required, rules.number]"
                         label="Temperature :"
                         filled
                         flat
@@ -407,19 +398,30 @@
           </v-col>
         </v-row>
       </v-col>
-      <!-- apppointments -->
-      <v-col cols="12" md="6" class="d-flex align-center">
+
+      <v-col cols="12" md="6" class="pt-6 mt-6">
+        <!-- requested apppointments -->
         <div
           style="width: 70%; background-color: rgba(256, 256, 256, 0.5)"
-          class="pa-4 rounded-2"
+          class="pa-4 rounded-lg mb-5"
         >
-          <h2>Appointments :</h2>
+          <h2>Requested Appointments :</h2>
           <div v-for="(item, i) in appointments" :key="i">
             {{ item.Date.substr(0, 10) + " -- " + item.Time }}
 
-            <v-btn small icon color="error" @click="deleteAppointment(item)">
-              <v-icon> mdi-close </v-icon>
-            </v-btn>
+            <v-btn x-small @click="deleteAppointment(item)"> cancel </v-btn>
+          </div>
+        </div>
+        <!-- approved apppointments -->
+        <div
+          style="width: 70%; background-color: rgba(256, 256, 256, 0.5)"
+          class="pa-4 rounded-lg mt-5"
+        >
+          <h2>Approved Appointments :</h2>
+          <div v-for="(item, i) in approved" :key="i">
+            {{ item.Date.substr(0, 10) + " -- " + item.Time }}
+
+            <v-btn x-small @click="deleteApproved(item)"> cancel </v-btn>
           </div>
         </div>
       </v-col>
@@ -434,6 +436,10 @@ export default {
 
   data() {
     return {
+      rules: {
+        required: (value) => !!value || "Required.",
+        number: (value) => typeof(value)=='number' || "must be a number",
+      },
       url: "http://localhost:5000/",
       edit_mode: false,
       show_more: false,
@@ -447,7 +453,7 @@ export default {
         Weight: null,
         SympDescription: null,
         Temperature: null,
-        BreathingIssues: 0,
+        BreathingIssues: null,
         Cough: 0,
         Covid: 0,
         LostTasteSmell: 0,
@@ -458,13 +464,22 @@ export default {
         Headache: 0,
         SoreThroat: 0,
       },
-      appointments: [{ id: 1, date: "2021-02-14" }],
+      appointments: [],
       form: null,
       availabilities: [],
       available: null,
+      approved: [],
     };
   },
   methods: {
+    disAvail(item) {
+      const found = this.appointments.findIndex((a) => {
+        return a.Time == item.StartTime && a.Date == item.SpecificDay;
+      });
+      if (found > -1) return true;
+      return false;
+    },
+
     onEdit(item) {
       this.edit_mode = true;
       this.status_dialoge = true;
@@ -586,9 +601,34 @@ export default {
           item.Date = item.Date.substr(0, 10);
           delete item.RequestedBy;
           try {
-            axios.post(this.url + "deleteappointment", item);
+            axios.post(this.url + "deleteappointmentrequest", item);
 
             this.getAppointments();
+          } catch (err) {
+            console.log("err", err);
+            alert("Failed ; delete appointment");
+          }
+          Swal.fire("Deleted!", "Your file has been deleted.", "success");
+        }
+      });
+    },
+    async deleteApproved(item) {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          item.Date = item.Date.substr(0, 10);
+          delete item.RequestedBy;
+          try {
+            axios.post(this.url + "deleteappointment", item);
+
+            this.getApproved();
           } catch (err) {
             console.log("err", err);
             alert("Failed ; delete appointment");
@@ -604,6 +644,18 @@ export default {
           PID: id,
         });
         this.appointments = res.data;
+      } catch (err) {
+        console.log("err", err);
+        alert("Failed ; get appointment");
+      }
+    },
+    async getApproved() {
+      const id = this.userId;
+      try {
+        const res = await axios.post(this.url + `appointments`, {
+          PID: id,
+        });
+        this.approved = res.data;
       } catch (err) {
         console.log("err", err);
         alert("Failed ; get appointment");
@@ -633,12 +685,12 @@ export default {
       return this.statuses;
     },
     userId() {
-      return 3;
-      // return store.state.user.UserID;
+      // return 3;
+      return this.$store.state.user.UserID;
     },
     doctorId() {
-      return 4;
-      // return store.state.user.UserID;
+      // return 4;
+      return this.$store.state.user.Doctor;
     },
     filteredAvailability() {
       return this.availabilities.filter((item) => {
@@ -647,6 +699,7 @@ export default {
     },
   },
   mounted() {
+    this.getApproved();
     this.getStatuses();
     this.getAppointments();
     this.form = Object.assign({}, this.form_default);
@@ -654,6 +707,10 @@ export default {
 };
 </script>
 <style>
+.red {
+  color: red !important;
+  background-color: white;
+}
 /* .up::before {
   content: "Next";
 }
