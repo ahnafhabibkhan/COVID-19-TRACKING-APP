@@ -37,7 +37,7 @@ export const createHealthStatus = (req, res) => {
 
 // Delete health status by primary key
 export const deleteHealthStatus = (req, res) => {
-    deleteHealthStatusByPK(req.body, (err, results) => {
+    deleteHealthStatusByPK(req.params, (err, results) => {
         if (err){
             res.send(err);
         }else{
@@ -48,7 +48,7 @@ export const deleteHealthStatus = (req, res) => {
 
 // Delete health statuses by patient ID
 export const deleteHealthStatuses = (req, res) => {
-    deleteHealthStatusByID(req.body, (err, results) => {
+    deleteHealthStatusByID(req.params, (err, results) => {
         if (err){
             res.send(err);
         }else{
