@@ -57,7 +57,6 @@ DROP TABLE IF EXISTS `appointment`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `appointment` (
-  `AID` int unsigned NOT NULL,
   `PID` int unsigned NOT NULL,
   `DID` int unsigned NOT NULL,
   `LevelOfEmergency` int NOT NULL,
@@ -285,4 +284,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-02-19 22:24:52
+-- Dump completed on 2022-02-19 23:31:09
