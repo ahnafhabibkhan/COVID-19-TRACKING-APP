@@ -1,4 +1,5 @@
 import { assert } from 'chai';
+import db from "../src/backend/config/db.js";
 import { getLatestHealthStatusByID, getHealthStatusesByID, insertHealthStatus, deleteHealthStatusByPK,deleteHealthStatusByID,updateHealthStatusByPK } from"../src/backend/models/healthStatusModel.js";
 
 describe('GET health status TEST',function(){
@@ -91,3 +92,4 @@ describe('insert modify and delete health test',function(){
     });
     
 });
+
