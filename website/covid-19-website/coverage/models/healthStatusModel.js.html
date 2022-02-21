@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">59.45% </span>
+                <span class="strong">74.32% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>44/74</span>
+                <span class='fraction'>55/74</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">72.72% </span>
+                <span class="strong">68.75% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>8/11</span>
+                <span class='fraction'>11/16</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">66.66% </span>
+                <span class="strong">83.33% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>4/6</span>
+                <span class='fraction'>5/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">59.45% </span>
+                <span class="strong">74.32% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>44/74</span>
+                <span class='fraction'>55/74</span>
             </div>
         
             
@@ -141,15 +141,15 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -177,6 +177,18 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -189,25 +201,13 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">// import connection
 import db from "../config/db.js";
@@ -249,16 +249,16 @@ export const insertHealthStatus = (data, result) =&gt; {
 }
 &nbsp;
 // Delete healthstatus from Database
-export const deleteHealthStatusByPK = <span class="fstat-no" title="function not covered" >(args, result) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    db.query("DELETE FROM healthstatus WHERE PID = ? and fillOutDate = ?", [args.pid, args.fillOutDate], (err, results) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >        if(err) {</span>
+export const deleteHealthStatusByPK = (args, result) =&gt; {
+    db.query("DELETE FROM healthstatus WHERE PID = ? and fillOutDate = ?", [args.pid, args.fillOutDate], (err, results) =&gt; {
+        if(err) <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
 <span class="cstat-no" title="statement not covered" >            console.log(err);</span>
 <span class="cstat-no" title="statement not covered" >            result(err, null);</span>
-<span class="cstat-no" title="statement not covered" >        } else {</span>
-<span class="cstat-no" title="statement not covered" >            result(null, results);</span>
-<span class="cstat-no" title="statement not covered" >        }</span>
-<span class="cstat-no" title="statement not covered" >    });</span>
-<span class="cstat-no" title="statement not covered" >}</span>
+        } else {
+            result(null, results);
+        }
+    });
+}
 &nbsp;
 // Delete healthstatuses from Database
 export const deleteHealthStatusByID = <span class="fstat-no" title="function not covered" >(pid, result) =&gt; {</span>
@@ -275,12 +275,12 @@ export const deleteHealthStatusByID = <span class="fstat-no" title="function not
 // Update a health status
 export const updateHealthStatusByPK = (data, pid, fillOutDate, result) =&gt; {
     db.query("UPDATE healthstatus SET ? WHERE PID = ? and fillOutDate = ?", [data, pid, fillOutDate], (err, results) =&gt; {
-<span class="cstat-no" title="statement not covered" >        if(err) {</span>
+        if(err) <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
 <span class="cstat-no" title="statement not covered" >            console.log(err);</span>
 <span class="cstat-no" title="statement not covered" >            result(err, null);</span>
-<span class="cstat-no" title="statement not covered" >        } else {</span>
-<span class="cstat-no" title="statement not covered" >            result(null, results);</span>
-<span class="cstat-no" title="statement not covered" >        }</span>
+        } else {
+            result(null, results);
+        }
     });
 }</pre></td></tr></table></pre>
 
@@ -289,7 +289,7 @@ export const updateHealthStatusByPK = (data, pid, fillOutDate, result) =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Sun Feb 20 2022 18:28:33 GMT-0500 (Eastern Standard Time)
+                at Sun Feb 20 2022 22:23:06 GMT-0500 (Eastern Standard Time)
             </div>
         <script src="../prettify.js"></script>
         <script>
