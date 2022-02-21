@@ -11,7 +11,7 @@ W## Team Members :technologist:
 | 2   | Tommy Soucy          | 40085762  |  TommySoucy         | Backend / Database Management|
 | 3   | Ahnaf Habib Khan     | 40079665  |  ahnafhabibkhan     | Tesitng & Micro-Management   |
 | 4   |                      |           |                     | Frontend Lead                |
-| 5   |                      |           |                     | Backend Lead                 |
+| 5   | Abdul Qadir Ali      | 40075793  |                     | Backend                      |
 | 6   | Yousha Hyatoolla     | 40099559  |  Yousha-hyat1999    | Fullstack                    |
 | 7   |                      |           |                     | Scrum Master                 |
 | 8   | Mohamed Abdul        | 40098785  |  M-Dimbio           | Fullstack                    |
