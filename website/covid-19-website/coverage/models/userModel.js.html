@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">58.42% </span>
+                <span class="strong">84.26% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>52/89</span>
+                <span class='fraction'>75/89</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">69.23% </span>
+                <span class="strong">68.18% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>9/13</span>
+                <span class='fraction'>15/22</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">57.14% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>4/7</span>
+                <span class='fraction'>7/7</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">58.42% </span>
+                <span class="strong">84.26% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>52/89</span>
+                <span class='fraction'>75/89</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -169,41 +169,41 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -256,42 +256,42 @@ export const getUserByEmail = (email, result) =&gt; {
 }
 &nbsp;
 // Get all Users
-export const getUsers = <span class="fstat-no" title="function not covered" >(result) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    db.query("SELECT * FROM user", (err, results) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >        if(err) {</span>
+export const getUsers = (result) =&gt; {
+    db.query("SELECT * FROM user", (err, results) =&gt; {
+        if(err) <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
 <span class="cstat-no" title="statement not covered" >            console.log(err);</span>
 <span class="cstat-no" title="statement not covered" >            result(err, null);</span>
-<span class="cstat-no" title="statement not covered" >        } else {</span>
-<span class="cstat-no" title="statement not covered" >            result(null, results);</span>
-<span class="cstat-no" title="statement not covered" >        }</span>
-<span class="cstat-no" title="statement not covered" >    });</span>
-<span class="cstat-no" title="statement not covered" >}</span>
+        } else {
+            result(null, results);
+        }
+    });
+}
 &nbsp;
 // Get Users by data
-export const getUsersByData = <span class="fstat-no" title="function not covered" >(data, result) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    const where = formatWhere(data);</span>
-<span class="cstat-no" title="statement not covered" >    const query = "SELECT * FROM user WHERE "+where;</span>
-<span class="cstat-no" title="statement not covered" >    db.query(query, (err, results) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >        if(err) {</span>
+export const getUsersByData = (data, result) =&gt; {
+    const where = formatWhere(data);
+    const query = "SELECT * FROM user WHERE "+where;
+    db.query(query, (err, results) =&gt; {
+        if(err) <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
 <span class="cstat-no" title="statement not covered" >            console.log(err);</span>
 <span class="cstat-no" title="statement not covered" >            result(err, null);</span>
-<span class="cstat-no" title="statement not covered" >        } else {</span>
-<span class="cstat-no" title="statement not covered" >            result(null, results);</span>
-<span class="cstat-no" title="statement not covered" >        }</span>
-<span class="cstat-no" title="statement not covered" >    });</span>
-<span class="cstat-no" title="statement not covered" >}</span>
+        } else {
+            result(null, results);
+        }
+    });
+}
 &nbsp;
 // Get basic data for Users that were covid positive in their latest health status
-export const getLatestPositiveUsers = <span class="fstat-no" title="function not covered" >(result) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    db.query("SELECT u.`UserID`,u.`FirstName`,u.`LastName`,u.`Telephone`,u.`Email`,hs.`Covid` FROM user u inner join healthstatus hs on u.`UserID` = hs.`PID` inner join (select `PID`, max(`fillOutDate`) maxDate from healthstatus group by `PID`) j0 on hs.`PID` = j0.`PID` and hs.`fillOutDate` = maxDate where hs.`Covid` = 1", (err, results) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >        if(err) {</span>
+export const getLatestPositiveUsers = (result) =&gt; {
+    db.query("SELECT u.`UserID`,u.`FirstName`,u.`LastName`,u.`Telephone`,u.`Email`,hs.`Covid` FROM user u inner join healthstatus hs on u.`UserID` = hs.`PID` inner join (select `PID`, max(`fillOutDate`) maxDate from healthstatus group by `PID`) j0 on hs.`PID` = j0.`PID` and hs.`fillOutDate` = maxDate where hs.`Covid` = 1", (err, results) =&gt; {
+        if(err) <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
 <span class="cstat-no" title="statement not covered" >            console.log(err);</span>
 <span class="cstat-no" title="statement not covered" >            result(err, null);</span>
-<span class="cstat-no" title="statement not covered" >        } else {</span>
-<span class="cstat-no" title="statement not covered" >            result(null, results);</span>
-<span class="cstat-no" title="statement not covered" >        }</span>
-<span class="cstat-no" title="statement not covered" >    });</span>
-<span class="cstat-no" title="statement not covered" >}</span>
+        } else {
+            result(null, results);
+        }
+    });
+}
 &nbsp;
 // Insert User to Database
 export const insertUser = (data, result) =&gt; {
@@ -334,7 +334,7 @@ export const modifyUser = (data, id, result) =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Sun Feb 20 2022 22:23:06 GMT-0500 (Eastern Standard Time)
+                at Mon Feb 21 2022 22:07:12 GMT-0500 (Eastern Standard Time)
             </div>
         <script src="../prettify.js"></script>
         <script>

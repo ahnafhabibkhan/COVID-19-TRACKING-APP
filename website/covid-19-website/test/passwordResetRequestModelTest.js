@@ -1,4 +1,5 @@
 import { assert } from 'chai';
+import {sleep} from "./commonFunctions.js";
 import { getPasswordResetRequestByID, insertPasswordResetRequest, deletePasswordResetRequestById, updatePasswordResetRequestById } from "../src/backend/models/passwordResetRequestModel.js";
 
 describe('GET Password ResetRequest TEST',function(){
@@ -23,16 +24,19 @@ describe('insert modify and delete passwordreset test',function(){
             insertPasswordResetRequest({
                 UserID: 20,
                 Key: "TEST11"},(err, results) => {
+                    sleep();
                     getPasswordResetRequestByID(20,(err, results) => {
                         assert.equal(results['Key'], "TEST11");
                         const id=20;
                         
                         
                         updatePasswordResetRequestById({Key: "TEST22"},id,(err, results) => {
-                            
+                            sleep();
                             getPasswordResetRequestByID(20,(err, results) => {
                                 assert.equal(results['Key'], "TEST22");
+
                                 deletePasswordResetRequestById(id,(err, results) => {
+                                    sleep();
                                     getPasswordResetRequestByID(20,(err, results) => {
                                         assert.equal(results, undefined);
                                     });

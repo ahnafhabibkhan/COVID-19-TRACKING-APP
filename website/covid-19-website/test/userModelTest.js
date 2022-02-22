@@ -1,7 +1,7 @@
 
 import { assert } from 'chai';
-import { getUserByEmail, insertUser, deleteUserById, modifyUser } from"../src/backend/models/userModel.js";
-import {sleep} from "./commonFunctions.js"
+import { getUserByEmail, insertUser, deleteUserById, modifyUser,getUsersByData,getLatestPositiveUsers,getUsers } from"../src/backend/models/userModel.js";
+import {sleep} from "./commonFunctions.js";
 
 
 describe('GET USER BY EMAIL TEST',function(){
@@ -13,86 +13,31 @@ describe('GET USER BY EMAIL TEST',function(){
         getUserByEmail("notAvaliable.com",(err, results) => {
             assert.equal(results, undefined);
         });
+        
     });
-    
+    it('test get latest postive user',function(){
+        getLatestPositiveUsers((err,results)=>{
+            assert.equal(results[0]["FirstName"], "John");
+        });
+    });
+    it('test get user by data',function(){
+        getUsersByData({FirstName:'John'},(err,results)=>{
+            
+            assert.equal(results[0]["LastName"],'Smith');
+        });
+    });
+    it('test get users',function(){
+        getUsers((err,results)=>{
+            assert.equal(results[1]['FirstName'],'Admin');
+        })
+        
+    });
 });
 
 
 describe('insert modify and delete user test',function(){
     var id;
-    // step('check exsitance user before',function(){
-    //     getUserByEmail("testOnly@gmail.com",(err, results) => {
-    //         assert.equal(results, undefined);
-    //         //call back inside callback to make sure run in order
-    //         console.log(1);
-            
-    //     });
-        
-        
-    // });
-    // step('insert user',function(){
-    //     insertUser({
-    //         Email: "testOnly@gmail.com",
-    //         FirstName: "testFirst",
-    //         LastName: "testLast",
-    //         Telephone: "4504664545", 
-    //         Address: "123 Main", 
-    //         Role: "Patient", 
-    //         Password: "TestPass", 
-    //         City: "Montreal", 
-    //         Country: "Canada",
-    //         Travelled:0},(err, results) => {
-    //             console.log(2);
-                
-
-    //     });
-    // });
     
-    // step('check added user',function(){
-    //     getUserByEmail("testOnly@gmail.com",(err, results) => {
-    //         assert.equal(results['Email'], "testOnly@gmail.com");
-    //         id=results['UserID'];
-    //         console.log(3);
-            
-            
-    //     });
-    // });
-    // step('modify user',function(){
-    //     modifyUser({Email: "testModified@gmail.com"},id,(err, results) => {
-    //         console.log(4);
-            
-    //     });
-    // });
-    // step('check users again after modify',function(){
-    //     getUserByEmail("testModified@gmail.com",(err, results) => {
-    //         assert.equal(results['FirstName'], "testFirst");
-    //     });
-
-    //     getUserByEmail("testOnly@gmail.com",(err, results) => {
-    //         assert.equal(results, undefined);
-    //         console.log(5);
-
-            
-    //     });
-    // });
-    // step('delete user',function(){
-    //     deleteUserById(id,(err, results) => {
-    //         console.log(6);
-            
-    //     });
-    // });
-
-    // step('check after deleting',function(){
-    //     getUserByEmail("testOnly@gmail.com",(err, results) => {
-    //         assert.equal(results, undefined);
-    //     });
-    //     getUserByEmail("testModified@gmail.com",(err, results) => {
-    //         assert.equal(results, undefined);
-    //     });
-    // });
-    
-
-
     async function checkUserNotExsist(){
         getUserByEmail("testOnly@gmail.com",(err, results) => {
             assert.equal(results, undefined);

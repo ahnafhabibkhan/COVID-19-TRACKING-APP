@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import db from "../src/backend/config/db.js";
+import {sleep} from "./commonFunctions.js";
 import { getLatestHealthStatusByID, getHealthStatusesByID, insertHealthStatus, deleteHealthStatusByPK,deleteHealthStatusByID,updateHealthStatusByPK } from"../src/backend/models/healthStatusModel.js";
 
 describe('GET health status TEST',function(){
@@ -43,9 +43,11 @@ describe('insert modify and delete health test',function(){
                 Headache: "0",
                 SoreThroat: "0",
                 Covid:"0"},(err, results) => {
+                    sleep();
                     getLatestHealthStatusByID(10,(err, results) => {
                         assert.equal(results['fillOutDate'].toISOString(), "2022-02-06T05:00:00.000Z");
                         updateHealthStatusByPK({Weight:90.0},10,new Date("2022-02-06T05:00:00.000Z").toJSON().slice(0, 10),(err,result)=>{
+                            sleep();
                             getLatestHealthStatusByID(10,(err,results)=>{
                                 assert.equal(results['Weight'],90.0);
 
@@ -53,6 +55,7 @@ describe('insert modify and delete health test',function(){
                                     pid: 10,
                                     fillOutDate: new Date("2022-02-06T05:00:00.000Z").toJSON().slice(0, 10)
                                 },(err,results)=>{
+                                    sleep();
                                     getLatestHealthStatusByID(10,(err, results) => {
                                         assert.equal(results, undefined);
                                     });

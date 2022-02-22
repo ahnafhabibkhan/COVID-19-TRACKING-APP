@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">36.11% </span>
+                <span class="strong">88.88% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>13/36</span>
+                <span class='fraction'>32/36</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">50% </span>
+                <span class="quiet">Branches</span>
+                <span class='fraction'>2/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
-                <span class="quiet">Branches</span>
+                <span class="quiet">Functions</span>
                 <span class='fraction'>1/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
-                <span class="quiet">Functions</span>
-                <span class='fraction'>0/1</span>
-            </div>
-        
-            
-            <div class='fl pad1y space-right2'>
-                <span class="strong">36.11% </span>
+                <span class="strong">88.88% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>13/36</span>
+                <span class='fraction'>32/36</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -111,29 +111,29 @@
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import mysql from "mysql2";
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">import mysql from "mysql2";
 &nbsp;
 // create the connection to database
 const db = mysql.createConnection({
@@ -145,37 +145,37 @@ const db = mysql.createConnection({
 &nbsp;
 export default db;
 &nbsp;
-export <span class="fstat-no" title="function not covered" >function formatWhere(data){</span>
-<span class="cstat-no" title="statement not covered" >    let where = "";</span>
-<span class="cstat-no" title="statement not covered" >    var count=0;</span>
-<span class="cstat-no" title="statement not covered" >    for(var prop in data) {</span>
-<span class="cstat-no" title="statement not covered" >        // eslint-disable-next-line no-prototype-builtins</span>
-<span class="cstat-no" title="statement not covered" >        if (data.hasOwnProperty(prop)) {</span>
-<span class="cstat-no" title="statement not covered" >            ++count;</span>
-<span class="cstat-no" title="statement not covered" >        }</span>
-<span class="cstat-no" title="statement not covered" >    }</span>
-<span class="cstat-no" title="statement not covered" >    const keys = Object.keys(data);</span>
-<span class="cstat-no" title="statement not covered" >    for(let i = 0; i &lt; count; ++i){</span>
-<span class="cstat-no" title="statement not covered" >        const element = data[keys[i]];</span>
-<span class="cstat-no" title="statement not covered" >        where = where + "`" + keys[i] + "` = ";</span>
-<span class="cstat-no" title="statement not covered" >        if(typeof element == "string"){</span>
-<span class="cstat-no" title="statement not covered" >            where = where + "'" + element + "'";</span>
-<span class="cstat-no" title="statement not covered" >        }else{</span>
+export function formatWhere(data){
+    let where = "";
+    var count=0;
+    for(var prop in data) {
+        // eslint-disable-next-line no-prototype-builtins
+        if (data.hasOwnProperty(prop)) {
+            ++count;
+        }
+    }
+    const keys = Object.keys(data);
+    for(let i = 0; i &lt; count; ++i){
+        const element = data[keys[i]];
+        where = where + "`" + keys[i] + "` = ";
+        if(typeof element == "string"){
+            where = where + "'" + element + "'";
+        }<span class="branch-0 cbranch-no" title="branch not covered" >else{</span>
 <span class="cstat-no" title="statement not covered" >            where = where + element;</span>
 <span class="cstat-no" title="statement not covered" >        }</span>
-<span class="cstat-no" title="statement not covered" >        if(i != count - 1){</span>
+        if(i != count - 1)<span class="branch-0 cbranch-no" title="branch not covered" >{</span>
 <span class="cstat-no" title="statement not covered" >            where = where + " and "</span>
 <span class="cstat-no" title="statement not covered" >        }</span>
-<span class="cstat-no" title="statement not covered" >    }</span>
-<span class="cstat-no" title="statement not covered" >    return where;</span>
-<span class="cstat-no" title="statement not covered" >}</span></pre></td></tr></table></pre>
+    }
+    return where;
+}</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Sun Feb 20 2022 22:23:06 GMT-0500 (Eastern Standard Time)
+                at Mon Feb 21 2022 22:07:12 GMT-0500 (Eastern Standard Time)
             </div>
         <script src="../prettify.js"></script>
         <script>
