@@ -4,11 +4,9 @@
     <v-container>
       <v-row>
         <v-col cols="12">
-         
-         
           <h1>Profile page</h1>
         </v-col>
-       
+
         <v-col cols="12" md="6">
           <v-text-field
             v-model="form.FirstName"
@@ -42,9 +40,15 @@
           />
         </v-col>
         <v-col cols="12" md="6">
-          <v-textarea v-model="form.Address" dense hide-details rows="1" label="address" />
+          <v-textarea
+            v-model="form.Address"
+            dense
+            hide-details
+            rows="1"
+            label="address"
+          />
         </v-col>
-         <v-col cols="12" md="6">
+        <v-col cols="12" md="6">
           <v-checkbox
             dense
             hide-details
@@ -58,11 +62,12 @@
         <v-col cols="12">
           <div class="d-flex justify-center">
             <v-btn @click="back" width="150px" color="primary">
-              <v-icon left>
-                mdi-arrow-left
-              </v-icon>
-              back</v-btn>
-            <v-btn @click="save" width="150px" class="mx-2" color="success">save</v-btn>
+              <v-icon left> mdi-arrow-left </v-icon>
+              back</v-btn
+            >
+            <v-btn @click="save" width="150px" class="mx-2" color="success"
+              >save</v-btn
+            >
           </div>
         </v-col>
       </v-row>

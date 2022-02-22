@@ -5,6 +5,113 @@
       <SignUpDialog />
     </v-dialog>
     <!-- End of Sign Up modal -->
+
+    <!-- Forget Password modal -->
+    <v-dialog v-model="ForgotPassword_modal" width="500px">
+      <v-card
+        elevation="15"
+        width="500px"
+        color="blue lighten-2"
+        style="border-radius: 20px; opacity: 95%; margin: auto"
+      >
+        <v-container>
+          <center>
+            <h1
+              class="white--text"
+              style="margin-left: auto; margin-right: auto; margin-bottom: 10px"
+            >
+              Enter Your email
+            </h1>
+          </center>
+          <v-row justify="center">
+            <v-col md="7">
+              <v-text-field
+                label="Email"
+                v-model="form.email"
+                type="email"
+                solo
+                :autocomplete="false"
+              ></v-text-field>
+
+              <!-- <v-text-field
+            label="City"
+            v-model="form.city"
+            solo
+            :autocomplete="false"
+          ></v-text-field> -->
+
+              <div class="d-flex justify-center">
+                <!-- signupUser(form) -->
+                <v-btn
+                  @click="createPasswordResetRequest(form.email)"
+                  width="150px"
+                  class="mx-2"
+                  >Send email</v-btn
+                >
+                <v-btn @click="cancelButtonAction()" width="150px"
+                  >cancel</v-btn
+                >
+              </div>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-card>
+    </v-dialog>
+    <!-- end of forget password modal  -->
+
+    <!-- Message afer clicking on Send a Login link -->
+    <v-dialog v-model="GeneratedPassword_modal" width="500px">
+      <v-card
+        elevation="15"
+        width="500px"
+        color="blue lighten-2"
+        style="border-radius: 20px; opacity: 95%; margin: auto"
+      >
+        <v-container>
+          <center>
+            <h1
+              class="white--text"
+              style="margin-left: auto; margin-right: auto; margin-bottom: 10px"
+            >
+              Enter Your Generated Password
+            </h1>
+          </center>
+          <v-row justify="center">
+            <v-col md="7">
+              <v-text-field
+                v-model="form.password"
+                label="Generated Password"
+                type="password"
+                solo
+              />
+              <v-text-field
+                v-model="form.password"
+                label="New Password"
+                type="password"
+                solo
+              />
+
+              <!-- <v-text-field
+            label="City"
+            v-model="form.city"
+            solo
+            :autocomplete="false"
+          ></v-text-field> -->
+
+              <div class="d-flex justify-center">
+                <v-btn @click="NewPassword()" width="150px" class="mx-2"
+                  >Send a Login link</v-btn
+                >
+                <v-btn @click="cancelGeneratedPasswordAction()" width="150px"
+                  >cancel</v-btn
+                >
+              </div>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-card>
+    </v-dialog>
+    <!-- End message after clickin -->
     <!-- login modal -->
     <v-dialog v-model="login_modal" width="600px">
       <v-card class="">
@@ -52,7 +159,8 @@
             >
             <v-col cols="6">
               Forgot your password?
-              <a v-on:click="createPasswordResetRequest(login.user_name)"
+              <!-- createPasswordResetRequest(login.user_name) -->
+              <a v-on:click="RenderForgotPasswordComponent"
                 >Click here</a
               ></v-col
             >
@@ -112,7 +220,7 @@
 
 <script>
 import SignUpDialog from "../components/SignUpDialog.vue";
-
+//import ForgotPassword from "../components/ForgotPassword.vue";
 import axios from "axios";
 
 // Makes a random length char key used for password reset
@@ -171,10 +279,36 @@ export default {
       },
       login_modal: false,
       signUp_modal: false,
+      //ForgotPassword_modal: false,
+      form: {
+        email: null,
+        password: null,
+      },
+      LoginLink_modal: false,
+      GeneratedPassword_modal: false,
     };
   },
 
   methods: {
+    //Forget Password Cancel Button
+    cancelButtonAction() {
+      this.login_modal = !this.login_modal;
+      this.ForgotPassword_modal = !this.ForgotPassword_modal;
+    },
+    // Login link modal render page
+    // loginLinkSendAction() {
+    //   this.ForgotPassword_modal = !this.ForgotPassword_modal;
+    //   this.GeneratedPassword_modal = !this.GeneratedPassword_modal;
+    // },
+    //Generated Password UI
+    cancelGeneratedPasswordAction() {
+      this.GeneratedPassword_modal = !this.GeneratedPassword_modal;
+      this.login_modal = !this.login_modal;
+    },
+    RenderForgotPasswordComponent() {
+      this.ForgotPassword_modal = !this.ForgotPassword_modal;
+      this.login_modal = !this.login_modal;
+    },
     // Log the user in
     async loginUser(email, password) {
       console.log(`Login pressed`);
@@ -197,17 +331,13 @@ export default {
             console.log(response.data.Role);
             if (response.data.Role == "Admin") {
               this.$router.push("/admin");
-            }
-            else if (response.data.Role == "Patient") {
+            } else if (response.data.Role == "Patient") {
               this.$router.push("/Patient");
-            }
-            else if (response.data.Role == "Doctor") {
+            } else if (response.data.Role == "Doctor") {
               this.$router.push("/Doctor");
-            }
-            else if (response.data.Role == "HealthOfficial") {
+            } else if (response.data.Role == "HealthOfficial") {
               this.$router.push("/health-official");
-            }
-            else if (response.data.Role == "ImmigrationOfficer") {
+            } else if (response.data.Role == "ImmigrationOfficer") {
               this.$router.push("/immigration-officer");
             }
           }
@@ -219,6 +349,9 @@ export default {
 
     // Create a password reset request
     async createPasswordResetRequest(email) {
+      this.ForgotPassword_modal = !this.ForgotPassword_modal;
+      this.GeneratedPassword_modal = !this.GeneratedPassword_modal;
+
       console.log(`Password reset pressed`);
       if (!email) {
         return;

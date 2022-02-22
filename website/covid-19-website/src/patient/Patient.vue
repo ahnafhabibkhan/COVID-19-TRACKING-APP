@@ -1,4 +1,3 @@
-
 <template>
   <v-container class="bg-image">
     <v-row>
@@ -438,7 +437,7 @@ export default {
     return {
       rules: {
         required: (value) => !!value || "Required.",
-        number: (value) => typeof(value)=='number' || "must be a number",
+        number: (value) => typeof value == "number" || "must be a number",
       },
       url: "http://localhost:5000/",
       edit_mode: false,
