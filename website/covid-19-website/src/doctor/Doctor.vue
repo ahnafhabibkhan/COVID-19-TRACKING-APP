@@ -267,7 +267,7 @@ export default {
     async getMessages() {
       try {
         const DID = this.$store.state.user.UserID;
-        this.messages = await axios.get(`http://localhost:5001/message/${DID}`);
+        this.messages = await axios.get(`http://localhost:5000/message/${DID}`);
       } catch (err) {
         console.log(err);
       }
@@ -277,7 +277,7 @@ export default {
     async getAvailabilities() {
       try {
         const res = await axios.get(
-          `http://localhost:5001/availability/${this.$store.state.user.UserID}`
+          `http://localhost:5000/availability/${this.$store.state.user.UserID}`
         );
         this.fetchAvailabilities = res.data;
       } catch (err) {
@@ -288,7 +288,7 @@ export default {
     // Add availability
     async addAvailability(DayOfWeek, StartTime, EndTime, SpecificDay) {
       try {
-        await axios.post(`http://localhost:5001/availability`, {
+        await axios.post(`http://localhost:5000/availability`, {
           DID: this.$store.state.user.UserID,
           DayOfWeek: DayOfWeek,
           StartTime: StartTime,
@@ -303,7 +303,7 @@ export default {
     // Remove availability
     async removeAvailability(DayOfWeek, StartTime, EndTime, SpecificDay) {
       try {
-        await axios.post(`http://localhost:5001/deleteavailability`, {
+        await axios.post(`http://localhost:5000/deleteavailability`, {
           DID: this.$store.state.user.UserID,
           DayOfWeek: DayOfWeek,
           StartTime: StartTime,
