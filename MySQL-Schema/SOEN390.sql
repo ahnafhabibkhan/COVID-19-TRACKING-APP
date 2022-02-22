@@ -57,7 +57,6 @@ DROP TABLE IF EXISTS `appointment`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `appointment` (
-  `AID` int unsigned NOT NULL,
   `PID` int unsigned NOT NULL,
   `DID` int unsigned NOT NULL,
   `LevelOfEmergency` int NOT NULL,
@@ -88,7 +87,9 @@ CREATE TABLE `appointmentrequest` (
   `DID` int NOT NULL,
   `Date` date NOT NULL,
   `Time` time NOT NULL,
-  `RequestedBy` enum('P','D') NOT NULL
+  `RequestedBy` enum('P','D') NOT NULL,
+  `LevelOfEmergency` int NOT NULL,
+  `Priority` tinyint NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -235,7 +236,7 @@ CREATE TABLE `passwordresetrequest` (
 
 LOCK TABLES `passwordresetrequest` WRITE;
 /*!40000 ALTER TABLE `passwordresetrequest` DISABLE KEYS */;
-INSERT INTO `passwordresetrequest` VALUES (1,'BE7CUI');
+INSERT INTO `passwordresetrequest` VALUES (1,'BE7CUI'),(5,'C3THLR');
 /*!40000 ALTER TABLE `passwordresetrequest` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -256,12 +257,11 @@ CREATE TABLE `user` (
   `Role` enum('Admin','Patient','Doctor','HealthOfficial','ImmigrationOfficer') NOT NULL,
   `Password` varchar(64) NOT NULL,
   `Doctor` int unsigned DEFAULT NULL,
-  `City` varchar(45) NOT NULL,
   `Country` varchar(45) NOT NULL,
-  `Travelled` tinyint NOT NULL,
+  `Travelled` tinyint NOT NULL DEFAULT '0',
   PRIMARY KEY (`UserID`),
   UNIQUE KEY `Email_UNIQUE` (`Email`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -270,7 +270,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'first@gmail.com','John','Smith','4504664852','7458 Main','Patient','JSmith0',4,'Montreal','Canada',0),(2,'admin@gmail.com','Admin','Admin','5144768016','0 Admin','Admin','Admin',NULL,'Montreal','Canada',0),(3,'test@gmail.com','Tester','Mann','5148758221','436 street montreal','Patient','password',4,'Montreal','Canada',0),(4,'doctor@gmail.com','Doc','Lessard','7784582102','42 Health','Doctor','Doctor',NULL,'Montreal','Canada',0),(5,'soucy.tommy@gmail.com','Tommy','Soucy','5144768016','1823 Langevin','Patient','password',NULL,'Chambly','Canada',0),(6,'immigration@gmail.com','Immigrator','Last','5165470021','84 Kilo','ImmigrationOfficer','password',NULL,'Montreal','Canada',0);
+INSERT INTO `user` VALUES (1,'first@gmail.com','John','Smith','4504664852','7458 Main','Patient','JSmith0',4,'Canada',0),(2,'admin@gmail.com','Admin','Admin','5144768016','0 Admin','Admin','Admin',NULL,'Canada',0),(3,'test@gmail.com','Tester','Mann','5148758221','436 street montreal','Patient','password',4,'Canada',1),(4,'doctor@gmail.com','Doc','Lessard','7784582102','42 Health','Doctor','Doctor',NULL,'Canada',0),(5,'soucy.tommy@gmail.com','Tommy','Soucy','5144768016','1823 Langevin','Patient','password',NULL,'Canada',0),(6,'immigration@gmail.com','Immigrator','Last','5165470021','84 Kilo','ImmigrationOfficer','password',NULL,'Canada',0),(7,'tester2@gmail.com','Tester','Mann2','5144758450','84 Lane','Patient','Password',NULL,'Canada',0);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -283,4 +283,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-02-15 13:38:26
+-- Dump completed on 2022-02-21 21:54:57

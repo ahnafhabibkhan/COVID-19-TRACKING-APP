@@ -33,7 +33,7 @@ router.get('/usersByCovid', showLatestPositiveUsers);
 router.post('/users', showUsersByData);
 
 // Create New User
-router.post('/users', createUser);
+router.post('/user', createUser);
 
 // Delete User
 router.delete('/users/:id', deleteUser);

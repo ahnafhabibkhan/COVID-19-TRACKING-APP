@@ -1,3 +1,4 @@
+
 <template>
   <v-container class="bg-image">
     <v-row>
@@ -13,7 +14,28 @@
                   :allowed-dates="allowedDates"
                   full-width
                 ></v-date-picker>
-                {{ date }}
+              </v-col>
+              <!-- list -->
+              <v-col cols="12">
+                <v-radio-group v-model="available">
+                  <v-radio
+                    v-for="(item, i) in filteredAvailability"
+                    :key="i"
+                    :color="disAvail(item) ? 'error' : ''"
+                    :disabled="disAvail(item)"
+                    :class="{
+                      'text-decoration-line-through red--text': disAvail(item),
+                    }"
+                    :label="
+                      item.SpecificDay.substr(0, 10) +
+                      ' -- ' +
+                      item.StartTime +
+                      ' - ' +
+                      item.EndTime
+                    "
+                    :value="item"
+                  ></v-radio>
+                </v-radio-group>
               </v-col>
               <v-col cols="6">
                 <v-btn
@@ -56,6 +78,7 @@
                   <v-row>
                     <v-col cols="6">
                       <v-text-field
+                        :rules="[rules.required, rules.number]"
                         label="Temperature :"
                         filled
                         flat
@@ -88,6 +111,16 @@
                       <v-checkbox
                         dense
                         hide-details
+                        label="covid"
+                        true-value="1"
+                        false-value="0"
+                        v-model.number="form.Covid"
+                      ></v-checkbox
+                    ></v-col>
+                    <v-col cols="6">
+                      <v-checkbox
+                        dense
+                        hide-details
                         label="BreathingIssues"
                         true-value="1"
                         false-value="0"
@@ -106,13 +139,12 @@
                     ></v-col>
                     <v-col cols="6">
                       <v-checkbox
+                        label="LostTasteSmell"
                         dense
                         hide-details
-                        label="LostTasteSmell"
-                        true-value="1"
-                        false-value="0"
-                        v-model.number="form.LostTasteSmell"
-                      ></v-checkbox
+                        v-model="form.LostTasteSmell"
+                      >
+                      </v-checkbox
                     ></v-col>
                     <v-col cols="6">
                       <v-checkbox
@@ -225,7 +257,7 @@
               color="blue lighten-2"
               width="400px"
               height="75px"
-              @click="date_dialoge = !date_dialoge"
+              @click="onAppointment"
               >Book an Appointment</v-btn
             >
           </div>
@@ -248,65 +280,107 @@
             <v-expansion-panels>
               <v-expansion-panel v-for="(item, i) in statusesFiltered" :key="i">
                 <v-expansion-panel-header>
-                  <span> Date: {{ item.fillOutDate }} </span>
+                  <span> Date: {{ item.fillOutDate.substr(0, 10) }} </span>
+                  <span>
+                    Updated Time: {{ item.lastUpdateTime.substr(0, 10) }}
+                  </span>
                   <v-checkbox
-                    label="i have Covid"
+                    label="Covid"
                     dense
-                    hide-details
                     readonly
-                    v-model="item.i_have_covid"
+                    hide-details
+                    v-model="item.Covid"
                   >
                   </v-checkbox>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
-                  <div class="d-flex align-center justify-space-between">
-                    <span> Fever: {{ item.fever }} </span>
+                  <div
+                    class="d-flex align-center justify-space-between flex-wrap"
+                  >
+                    <span> Temperature: {{ item.Temperature }} </span>
+                    <span> Weight: {{ item.Weight }} </span>
 
                     <v-checkbox
-                      label="Covid"
+                      label="BreathingIssues"
                       dense
                       hide-details
                       readonly
-                      v-model="item.i_have_covid"
+                      v-model="item.BreathingIssues"
                     >
                     </v-checkbox>
                     <v-checkbox
-                      label="Headech"
+                      label="Cough"
                       dense
-                      readonly
                       hide-details
-                      v-model="item.headache"
+                      readonly
+                      v-model="item.Cough"
+                    >
+                    </v-checkbox>
+
+                    <v-checkbox
+                      label="Diarrhea"
+                      dense
+                      hide-details
+                      readonly
+                      v-model="item.Diarrhea"
                     >
                     </v-checkbox>
                     <v-checkbox
-                      label="Runny Nose"
+                      label="Headache"
                       dense
                       hide-details
                       readonly
-                      v-model="item.runny_nose"
+                      v-model="item.Headache"
                     >
                     </v-checkbox>
                     <v-checkbox
-                      label="Breath Issue"
+                      label="LostTasteSmell"
                       dense
                       hide-details
                       readonly
-                      v-model="item.breath_problem"
+                      v-model="item.LostTasteSmell"
+                    >
+                    </v-checkbox>
+                    <v-checkbox
+                      label="MusclePain"
+                      dense
+                      hide-details
+                      readonly
+                      v-model="item.MusclePain"
+                    >
+                    </v-checkbox>
+                    <v-checkbox
+                      label="SoreThroat"
+                      dense
+                      hide-details
+                      readonly
+                      v-model="item.SoreThroat"
+                    />
+                    <v-checkbox
+                      label="Vomitting"
+                      dense
+                      hide-details
+                      readonly
+                      v-model="item.Vomitting"
+                    >
+                    </v-checkbox>
+                    <v-checkbox
+                      label="Nausea"
+                      dense
+                      hide-details
+                      readonly
+                      v-model="item.Nausea"
                     >
                     </v-checkbox>
 
                     <v-btn @click="onEdit(item)" icon color="primary" small>
                       <v-icon> mdi-pencil </v-icon>
                     </v-btn>
-                    <v-btn
-                      @click="deleteStatus(item.id)"
-                      icon
-                      color="error"
-                      small
-                    >
+                    <v-btn @click="deleteStatus(item)" icon color="error" small>
                       <v-icon> mdi-close </v-icon>
                     </v-btn>
                   </div>
+                  <div>SympDescription: {{ item.SympDescription }}</div>
                 </v-expansion-panel-content>
               </v-expansion-panel>
             </v-expansion-panels>
@@ -324,19 +398,30 @@
           </v-col>
         </v-row>
       </v-col>
-      <!-- apppointments -->
-      <v-col cols="12" md="6" class="d-flex align-center">
+
+      <v-col cols="12" md="6" class="pt-6 mt-6">
+        <!-- requested apppointments -->
         <div
           style="width: 70%; background-color: rgba(256, 256, 256, 0.5)"
-          class="pa-4 rounded-2"
+          class="pa-4 rounded-lg mb-5"
         >
-          <h2>Appointments :</h2>
+          <h2>Requested Appointments :</h2>
           <div v-for="(item, i) in appointments" :key="i">
-            {{ item.date }}
+            {{ item.Date.substr(0, 10) + " -- " + item.Time }}
 
-            <v-btn small color="error" @click="deleteAppointment(item.id)">
-              delete appointment
-            </v-btn>
+            <v-btn x-small @click="deleteAppointment(item)"> cancel </v-btn>
+          </div>
+        </div>
+        <!-- approved apppointments -->
+        <div
+          style="width: 70%; background-color: rgba(256, 256, 256, 0.5)"
+          class="pa-4 rounded-lg mt-5"
+        >
+          <h2>Approved Appointments :</h2>
+          <div v-for="(item, i) in approved" :key="i">
+            {{ item.Date.substr(0, 10) + " -- " + item.Time }}
+
+            <v-btn x-small @click="deleteApproved(item)"> cancel </v-btn>
           </div>
         </div>
       </v-col>
@@ -345,11 +430,16 @@
 </template>
 <script>
 import axios from "axios";
+import Swal from "sweetalert2";
 export default {
   name: "Patient",
 
   data() {
     return {
+      rules: {
+        required: (value) => !!value || "Required.",
+        number: (value) => typeof(value)=='number' || "must be a number",
+      },
       url: "http://localhost:5000/",
       edit_mode: false,
       show_more: false,
@@ -363,8 +453,9 @@ export default {
         Weight: null,
         SympDescription: null,
         Temperature: null,
-        BreathingIssues: 0,
+        BreathingIssues: null,
         Cough: 0,
+        Covid: 0,
         LostTasteSmell: 0,
         MusclePain: 0,
         Diarrhea: 0,
@@ -373,36 +464,32 @@ export default {
         Headache: 0,
         SoreThroat: 0,
       },
-      appointments: [{ id: 1, date: "2021-02-14" }],
+      appointments: [],
       form: null,
+      availabilities: [],
+      available: null,
+      approved: [],
     };
   },
   methods: {
+    disAvail(item) {
+      const found = this.appointments.findIndex((a) => {
+        return a.Time == item.StartTime && a.Date == item.SpecificDay;
+      });
+      if (found > -1) return true;
+      return false;
+    },
+
     onEdit(item) {
       this.edit_mode = true;
       this.status_dialoge = true;
       this.form = Object.assign({}, item);
     },
-    // update() {
-    //   const index = this.statuses.findIndex((item) => {
-    //     return item.id === this.form.id;
-    //   });
 
-    //   this.statuses.splice(index, 1, this.form);
-    //   this.status_dialoge = false;
-    //   this.edit_mode = false;
-    // },
     allowedDates() {
       return true;
     },
-    // add() {
-    //   const d = new Date();
-    //   this.form.date = d.toLocaleString();
-    //   this.form.id = this.statuses.length + 1;
-    //   this.statuses.push(Object.assign({}, this.form));
-    //   this.status_dialoge = false;
-    // },
-    // this method open dialoge
+
     onUpdateStatus() {
       this.form = Object.assign({}, this.form_default);
       this.status_dialoge = !this.status_dialoge;
@@ -416,7 +503,7 @@ export default {
         console.log("request fired");
         const res = await axios.get(this.url + `healthstatuses/${this.userId}`);
         console.log(res);
-        // this.statuses = res.data;
+        this.statuses = res.data;
       } catch (err) {
         // alert("error ; get statuses");
         console.log("err", err);
@@ -424,8 +511,8 @@ export default {
     },
     async addStatus() {
       let d = new Date();
-      this.form.fillOutDate = d.toDateString().substr(0,10);
-      this.form.lastUpdateTime = d.getTime();
+      this.form.fillOutDate = d.toISOString().split("T")[0];
+      this.form.lastUpdateTime = d.toLocaleTimeString().substr(0, 8);
       try {
         this.form.PID = this.userId;
         await axios.post(this.url + "healthstatus", this.form);
@@ -438,8 +525,11 @@ export default {
       }
     },
     async updateStatus() {
+      const PID = this.userId;
+      const date = this.form.fillOutDate.substr(0, 10);
+      this.form.fillOutDate = this.form.fillOutDate.substr(0, 10);
       try {
-        await this.$axios.put(this.url + "statuses", this.form);
+        await axios.put(this.url + `healthstatus/${PID}/${date}`, this.form);
         // alert("statuse updated successfully");
         this.status_dialoge = false;
         this.edit_mode = false;
@@ -449,44 +539,142 @@ export default {
         // alert("Failed ; add new status");
       }
     },
-    async deleteStatus(id) {
-      try {
-        await this.$axios.put(this.url + "statuses", id);
-        alert("statuse deleted successfully");
-        this.getStatuses();
-      } catch (err) {
-        console.log("err", err);
-        alert("Failed ; delete one status");
-      }
+    async deleteStatus(status) {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // del status
+          try {
+            const id = this.userId;
+            status.PID = id;
+            axios.delete(
+              this.url +
+                `healthstatus/${id}/${status.fillOutDate.split("T")[0]}`
+            );
+
+            this.getStatuses();
+          } catch (err) {
+            console.log("err", err);
+          }
+          Swal.fire("Deleted!", "Your file has been deleted.", "success");
+        }
+      });
     },
     async bookAppoitment() {
+      const did = this.doctorId;
+      const pid = this.userId;
+      let params = {
+        DID: did,
+        PID: pid,
+        Time: this.available.StartTime,
+        Date: this.available.SpecificDay.substr(0, 10),
+        RequestedBy: "P",
+      };
       try {
-        await this.$axios.post(this.url + "statuses", this.date);
-        alert("appointment booked successfully");
-        this.getStatuses();
+        await axios.post(this.url + "appointmentrequest", params);
+
+        this.date_dialoge = false;
+        this.getAppointments();
       } catch (err) {
         console.log("err", err);
         alert("Failed ; book appointment");
       }
     },
-    async deleteAppointment(id) {
-      try {
-        await this.$axios.delete(this.url + "deleteAppoitnment", id);
-        alert("appointment deleted successfully");
-        this.getAppointments();
-      } catch (err) {
-        console.log("err", err);
-        alert("Failed ; delete appointment");
-      }
+    async deleteAppointment(item) {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          item.Date = item.Date.substr(0, 10);
+          delete item.RequestedBy;
+          try {
+            axios.post(this.url + "deleteappointmentrequest", item);
+
+            this.getAppointments();
+          } catch (err) {
+            console.log("err", err);
+            alert("Failed ; delete appointment");
+          }
+          Swal.fire("Deleted!", "Your file has been deleted.", "success");
+        }
+      });
+    },
+    async deleteApproved(item) {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          item.Date = item.Date.substr(0, 10);
+          delete item.RequestedBy;
+          try {
+            axios.post(this.url + "deleteappointment", item);
+
+            this.getApproved();
+          } catch (err) {
+            console.log("err", err);
+            alert("Failed ; delete appointment");
+          }
+          Swal.fire("Deleted!", "Your file has been deleted.", "success");
+        }
+      });
     },
     async getAppointments() {
+      const id = this.userId;
       try {
-        const res = await this.$axios.get(this.url + "Appointments");
+        const res = await axios.post(this.url + `appointmentrequests`, {
+          PID: id,
+        });
         this.appointments = res.data;
       } catch (err) {
         console.log("err", err);
         alert("Failed ; get appointment");
       }
+    },
+    async getApproved() {
+      const id = this.userId;
+      try {
+        const res = await axios.post(this.url + `appointments`, {
+          PID: id,
+        });
+        this.approved = res.data;
+      } catch (err) {
+        console.log("err", err);
+        alert("Failed ; get appointment");
+      }
+    },
+    async getAvailabilities() {
+      const id = this.doctorId;
+      try {
+        const res = await axios.get(this.url + `availability/${id}`);
+        this.availabilities = res.data;
+      } catch (err) {
+        console.log("err", err);
+        alert("Failed ; get appointment");
+      }
+    },
+
+    async onAppointment() {
+      await this.getAvailabilities();
+      this.date_dialoge = true;
     },
   },
   computed: {
@@ -497,17 +685,32 @@ export default {
       return this.statuses;
     },
     userId() {
+      // return 3;
       return this.$store.state.user.UserID;
+    },
+    doctorId() {
+      // return 4;
+      return this.$store.state.user.Doctor;
+    },
+    filteredAvailability() {
+      return this.availabilities.filter((item) => {
+        return item.SpecificDay.substr(0, 10) == this.date;
+      });
     },
   },
   mounted() {
+    this.getApproved();
     this.getStatuses();
-    // this.getAppointments();
+    this.getAppointments();
     this.form = Object.assign({}, this.form_default);
   },
 };
 </script>
 <style>
+.red {
+  color: red !important;
+  background-color: white;
+}
 /* .up::before {
   content: "Next";
 }
