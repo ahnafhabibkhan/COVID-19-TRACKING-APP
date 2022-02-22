@@ -1,7 +1,80 @@
 <template>
   <div class="doctor">
+    <!-- date modal start -->
+    <v-dialog v-model="date_dialog" width="600px">
+      <v-card>
+        <v-container>
+          <v-row>
+            <v-col cols="12" class="pa-5">
+              <h1>Book an Appointment</h1>
+              <v-date-picker
+                v-model="date"
+                :allowed-dates="allowedDates"
+                full-width
+                @change="onDateClick()"
+              ></v-date-picker>
+            </v-col>
+            <!-- list -->
+            <v-col cols="12">
+              <v-container>
+                <v-checkbox
+                  v-for="(item, i) in allAvailabilities"
+                  :key="i"
+                  v-model="available"
+                  :label="item"
+                  :value="item"
+                ></v-checkbox>
+              </v-container>
+            </v-col>
+            <v-col cols="6">
+              <v-btn
+                color="error"
+                block
+                @click="date_dialog = false"
+                elevation="0"
+              >
+                cancel
+              </v-btn>
+            </v-col>
+            <v-col cols="6">
+              <v-btn
+                block
+                color="success"
+                elevation="0"
+                @click="setAvailabilities()"
+              >
+                Set
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-card>
+    </v-dialog>
+    <!-- date modal end -->
     <div class="right-side-doctor">
-      <div style="margin-top: 95%; margin-left: 85%">
+      <!-- availabilities -->
+      <div
+        style="
+          background-color: rgba(256, 256, 256, 0.9);
+          width: 70%;
+          margin: auto;
+        "
+        class="pa-4 rounded-lg mb-5"
+      >
+        <h2>Availabilites:</h2>
+        <div v-for="(item, i) in fetchAvailabilities" :key="i">
+          {{
+            item.SpecificDay.substr(0, 10) +
+            " -- " +
+            item.StartTime +
+            "-" +
+            item.EndTime
+          }}
+
+          <v-btn x-small @click="deleteAvailability(item)"> Delete </v-btn>
+        </div>
+      </div>
+      <div style="margin-top: 75%; margin-left: 85%">
         <v-btn @click="ChatboxClick" icon height="80px" width="80px">
           <v-icon color="blue darken-3" style="font-size: 80px">
             mdi-message-text
@@ -31,6 +104,7 @@
                 color="blue lighten-2"
                 width="400px"
                 height="75px"
+                @click="listOfAppointments()"
                 >List of Appointments</v-btn
               >
             </div>
@@ -41,6 +115,7 @@
                 color="blue lighten-2"
                 width="400px"
                 height="75px"
+                @click="date_dialog = !date_dialog"
                 >Update Availabilities</v-btn
               >
             </div>
@@ -60,6 +135,7 @@
 </template>
 
 <script>
+import moment from "moment";
 import axios from "axios";
 
 export default {
@@ -70,15 +146,6 @@ export default {
   data: function () {
     return {
       messages: [],
-      appointments: [],
-      appointmentRequestForm: {
-        PID: -1,
-        Day: -1,
-        Month: -1,
-        Year: -1,
-        Hour: -1,
-        Minute: -1,
-      },
       chatBotMessages: [],
 
       series: [44, 55],
@@ -102,124 +169,105 @@ export default {
           },
         ],
       },
+      appointments: [],
+      date_dialog: false,
+      available: [],
+      date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+        .toISOString()
+        .substr(0, 10),
+      allAvailabilities: [],
+      fetchAvailabilities: [],
     };
   },
 
   created() {
     this.getMessages();
-    this.getAppointments();
-    this.getOwnAppointmentRequests();
-    this.getAppointmentRequests();
+    this.getAvailabilities();
+    this.listOfAvailabilities();
   },
 
   methods: {
+    chatBox() {},
+
+    listOfAvailabilities() {
+      this.allAvailabilities = [];
+      var availabilities = [
+        "09:00:00-10:00:00",
+        "10:00:00-11:00:00",
+        "11:00:00-12:00:00",
+        "12:00:00-13:00:00",
+        "13:00:00-14:00:00",
+        "14:00:00-15:00:00",
+        "15:00:00-16:00:00",
+        "16:00:00-17:00:00",
+      ];
+      var dateTimes = [];
+      for (var i = 0; i < this.fetchAvailabilities.length; i++) {
+        const time =
+          this.fetchAvailabilities[i].StartTime.toString() +
+          "-" +
+          this.fetchAvailabilities[i].EndTime.toString();
+        if (
+          this.date.substr(0, 10) ==
+          this.fetchAvailabilities[i].SpecificDay.substr(0, 10)
+        ) {
+          dateTimes.push(time);
+        }
+      }
+      for (let j = 0; j < availabilities.length; j++) {
+        if (!dateTimes.includes(availabilities[j])) {
+          this.allAvailabilities.push(availabilities[j]);
+        }
+      }
+    },
+
+    deleteAvailability(item) {
+      this.removeAvailability(
+        item.DayOfWeek,
+        item.StartTime,
+        item.EndTime,
+        item.SpecificDay.substr(0, 10)
+      );
+      window.location.reload();
+    },
+
+    onDateClick() {
+      this.available = [];
+      this.listOfAvailabilities();
+    },
+
+    //Set doctor's availabilities
+    setAvailabilities() {
+      for (var i = 0; i < this.available.length; i++) {
+        var times = this.available[i].split("-");
+        this.addAvailability(
+          moment(this.date).format("dddd"),
+          times[0],
+          times[1],
+          this.date
+        );
+      }
+      window.location.reload();
+    },
+    disAvail(item) {
+      const found = this.appointments.findIndex((a) => {
+        return a.Time == item.StartTime && a.Date == item.SpecificDay;
+      });
+      if (found > -1) return true;
+      return false;
+    },
+    allowedDates() {
+      return true;
+    },
+    listOfAppointments() {
+      this.$router.push("/list-of-appointments");
+    },
+
     // Get all messages to and from this doctor's botchat
     async getMessages() {
       try {
         const DID = this.$store.state.user.UserID;
-        this.messages = await axios.get(`http://localhost:5000/message/${DID}`);
-      } catch (err) {
-        console.log(err);
-      }
-    },
-
-    // Request appointment with patient
-    async requestAppointment() {
-      try {
-        const Date = this.appointmentRequestForm.Year.toString()
-          .concat("-", this.appointmentRequestForm.Month.toString())
-          .concat("-", this.appointmentRequestForm.Day.toString());
-        const Time = this.appointmentRequestForm.Hour.toString().concat(
-          ":",
-          this.appointmentRequestForm.Minute.toString()
-        );
-        const RequestedBy = "D";
-        const DID = this.$store.state.user.UserID;
-        await axios.post(`http://localhost:5000/appointmentrequest`, {
-          PID: this.appointmentRequestForm.PID,
-          DID: DID,
-          Date: Date,
-          Time: Time,
-          RequestedBy: RequestedBy,
-        });
-      } catch (err) {
-        console.log(err);
-      }
-    },
-
-    // Cancel an appointment request
-    async cancelAppointmentRequest(PID, DID, Date, Time) {
-      try {
-        await axios.post(`http://localhost:5000/deleteappointmentrequest`, {
-          PID: PID,
-          DID: DID,
-          Date: Date,
-          Time: Time,
-        });
-      } catch (err) {
-        console.log(err);
-      }
-    },
-
-    // Get appointment requests made by this doctor
-    async getOwnAppointmentRequests() {
-      try {
-        await axios.post(`http://localhost:5000/appointmentrequests`, {
-          DID: this.$store.state.user.UserID,
-          RequestedBy: "D",
-        });
-      } catch (err) {
-        console.log(err);
-      }
-    },
-
-    // Get appointment requests
-    async getAppointmentRequests() {
-      try {
-        await axios.post(`http://localhost:5000/appointmentrequests`, {
-          DID: this.$store.state.user.UserID,
-          RequestedBy: "P",
-        });
-      } catch (err) {
-        console.log(err);
-      }
-    },
-
-    // Get appointments
-    async getAppointments() {
-      try {
-        await axios.post(`http://localhost:5000/appointments`, {
-          DID: this.$store.state.user.UserID,
-        });
-      } catch (err) {
-        console.log(err);
-      }
-    },
-
-    // Cancel an appointment
-    async cancelAppointment(PID, DID, Date, Time) {
-      try {
-        await axios.post(`http://localhost:5000/deleteappointment`, {
-          PID: PID,
-          DID: DID,
-          Date: Date,
-          Time: Time,
-        });
-      } catch (err) {
-        console.log(err);
-      }
-    },
-
-    // Approve an appointment
-    async approveAppointment(PID, DID, Date, Time) {
-      try {
-        this.cancelAppointmentRequest(PID, DID, Date, Time);
-        await axios.post(`http://localhost:5000/appointment`, {
-          PID: PID,
-          DID: DID,
-          Date: Date,
-          Time: Time,
-        });
+        this.messages = await axios.get(`http://localhost:5001/message/${DID}`);
       } catch (err) {
         console.log(err);
       }
@@ -228,9 +276,10 @@ export default {
     // Get availabilities
     async getAvailabilities() {
       try {
-        await axios.get(
-          `http://localhost:5000/availability/${this.$store.state.user.UserID}`
+        const res = await axios.get(
+          `http://localhost:5001/availability/${this.$store.state.user.UserID}`
         );
+        this.fetchAvailabilities = res.data;
       } catch (err) {
         console.log(err);
       }
@@ -239,7 +288,7 @@ export default {
     // Add availability
     async addAvailability(DayOfWeek, StartTime, EndTime, SpecificDay) {
       try {
-        await axios.post(`http://localhost:5000/availability`, {
+        await axios.post(`http://localhost:5001/availability`, {
           DID: this.$store.state.user.UserID,
           DayOfWeek: DayOfWeek,
           StartTime: StartTime,
@@ -254,7 +303,7 @@ export default {
     // Remove availability
     async removeAvailability(DayOfWeek, StartTime, EndTime, SpecificDay) {
       try {
-        await axios.post(`http://localhost:5000/deleteavailability`, {
+        await axios.post(`http://localhost:5001/deleteavailability`, {
           DID: this.$store.state.user.UserID,
           DayOfWeek: DayOfWeek,
           StartTime: StartTime,
