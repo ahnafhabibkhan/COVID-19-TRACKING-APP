@@ -107,7 +107,7 @@ export default {
       try {
         const id = this.userId;
         const res = await axios.put(this.url + `users/${id}`, this.form);
-        console.log("successsfull upadated", res);
+        console.log("successfully updated", res);
         this.get();
       } catch (err) {
         console.log("error ; save profile", err);
@@ -126,12 +126,10 @@ export default {
   },
   computed: {
     userEmail() {
-      return "test@gmail.com";
-      // return store.state.user.UserID;
+      return this.$store.state.user.Email;
     },
     userId() {
-      return 3;
-      // return store.state.user.UserID;
+      return this.$store.state.user.UserID;
     },
   },
   mounted() {
