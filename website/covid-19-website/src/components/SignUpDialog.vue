@@ -180,7 +180,7 @@ export default {
           // In case of Patient, create account directly
           if (role == "Patient") {
             console.log(`Patient, creating new user`);
-            await axios.post(`http://localhost:5000/users`, {
+            await axios.post(`http://localhost:5000/user`, {
               Email: formStruct.email,
               FirstName: formStruct.firstName,
               LastName: formStruct.lastName,
