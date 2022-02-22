@@ -26,20 +26,10 @@
           <v-text-field v-model="form.Telephone" label="phone" />
         </v-col>
         <v-col cols="12" md="6">
-          <v-text-field v-model="form.City" label="City" type="text" />
-        </v-col>
-        <v-col cols="12" md="6">
           <v-text-field v-model="form.Country" label="country" type="text" />
         </v-col>
         <v-col cols="12" md="6">
           <v-select v-model="form.Role" :items="roles" label="role"></v-select>
-        </v-col>
-        <v-col cols="12" md="6">
-          <v-text-field
-            v-model="form.Password"
-            label="password"
-            type="password"
-          />
         </v-col>
         <v-col cols="12" md="6">
           <v-textarea v-model="form.Address" dense hide-details rows="1" label="address" />
@@ -88,13 +78,11 @@ export default {
         FirstName: null,
         LastName: null,
         Email: null,
-        Password: null,
         Role: null,
-        City: null,
         Telephone: null,
         Country: null,
         Address: null,
-        Travelled: null,
+        Travelled: 0,
       },
     };
   },
