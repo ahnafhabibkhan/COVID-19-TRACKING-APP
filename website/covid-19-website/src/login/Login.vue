@@ -395,6 +395,65 @@ export default {
         console.log(err);
       }
     },
+
+    // Redirects to new password input form if key is correct
+    async verifyPasswordResetKey(email, key) {
+      console.log(`Password reset key submitted: ${key}`);
+      if (!email || !key) {
+        return;
+      }
+      try {
+        // Get UserID of the User with that Email
+        const response = await axios.get(
+          `http://localhost:5000/users/${email}`
+        );
+        if (response.data.UserID != null) {
+          console.log(`Retrieved user ID: ${response.data.UserID}`);
+          // Get passwordresetrequest for that UserID
+          const requestResponse = await axios.get(
+            `http://localhost:5000/passwordresetrequest/${response.data.UserID}`
+          );
+          if (requestResponse.data.UserID != null) {
+            if(key == requestResponse.data.Key){
+              // TODO: Display password reset form
+            }
+          }
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    },
+
+    // Changes the user with that email's password
+    async changePassword(email, password, passwordConfirmation) {
+      console.log(`Change password called for Email: ${email}`);
+      if (!email || !password || !passwordConfirmation || (password != passwordConfirmation)) {
+        return;
+      }
+      try {
+        // Get the User with that Email
+        const response = await axios.get(
+          `http://localhost:5000/users/${email}`
+        );
+        if (response.data.UserID != null) {
+          // Update User's password
+          await axios.put(
+            `http://localhost:5000/users/${response.data.UserID}`,
+            {
+              Password: password,
+            },
+          );
+
+          // Delete password reset request
+          await axios.delete(
+            `http://localhost:5000/passwordresetrequest/${response.data.UserID}`
+          );
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    },
+
     onNavClick(text) {
       if (text == "Sign Up") {
         this.signUp_modal = !this.signUp_modal;
