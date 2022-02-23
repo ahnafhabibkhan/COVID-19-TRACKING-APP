@@ -7,14 +7,14 @@ pipeline {
         stage('Build') {
             steps {
                 dir('website/covid-19-website'){
-                    sh 'npm install'
+                    bat 'npm install'
                 }
             }
         }
         stage('Test') {
             steps {
                 dir('website/covid-19-website'){
-                    sh 'npm run test'
+                    bat 'npm run test'
                 }
             }
         }
