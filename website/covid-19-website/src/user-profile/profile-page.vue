@@ -24,9 +24,6 @@
           <v-text-field v-model="form.Telephone" label="phone" />
         </v-col>
         <v-col cols="12" md="6">
-          <v-text-field v-model="form.City" label="City" type="text" />
-        </v-col>
-        <v-col cols="12" md="6">
           <v-text-field v-model="form.Country" label="country" type="text" />
         </v-col>
         <v-col cols="12" md="6">
@@ -93,13 +90,11 @@ export default {
         FirstName: null,
         LastName: null,
         Email: null,
-        Password: null,
         Role: null,
-        City: null,
         Telephone: null,
         Country: null,
         Address: null,
-        Travelled: null,
+        Travelled: 0,
       },
     };
   },
@@ -112,7 +107,7 @@ export default {
       try {
         const id = this.userId;
         const res = await axios.put(this.url + `users/${id}`, this.form);
-        console.log("successsfull upadated", res);
+        console.log("successfully updated", res);
         this.get();
       } catch (err) {
         console.log("error ; save profile", err);
