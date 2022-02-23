@@ -4,14 +4,17 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'cd website/covid-19-website'
-                sh 'npm install'
+                sh '''
+                cd website/covid-19-website
+                npm install
+                '''
             }
         }
         stage('Test') {
             steps {
-                sh 'cd website/covid-19-website'
-                sh 'npm run test'
+                sh '''cd website/covid-19-website
+                npm run test
+                '''
             }
         }
         
