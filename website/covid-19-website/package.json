@@ -7,8 +7,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "test": "mocha -parallel",
-    "test-with-report": "npx c8 -r html mocha -parallel"
+    "test": "mocha -exit",
+    "test-with-report": "npx c8 -r html mocha -exit"
   },
   "dependencies": {
     "axios": "^0.25.0",

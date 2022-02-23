@@ -54,10 +54,8 @@ describe('insert modify and delete user test',function(){
             Telephone: "4504664545", 
             Address: "123 Main", 
             Role: "Patient", 
-            Password: "TestPass", 
-            City: "Montreal", 
-            Country: "Canada",
-            Travelled:0},(err, results) => {
+            Password: "TestPass",  
+            Country: "Canada"},(err, results) => {
                 
                 
 

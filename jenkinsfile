@@ -1,0 +1,19 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                cd website/covid-19-website
+                npm install
+            }
+        }
+        stage('Test') {
+            steps {
+                cd website/covid-19-website
+                npm run test
+            }
+        }
+        
+    }
+}
