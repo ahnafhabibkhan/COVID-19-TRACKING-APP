@@ -49,8 +49,8 @@
             dense
             hide-details
             label="Travelled"
-            true-value="1"
-            false-value="0"
+            :true-value="1"
+            :false-value="0"
             v-model.number="form.Travelled"
           ></v-checkbox
         ></v-col>
@@ -126,12 +126,12 @@ export default {
   },
   computed: {
     userEmail() {
-      return "test@gmail.com";
-      // return store.state.user.UserID;
+      // return "test@gmail.com";
+      return this.$store.state.user.Email;
     },
     userId() {
-      return 3;
-      // return store.state.user.UserID;
+      // return 3;
+      return this.$store.state.user.UserID;
     },
   },
   mounted() {
