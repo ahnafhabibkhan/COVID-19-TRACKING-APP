@@ -41,7 +41,6 @@
           ></v-text-field> -->
 
               <div class="d-flex justify-center">
-                <!-- signupUser(form) -->
                 <v-btn
                   @click="createPasswordResetRequest(form.email)"
                   width="150px"
@@ -80,13 +79,71 @@
             <v-col md="7">
               <v-text-field
                 v-model="form.password"
+                :error-messages="passwordErrorMessage"
                 label="Generated Password"
                 type="password"
                 solo
               />
-              <v-text-field
+              <!-- <v-text-field
                 v-model="form.password"
                 label="New Password"
+                type="password"
+                solo
+              /> -->
+
+              <!-- <v-text-field
+            label="City"
+            v-model="form.city"
+            solo
+            :autocomplete="false"
+          ></v-text-field> -->
+
+              <div class="d-flex justify-center">
+                <v-btn
+                  @click="verifyPasswordResetKey(form.email, form.password)"
+                  width="150px"
+                  class="mx-2"
+                  >Confirm</v-btn
+                >
+                <v-btn @click="cancelGeneratedPasswordAction()" width="150px"
+                  >cancel</v-btn
+                >
+              </div>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-card>
+    </v-dialog>
+
+    <!-- Enter your new password UI -->
+    <v-dialog v-model="NewPassword_modal" width="500px">
+      <v-card
+        elevation="15"
+        width="500px"
+        color="blue lighten-2"
+        style="border-radius: 20px; opacity: 95%; margin: auto"
+      >
+        <v-container>
+          <center>
+            <h1
+              class="white--text"
+              style="margin-left: auto; margin-right: auto; margin-bottom: 10px"
+            >
+              Enter Your New password
+            </h1>
+          </center>
+          <v-row justify="center">
+            <v-col md="7">
+              <v-text-field
+                v-model="form.newPassword"
+                label="New password"
+                type="password"
+                solo
+              />
+              <v-text-field
+                v-model="form.passwordConfirmation"
+                label="Password Confirmation"
+                :error-messages="confirmationErrorMessage"
                 type="password"
                 solo
               />
@@ -99,11 +156,17 @@
           ></v-text-field> -->
 
               <div class="d-flex justify-center">
-                <v-btn @click="NewPassword()" width="150px" class="mx-2"
-                  >Send a Login link</v-btn
-                >
-                <v-btn @click="cancelGeneratedPasswordAction()" width="150px"
-                  >cancel</v-btn
+                <v-btn
+                  @click="
+                    changePassword(
+                      form.email,
+                      form.newPassword,
+                      form.passwordConfirmation
+                    )
+                  "
+                  width="150px"
+                  class="mx-2"
+                  >Confirm</v-btn
                 >
               </div>
             </v-col>
@@ -111,29 +174,21 @@
         </v-container>
       </v-card>
     </v-dialog>
+    <!-- end of new password UI -->
     <!-- End message after clickin -->
     <!-- login modal -->
-    <v-dialog v-model="login_modal" width="600px">
-      <v-card class="">
+    <v-dialog v-model="login_modal" width="330px">
+      <v-card>
         <v-container>
           <v-row>
             <v-col cols="12" class="pa-5">
-              <h1>login</h1>
-
-              <v-select
-                :items="roles"
-                v-model="login.role"
-                item-text="title"
-                item-value="value"
-                label="role"
-                dense
-                hide-details
-              ></v-select>
+              <h1 style="text-align: center">login</h1>
             </v-col>
             <v-col cols="12">
               <v-text-field
                 v-model="login.user_name"
                 label="Username"
+                style="text-align: center"
                 dense
                 hide-details
               ></v-text-field>
@@ -286,6 +341,9 @@ export default {
       },
       LoginLink_modal: false,
       GeneratedPassword_modal: false,
+      NewPassword_modal: false,
+      passwordErrorMessage: "",
+      confirmationErrorMessage: "",
     };
   },
 
@@ -413,9 +471,18 @@ export default {
           const requestResponse = await axios.get(
             `http://localhost:5000/passwordresetrequest/${response.data.UserID}`
           );
+
           if (requestResponse.data.UserID != null) {
-            if(key == requestResponse.data.Key){
-              // TODO: Display password reset form
+            if (key == requestResponse.data.Key) {
+              //todo
+
+              this.GeneratedPassword_modal = !this.GeneratedPassword_modal;
+              this.NewPassword_modal = !this.NewPassword_modal;
+            } else if (key != requestResponse.data.Key) {
+              this.passwordErrorMessage = "Wrong password";
+              return;
+              // this.GeneratedPassword_modal = false;
+              // this.GeneratedPassword_modal = !this.GeneratedPassword_modal;
             }
           }
         }
@@ -427,7 +494,16 @@ export default {
     // Changes the user with that email's password
     async changePassword(email, password, passwordConfirmation) {
       console.log(`Change password called for Email: ${email}`);
-      if (!email || !password || !passwordConfirmation || (password != passwordConfirmation)) {
+      if (
+        !email ||
+        !password ||
+        !passwordConfirmation
+        // password != passwordConfirmation
+      ) {
+        return;
+      }
+      if (password != passwordConfirmation) {
+        this.confirmationErrorMessage = "Password doesn't match";
         return;
       }
       try {
@@ -441,9 +517,10 @@ export default {
             `http://localhost:5000/users/${response.data.UserID}`,
             {
               Password: password,
-            },
+            }
           );
-
+          this.NewPassword_modal = !this.NewPassword_modal;
+          this.login_modal = !this.login_modal;
           // Delete password reset request
           await axios.delete(
             `http://localhost:5000/passwordresetrequest/${response.data.UserID}`
