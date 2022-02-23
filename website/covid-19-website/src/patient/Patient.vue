@@ -102,8 +102,8 @@
                         dense
                         hide-details
                         label="Headache"
-                        true-value="1"
-                        false-value="0"
+                        :true-value="1"
+                        :false-value="0"
                         v-model.number="form.Headache"
                       ></v-checkbox
                     ></v-col>
@@ -112,8 +112,8 @@
                         dense
                         hide-details
                         label="covid"
-                        true-value="1"
-                        false-value="0"
+                        :true-value="1"
+                        :false-value="0"
                         v-model.number="form.Covid"
                       ></v-checkbox
                     ></v-col>
@@ -122,8 +122,8 @@
                         dense
                         hide-details
                         label="BreathingIssues"
-                        true-value="1"
-                        false-value="0"
+                        :true-value="1"
+                        :false-value="0"
                         v-model.number="form.BreathingIssues"
                       ></v-checkbox
                     ></v-col>
@@ -132,8 +132,8 @@
                         dense
                         hide-details
                         label="Cough"
-                        true-value="1"
-                        false-value="0"
+                        :true-value="1"
+                        :false-value="0"
                         v-model.number="form.Cough"
                       ></v-checkbox
                     ></v-col>
@@ -151,8 +151,8 @@
                         dense
                         hide-details
                         label="MusclePain"
-                        true-value="1"
-                        false-value="0"
+                        :true-value="1"
+                        :false-value="0"
                         v-model.number="form.MusclePain"
                       ></v-checkbox
                     ></v-col>
@@ -161,8 +161,8 @@
                         dense
                         hide-details
                         label="Diarrhea"
-                        true-value="1"
-                        false-value="0"
+                        :true-value="1"
+                        :false-value="0"
                         v-model.number="form.Diarrhea"
                       ></v-checkbox
                     ></v-col>
@@ -171,8 +171,8 @@
                         dense
                         hide-details
                         label="Vomitting"
-                        true-value="1"
-                        false-value="0"
+                        :true-value="1"
+                        :false-value="0"
                         v-model.number="form.Vomitting"
                       ></v-checkbox
                     ></v-col>
@@ -181,8 +181,8 @@
                         dense
                         hide-details
                         label="Nausea"
-                        true-value="1"
-                        false-value="0"
+                        :true-value="1"
+                        :false-value="0"
                         v-model.number="form.Nausea"
                       ></v-checkbox
                     ></v-col>
@@ -191,8 +191,8 @@
                         dense
                         hide-details
                         label="SoreThroat"
-                        true-value="1"
-                        false-value="0"
+                        :true-value="1"
+                        :false-value="0"
                         v-model.number="form.SoreThroat"
                       ></v-checkbox
                     ></v-col>
