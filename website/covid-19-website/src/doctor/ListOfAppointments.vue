@@ -113,7 +113,7 @@
         <div class="my-6" style="text-align: center">
           <v-btn
             class="white--text"
-            style="font-size: 18px;"
+            style="font-size: 18px"
             color="blue lighten-2"
             width="400px"
             height="75px"
@@ -137,7 +137,9 @@ export default {
       ownRequestedAppointments: [],
       appointmentRequestForm: {
         PID: 0,
-        Date: null,
+        Date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+          .toISOString()
+          .substr(0, 10),
         Hour: 0,
         Minute: 0,
         EmergencyLevel: 0,
@@ -292,6 +294,7 @@ export default {
       } catch (err) {
         console.log(err);
       }
+      window.location.reload();
     },
 
     // Get appointment requests made by this doctor

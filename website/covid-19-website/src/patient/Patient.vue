@@ -37,6 +37,7 @@
                 </v-radio-group>
               </v-col>
               <v-col cols="12">
+                <h4>Level of Emergency:</h4>
                 <v-radio-group v-model="emergencyLevel">
                   <v-radio label="High" value="High"> </v-radio>
                   <v-radio label="Medium" value="Medium"> </v-radio>
@@ -467,7 +468,9 @@ export default {
       show_more: false,
       date_dialoge: false,
       status_dialoge: false,
-      date: null,
+      date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+        .toISOString()
+        .substr(0, 10),
       statuses: [],
       form_default: {
         fillOutDate: "2022-02-14",
@@ -640,6 +643,8 @@ export default {
             axios.post(this.url + "deleteappointmentrequest", item);
 
             this.getAppointments();
+            this.getDoctorAppointmentRequests();
+            window.location.reload();
           } catch (err) {
             console.log("err", err);
             alert("Failed ; delete appointment");
