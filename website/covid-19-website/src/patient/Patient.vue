@@ -425,6 +425,11 @@
         </div>
       </v-col>
     </v-row>
+    <v-btn class="chatbox-ui" icon height="80px" width="80px">
+      <v-icon color="blue darken-3" style="font-size: 80px">
+        mdi-message-text
+      </v-icon>
+    </v-btn>
   </v-container>
 </template>
 <script>
@@ -742,5 +747,10 @@ th {
   width: 30%;
   height: 40%;
   margin-left: 100%; */
+}
+.chatbox-ui {
+  /* border: 5px solid red; */
+  float: right;
+  margin-top: 25%;
 }
 </style>
