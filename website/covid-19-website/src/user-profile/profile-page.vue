@@ -1,46 +1,70 @@
 <template>
-<!--Profile-->
+  <!--Profile-->
   <div class="bg-image">
-    <v-btn small color="accent" elevation="0" @click="back"> back</v-btn>
-    <h1>Profile page</h1>
-
     <v-container>
       <v-row>
+        <v-col cols="12">
+          <h1>Profile page</h1>
+        </v-col>
+
         <v-col cols="12" md="6">
-          <v-text-field v-model="form.firstName" label="firstname" :autocomplete="false" />
+          <v-text-field
+            v-model="form.FirstName"
+            label="FirstName"
+            :autocomplete="false"
+          />
         </v-col>
         <v-col cols="12" md="6">
-          <v-text-field v-model="form.lastName" label="lastName" />
+          <v-text-field v-model="form.LastName" label="LastName" />
         </v-col>
         <v-col cols="12" md="6">
-          <v-text-field v-model="form.email" label="email" type="email" />
+          <v-text-field v-model="form.Email" label="Email" type="Email" />
         </v-col>
         <v-col cols="12" md="6">
-          <v-text-field v-model="form.telephone" label="phone" />
+          <v-text-field v-model="form.Telephone" label="phone" />
         </v-col>
         <v-col cols="12" md="6">
-          <v-text-field v-model="form.bithDate" label="birthDate" type="date" />
+          <v-text-field v-model="form.Country" label="country" type="text" />
         </v-col>
         <v-col cols="12" md="6">
-           <v-select
-           item-text="title"
-           item-value="value"
-          :items="roles"
-          label="role"
-        ></v-select>
+          <v-select v-model="form.Role" :items="roles" label="role"></v-select>
         </v-col>
         <v-col cols="12" md="6">
           <v-text-field
-            v-model="form.password"
+            v-model="form.Password"
             label="password"
             type="password"
           />
         </v-col>
+        <v-col cols="12" md="6">
+          <v-textarea
+            v-model="form.Address"
+            dense
+            hide-details
+            rows="1"
+            label="address"
+          />
+        </v-col>
+        <v-col cols="12" md="6">
+          <v-checkbox
+            dense
+            hide-details
+            label="Travelled"
+            :true-value="1"
+            :false-value="0"
+            v-model.number="form.Travelled"
+          ></v-checkbox
+        ></v-col>
 
         <v-col cols="12">
           <div class="d-flex justify-center">
-            <v-btn @click="save" width="150px" class="mx-2">save</v-btn>
-            <v-btn @click="back" width="150px">cancel</v-btn>
+            <v-btn @click="back" width="150px" color="primary">
+              <v-icon left> mdi-arrow-left </v-icon>
+              back</v-btn
+            >
+            <v-btn @click="save" width="150px" class="mx-2" color="success"
+              >save</v-btn
+            >
           </div>
         </v-col>
       </v-row>
@@ -49,24 +73,28 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "Profile",
   data() {
     return {
-      roles:[
-              { title: "admin", value: 1 },
-        { title: "patient", value: 2 },
-        { title: "doctor", value: 3 },
-        { title: "health officer", value: 4 },
-        { title: "immigrant officer", value: 5 },
+      url: "http://localhost:5000/",
+      roles: [
+        "Admin",
+        "Patient",
+        "Doctor",
+        "HealthOofficer",
+        "ImmigrantOfficer",
       ],
       form: {
-        firstName: null,
-        lastName: null,
-        email: null,
-        password: null,
-        birthDate: null,
-        telephone: null,
+        FirstName: null,
+        LastName: null,
+        Email: null,
+        Role: null,
+        Telephone: null,
+        Country: null,
+        Address: null,
+        Travelled: 0,
       },
     };
   },
@@ -77,31 +105,38 @@ export default {
 
     async save() {
       try {
-        const res = await this.$axios.put(
-          "http://localhost:5000/profile/${id}",
-          this.form
-        );
-        console.log("successsfull upadated", res);
+        const id = this.userId;
+        const res = await axios.put(this.url + `users/${id}`, this.form);
+        console.log("successfully updated", res);
+        this.get();
       } catch (err) {
         console.log("error ; save profile", err);
       }
     },
     async get() {
-      const id = this.$route.params.id;
+      const email = this.userEmail;
       try {
-        const res = await this.$axios.get(
-          `http://localhost:5000/profile/${id}`
-        );
-        console.log("successsfull upadated", res);
-        this.form = res;
+        const res = await axios.get(this.url + `users/${email}`);
+
+        this.form = res.data;
       } catch (err) {
-        console.log("error ; save profile", err);
+        console.log("error ; get profile", err);
       }
     },
   },
-  mounted(){
-    this.get()
-  }
+  computed: {
+    userEmail() {
+      // return "test@gmail.com";
+      return this.$store.state.user.Email;
+    },
+    userId() {
+      // return 3;
+      return this.$store.state.user.UserID;
+    },
+  },
+  mounted() {
+    this.get();
+  },
 };
 </script>
 <style>
@@ -114,7 +149,7 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
-  opacity :1;
+  opacity: 1;
 }
 .btn-container {
   /* border: 5px solid red; */

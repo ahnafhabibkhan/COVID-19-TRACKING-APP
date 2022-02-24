@@ -1,7 +1,7 @@
 <template>
   <v-card
     elevation="15"
-    width="500"
+    width="500px"
     color="blue lighten-2"
     style="border-radius: 20px; opacity: 95%; margin: auto"
   >
@@ -17,12 +17,10 @@
       <v-row justify="center">
         <v-col md="7">
           <v-text-field
-            style="margin-left: auto; margin-right: auto"
             label="First Name"
             v-model="form.firstName"
             solo
             :autocomplete="false"
-            full-width
           ></v-text-field>
 
           <v-text-field
@@ -55,12 +53,12 @@
             :autocomplete="false"
           ></v-text-field>
 
-          <v-text-field
+          <!-- <v-text-field
             label="City"
             v-model="form.city"
             solo
             :autocomplete="false"
-          ></v-text-field>
+          ></v-text-field> -->
 
           <v-text-field
             label="Country"
@@ -100,7 +98,9 @@
           />
 
           <div class="d-flex justify-center">
-            <v-btn @click="signupUser(form)" width="150px" class="mx-2">save</v-btn>
+            <v-btn @click="signupUser(form)" width="150px" class="mx-2"
+              >save</v-btn
+            >
             <v-btn @click="back" width="150px">cancel</v-btn>
           </div>
         </v-col>
@@ -108,7 +108,8 @@
     </v-container>
   </v-card>
 </template>
-<script>import axios from "axios";
+<script>
+import axios from "axios";
 export default {
   name: "SignUpDialog",
   data() {
@@ -130,7 +131,7 @@ export default {
         birthDate: null,
         telephone: null,
         address: null,
-        city: null,
+        // city: null,
         country: null,
       },
     };
@@ -141,17 +142,17 @@ export default {
     async signupUser(formStruct) {
       console.log(`Signup pressed`);
       if (
-              !formStruct.role ||
-              !formStruct.email ||
-              !formStruct.password ||
-              !formStruct.passwordConfirm ||
-              !formStruct.firstName ||
-              !formStruct.lastName ||
-              !formStruct.telephone ||
-              !formStruct.address ||
-              !formStruct.city ||
-              !formStruct.country ||
-              formStruct.password != formStruct.passwordConfirm
+        !formStruct.role ||
+        !formStruct.email ||
+        !formStruct.password ||
+        !formStruct.passwordConfirm ||
+        !formStruct.firstName ||
+        !formStruct.lastName ||
+        !formStruct.telephone ||
+        !formStruct.address ||
+        // !formStruct.city ||
+        !formStruct.country ||
+        formStruct.password != formStruct.passwordConfirm
       ) {
         console.log(`Form invalid`);
         return;
@@ -160,7 +161,7 @@ export default {
         console.log(`Form valid, checking if user already exists`);
         // Check if user with that email already exists
         const response = await axios.get(
-                `http://localhost:5000/users/${formStruct.email}`
+          `http://localhost:5000/users/${formStruct.email}`
         );
         if (response.data.UserID == null) {
           console.log(`User does not exist yet`);
@@ -177,11 +178,11 @@ export default {
           } else if (formStruct.role == 5) {
             role = "ImmigrationOfficer";
           }
-          console.log(`Role: `+role);
+          console.log(`Role: ` + role);
           // In case of Patient, create account directly
           if (role == "Patient") {
             console.log(`Patient, creating new user`);
-            await axios.post(`http://localhost:5000/users`, {
+            await axios.post(`http://localhost:5000/user`, {
               Email: formStruct.email,
               FirstName: formStruct.firstName,
               LastName: formStruct.lastName,
@@ -189,21 +190,23 @@ export default {
               Address: formStruct.address,
               Role: role,
               Password: formStruct.password,
-              City: formStruct.city,
+              // City: formStruct.city,
               Country: formStruct.country,
             });
           } else {
-            console.log(`Role not patient, checking is account request already exists`);
+            console.log(
+              `Role not patient, checking is account request already exists`
+            );
             // If role not patient then need to make an account request instead
             // Check if a request already exists
             const requestExistResponse = await axios.get(
-                    `http://localhost:5000/accountRequest/${formStruct.email}`
+              `http://localhost:5000/accountRequest/${formStruct.email}`
             );
             if (requestExistResponse.data.Email == null) {
               console.log(`Account request does not already exist, creating`);
               const currentDate = new Date();
               const year = currentDate.getFullYear();
-              const month = currentDate.getMonth()+1;
+              const month = currentDate.getMonth() + 1;
               const day = currentDate.getDate();
               const hour = currentDate.getHours();
               const minute = currentDate.getMinutes();
@@ -215,10 +218,24 @@ export default {
                 Address: formStruct.address,
                 Role: role,
                 Password: formStruct.password,
-                City: formStruct.city,
+                // City: formStruct.city,
                 Country: formStruct.country,
-                Date: ""+year+"-"+(month < 10 ? "0" : "")+month+"-"+(day < 10 ? "0" : "")+day,
-                Time: ""+(hour < 10 ? "0" : "")+hour+":"+(minute < 10 ? "0" : "")+minute,
+                Date:
+                  "" +
+                  year +
+                  "-" +
+                  (month < 10 ? "0" : "") +
+                  month +
+                  "-" +
+                  (day < 10 ? "0" : "") +
+                  day,
+                Time:
+                  "" +
+                  (hour < 10 ? "0" : "") +
+                  hour +
+                  ":" +
+                  (minute < 10 ? "0" : "") +
+                  minute,
               });
             }
           }

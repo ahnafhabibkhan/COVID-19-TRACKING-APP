@@ -6,17 +6,20 @@
     <div class="right-side">
       <div style="margin-top: 90%; margin-left: 80%">
         <v-btn @click="onClickChatBox()" icon height="80px" width="80px">
+    <div class="right-side-doctor">
+      <div style="margin-top: 95%; margin-left: 85%">
+        <v-btn @click="ChatboxClick" icon height="80px" width="80px">
           <v-icon color="blue darken-3" style="font-size: 80px">
             mdi-message-text
           </v-icon>
         </v-btn>
       </div>
     </div>
-    <div class="left-side">
-      <div class="btn-container" style="margin-left: auto; margin-right: auto">
+    <div class="left-side-doctor">
+      <div class="btn-container-doctor" style="margin: auto">
         <v-row align="center">
           <v-col cols="12" sm="6">
-            <div class="my-6 mx-3">
+            <div>
               <v-btn
                 class="white--text"
                 style="font-size: 18px; opacity: 90%"
@@ -27,7 +30,7 @@
                 >List Of Patients</v-btn
               >
             </div>
-            <div class="my-6 mx-3">
+            <div class="my-6">
               <v-btn
                 class="white--text"
                 style="font-size: 18px; opacity: 90%"
@@ -37,7 +40,7 @@
                 >List of Appointments</v-btn
               >
             </div>
-            <div class="my-6 mx-3">
+            <div class="my-6">
               <v-btn
                 class="white--text"
                 style="font-size: 18px; opacity: 90%"
@@ -114,18 +117,48 @@ export default {
     this.getAppointments();
     this.getOwnAppointmentRequests();
     this.getAppointmentRequests();
+    this.getChartData();
   },
 
   methods: {
-    onClickChatBox() {
-      this.chatbox_modal = !this.chatbox_modal;
+    // Get infected and non infected data
+    async getChartData() {
+      try {
+        const DID = this.$store.state.user.UserID;
+        const response = await axios.post(`http://localhost:5000/users`, {
+          Doctor: DID,
+        });
+        const patientList = response.data;
+        let infectedCount = 0;
+        let nonInfectedCount = 0;
+        let totalCount = 0;
+        let patientIDs = [];
+        patientList.forEach(patient => {
+          ++totalCount;
+          patientIDs.push(patient.UserID);
+        });
+        for(let i=0;i<patientIDs.length;++i){
+          const latestHSResponse = await axios.get(`http://localhost:5000/healthstatus/${patientIDs[i]}`);
+          console.log(JSON.stringify(latestHSResponse.data));
+          const infected = (latestHSResponse.data.Covid == 1);
+          if(infected){
+            ++infectedCount;
+          }else{
+            ++nonInfectedCount
+          }
+        }
+        this.series = [infectedCount/totalCount * 100, nonInfectedCount/totalCount * 100];
+      } catch (err) {
+        console.log(err);
+      }
     },
+    
     // Get all messages to and from this doctor's botchat
 
     async getMessages() {
       try {
         const DID = this.$store.state.user.UserID;
-        this.messages = await axios.get(`http://localhost:5000/message/${DID}`);
+        this.messages = await axios.get(`http://localhost:5000/messages/${DID}`);
       } catch (err) {
         console.log(err);
       }
@@ -288,10 +321,11 @@ export default {
   display: block;
   margin-top: 35px;
 } */
-.btn-container {
+.btn-container-doctor {
   /* border: 5px solid red; */
-  padding-top: 25px;
-  margin-top: 100px;
+  /* padding-top: 25px;
+  margin-top: auto;
+  margin-bottom: auto; */
   /* margin-left: 300px; */
   /* margin-right: auto; */
   width: 58%;
@@ -303,15 +337,15 @@ export default {
   /* border: 5px solid red; */
   width: 65%;
   height: 40%;
-  margin-top: 2%;
+  margin-top: 5%;
   margin-left: auto;
   margin-right: auto;
   opacity: 90%;
 }
-.left-side {
+.left-side-doctor {
   /* border: 5px solid red; */
   width: 40%;
-  height: 1000px;
+  height: 100%;
   float: left;
 }
 .icons-container {
@@ -322,10 +356,10 @@ export default {
   float: right;
 }
 
-.right-side {
+.right-side-doctor {
   /* border: 5px solid red; */
   float: right;
   width: 50%;
-  height: 1000px;
+  height: 100%;
 }
 </style>
