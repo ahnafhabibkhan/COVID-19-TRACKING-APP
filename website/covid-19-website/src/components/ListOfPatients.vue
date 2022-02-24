@@ -10,7 +10,11 @@
     >
       {{ title }}
     </h1>
-    <v-text-field style="width: 50%; margin-left: auto; margin-right: auto;" v-model="search" placeholder="Search Patients"></v-text-field>
+    <v-text-field
+      style="width: 50%; margin-left: auto; margin-right: auto"
+      v-model="search"
+      placeholder="Search Patients"
+    ></v-text-field>
     <v-card class="patients-list-container" outlined color="transparent">
       <v-card
         v-for="(item, UserID) in filteredPatients"
@@ -22,7 +26,11 @@
         height="10%"
         @click="onPatientClick()"
         ><h2 class="my-2">{{ item.FirstName }} {{ item.LastName }}</h2>
-        <p>Contact:<br/> Phone: {{ item.Telephone }} <br/> Email: {{ item.Email }}</p>
+        <p>
+          Contact:<br />
+          Phone: {{ item.Telephone }} <br />
+          Email: {{ item.Email }}
+        </p>
       </v-card>
     </v-card>
   </div>
@@ -44,7 +52,8 @@ export default {
       userRole: this.user,
     };
   },
-  created() { // Call all these on page creation
+  created() {
+    // Call all these on page creation
     this.getPatients();
   },
   methods: {
@@ -52,21 +61,26 @@ export default {
     async getPatients() {
       console.log("getPatients called");
       try {
-        if(this.userRole == "doctor"){
+        if (this.userRole == "doctor") {
           const DID = this.$store.state.user.UserID;
-          console.log("logged in doctor ID: "+DID);
+          console.log("logged in doctor ID: " + DID);
           // Check if user with that email already exists
           const response = await axios.post(`http://localhost:5000/users`, {
             Doctor: DID,
           });
           this.patientList = response.data;
-        }else if(this.userRole == "health-official"){
+        } else if (this.userRole == "health-official") {
           const response = await axios.get(`http://localhost:5000/users`);
           this.patientList = response.data;
-        }else if(this.userRole == "immigration-officer"){
-          const response = await axios.get(`http://localhost:5000/usersByCovid`);
+        } else if (this.userRole == "immigration-officer") {
+          const response = await axios.get(
+            `http://localhost:5000/usersByCovid`
+          );
           this.patientList = response.data;
-          const travelResponse = await axios.post(`http://localhost:5000/users`, {Role: 'Patient', Travelled: 1});
+          const travelResponse = await axios.post(
+            `http://localhost:5000/users`,
+            { Role: "Patient", Travelled: 1 }
+          );
           this.patientList = this.patientList.concat(travelResponse.data);
         }
       } catch (err) {

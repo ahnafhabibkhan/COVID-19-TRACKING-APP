@@ -184,10 +184,55 @@ export default {
     this.getMessages();
     this.getAvailabilities();
     this.listOfAvailabilities();
+    this.getChartData();
   },
 
+
   methods: {
+
     chatBox() {},
+
+    // Get infected and non infected data
+    async getChartData() {
+      try {
+        const DID = this.$store.state.user.UserID;
+        const response = await axios.post(`http://localhost:5000/users`, {
+          Doctor: DID,
+        });
+        const patientList = response.data;
+        let infectedCount = 0;
+        let nonInfectedCount = 0;
+        let totalCount = 0;
+        let patientIDs = [];
+        patientList.forEach(patient => {
+          ++totalCount;
+          patientIDs.push(patient.UserID);
+        });
+        for(let i=0;i<patientIDs.length;++i){
+          const latestHSResponse = await axios.get(`http://localhost:5000/healthstatus/${patientIDs[i]}`);
+          console.log(JSON.stringify(latestHSResponse.data));
+          const infected = (latestHSResponse.data.Covid == 1);
+          if(infected){
+            ++infectedCount;
+          }else{
+            ++nonInfectedCount
+          }
+        }
+        this.series = [infectedCount/totalCount * 100, nonInfectedCount/totalCount * 100];
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    
+    // Get all messages to and from this doctor's botchat
+    async getMessages() {
+      try {
+        const DID = this.$store.state.user.UserID;
+        this.messages = await axios.get(`http://localhost:5000/messages/${DID}`);
+      } catch (err) {
+        console.log(err);
+      }
+    },
 
     listOfAvailabilities() {
       this.allAvailabilities = [];
