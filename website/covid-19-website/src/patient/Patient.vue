@@ -1,4 +1,3 @@
-
 <template>
   <v-container class="bg-image">
     <v-row>
@@ -37,6 +36,15 @@
                   ></v-radio>
                 </v-radio-group>
               </v-col>
+              <v-col cols="12">
+                <h4>Level of Emergency:</h4>
+                <v-radio-group v-model="emergencyLevel">
+                  <v-radio label="High" value="High"> </v-radio>
+                  <v-radio label="Medium" value="Medium"> </v-radio>
+                  <v-radio label="Low" value="Low"> </v-radio>
+                </v-radio-group>
+              </v-col>
+
               <v-col cols="6">
                 <v-btn
                   color="error"
@@ -102,8 +110,8 @@
                         dense
                         hide-details
                         label="Headache"
-                        true-value="1"
-                        false-value="0"
+                        :true-value="1"
+                        :false-value="0"
                         v-model.number="form.Headache"
                       ></v-checkbox
                     ></v-col>
@@ -112,8 +120,8 @@
                         dense
                         hide-details
                         label="covid"
-                        true-value="1"
-                        false-value="0"
+                        :true-value="1"
+                        :false-value="0"
                         v-model.number="form.Covid"
                       ></v-checkbox
                     ></v-col>
@@ -122,8 +130,8 @@
                         dense
                         hide-details
                         label="BreathingIssues"
-                        true-value="1"
-                        false-value="0"
+                        :true-value="1"
+                        :false-value="0"
                         v-model.number="form.BreathingIssues"
                       ></v-checkbox
                     ></v-col>
@@ -132,8 +140,8 @@
                         dense
                         hide-details
                         label="Cough"
-                        true-value="1"
-                        false-value="0"
+                        :true-value="1"
+                        :false-value="0"
                         v-model.number="form.Cough"
                       ></v-checkbox
                     ></v-col>
@@ -151,8 +159,8 @@
                         dense
                         hide-details
                         label="MusclePain"
-                        true-value="1"
-                        false-value="0"
+                        :true-value="1"
+                        :false-value="0"
                         v-model.number="form.MusclePain"
                       ></v-checkbox
                     ></v-col>
@@ -161,8 +169,8 @@
                         dense
                         hide-details
                         label="Diarrhea"
-                        true-value="1"
-                        false-value="0"
+                        :true-value="1"
+                        :false-value="0"
                         v-model.number="form.Diarrhea"
                       ></v-checkbox
                     ></v-col>
@@ -171,8 +179,8 @@
                         dense
                         hide-details
                         label="Vomitting"
-                        true-value="1"
-                        false-value="0"
+                        :true-value="1"
+                        :false-value="0"
                         v-model.number="form.Vomitting"
                       ></v-checkbox
                     ></v-col>
@@ -181,8 +189,8 @@
                         dense
                         hide-details
                         label="Nausea"
-                        true-value="1"
-                        false-value="0"
+                        :true-value="1"
+                        :false-value="0"
                         v-model.number="form.Nausea"
                       ></v-checkbox
                     ></v-col>
@@ -191,8 +199,8 @@
                         dense
                         hide-details
                         label="SoreThroat"
-                        true-value="1"
-                        false-value="0"
+                        :true-value="1"
+                        :false-value="0"
                         v-model.number="form.SoreThroat"
                       ></v-checkbox
                     ></v-col>
@@ -424,6 +432,21 @@
             <v-btn x-small @click="deleteApproved(item)"> cancel </v-btn>
           </div>
         </div>
+        <!-- Doctor's Requested apppointments -->
+        <div
+          style="width: 70%; background-color: rgba(256, 256, 256, 0.5)"
+          class="pa-4 rounded-lg mt-5"
+        >
+          <h2>Doctor's Requested Appointments:</h2>
+          <div v-for="(item, i) in doctorRequestedAppointments" :key="i">
+            {{ item.Date.substr(0, 10) + " -- " + item.Time }}
+
+            <v-btn x-small @click="approveRequested(item)"> Approve </v-btn>
+            <v-btn class="mx-2" x-small @click="deleteAppointment(item)">
+              Refuse
+            </v-btn>
+          </div>
+        </div>
       </v-col>
     </v-row>
   </v-container>
@@ -438,14 +461,16 @@ export default {
     return {
       rules: {
         required: (value) => !!value || "Required.",
-        number: (value) => typeof(value)=='number' || "must be a number",
+        number: (value) => typeof value == "number" || "must be a number",
       },
       url: "http://localhost:5000/",
       edit_mode: false,
       show_more: false,
       date_dialoge: false,
       status_dialoge: false,
-      date: null,
+      date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+        .toISOString()
+        .substr(0, 10),
       statuses: [],
       form_default: {
         fillOutDate: "2022-02-14",
@@ -468,7 +493,9 @@ export default {
       form: null,
       availabilities: [],
       available: null,
+      emergencyLevel: null,
       approved: [],
+      doctorRequestedAppointments: [],
     };
   },
   methods: {
@@ -570,12 +597,24 @@ export default {
     async bookAppoitment() {
       const did = this.doctorId;
       const pid = this.userId;
+      const covidStatusInt = await axios.get(
+        `http://localhost:5000/healthstatus/${pid}`
+      );
+      var levelOfEmergency = 0;
+      if (this.emergencyLevel == "High") {
+        levelOfEmergency = 2;
+      } else if (this.emergencyLevel == "Medium") {
+        levelOfEmergency = 1;
+      }
+
       let params = {
         DID: did,
         PID: pid,
         Time: this.available.StartTime,
         Date: this.available.SpecificDay.substr(0, 10),
         RequestedBy: "P",
+        LevelOfEmergency: levelOfEmergency,
+        Priority: covidStatusInt.data.Covid,
       };
       try {
         await axios.post(this.url + "appointmentrequest", params);
@@ -604,6 +643,8 @@ export default {
             axios.post(this.url + "deleteappointmentrequest", item);
 
             this.getAppointments();
+            this.getDoctorAppointmentRequests();
+            window.location.reload();
           } catch (err) {
             console.log("err", err);
             alert("Failed ; delete appointment");
@@ -676,6 +717,68 @@ export default {
       await this.getAvailabilities();
       this.date_dialoge = true;
     },
+
+    // Get appointment requests made by this doctor
+    async getDoctorAppointmentRequests() {
+      try {
+        const res = await axios.post(
+          `http://localhost:5000/appointmentrequests`,
+          {
+            DID: this.doctorId,
+            PID: this.userId,
+            RequestedBy: "D",
+          }
+        );
+        this.doctorRequestedAppointments = res.data;
+      } catch (err) {
+        console.log(err);
+      }
+    },
+
+    //Accept requested appointment
+    approveRequested(item) {
+      console.log(item);
+      this.approveAppointment(
+        item.PID,
+        item.DID,
+        item.Date.substr(0, 10),
+        item.Time,
+        item.LevelOfEmergency,
+        item.Priority
+      );
+      window.location.reload();
+    },
+
+    // Approve an appointment
+    async approveAppointment(PID, DID, Date, Time, LevelOfEmergency, Priority) {
+      try {
+        this.cancelAppointmentRequest(PID, DID, Date, Time);
+        await axios.post(`http://localhost:5000/appointment`, {
+          PID: PID,
+          DID: DID,
+          Date: Date,
+          Time: Time,
+          LevelOfEmergency: LevelOfEmergency,
+          Priority: Priority,
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    },
+
+    // Cancel an appointment from the doctor
+    async cancelAppointmentRequest(PID, DID, Date, Time) {
+      try {
+        await axios.post(`http://localhost:5000/deleteappointmentrequest`, {
+          PID: PID,
+          DID: DID,
+          Date: Date,
+          Time: Time,
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    },
   },
   computed: {
     statusesFiltered() {
@@ -702,6 +805,7 @@ export default {
     this.getApproved();
     this.getStatuses();
     this.getAppointments();
+    this.getDoctorAppointmentRequests();
     this.form = Object.assign({}, this.form_default);
   },
 };

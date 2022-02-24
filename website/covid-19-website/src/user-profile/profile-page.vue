@@ -4,11 +4,9 @@
     <v-container>
       <v-row>
         <v-col cols="12">
-         
-         
           <h1>Profile page</h1>
         </v-col>
-       
+
         <v-col cols="12" md="6">
           <v-text-field
             v-model="form.FirstName"
@@ -26,9 +24,6 @@
           <v-text-field v-model="form.Telephone" label="phone" />
         </v-col>
         <v-col cols="12" md="6">
-          <v-text-field v-model="form.City" label="City" type="text" />
-        </v-col>
-        <v-col cols="12" md="6">
           <v-text-field v-model="form.Country" label="country" type="text" />
         </v-col>
         <v-col cols="12" md="6">
@@ -42,15 +37,21 @@
           />
         </v-col>
         <v-col cols="12" md="6">
-          <v-textarea v-model="form.Address" dense hide-details rows="1" label="address" />
+          <v-textarea
+            v-model="form.Address"
+            dense
+            hide-details
+            rows="1"
+            label="address"
+          />
         </v-col>
-         <v-col cols="12" md="6">
+        <v-col cols="12" md="6">
           <v-checkbox
             dense
             hide-details
             label="Travelled"
-            true-value="1"
-            false-value="0"
+            :true-value="1"
+            :false-value="0"
             v-model.number="form.Travelled"
           ></v-checkbox
         ></v-col>
@@ -58,11 +59,12 @@
         <v-col cols="12">
           <div class="d-flex justify-center">
             <v-btn @click="back" width="150px" color="primary">
-              <v-icon left>
-                mdi-arrow-left
-              </v-icon>
-              back</v-btn>
-            <v-btn @click="save" width="150px" class="mx-2" color="success">save</v-btn>
+              <v-icon left> mdi-arrow-left </v-icon>
+              back</v-btn
+            >
+            <v-btn @click="save" width="150px" class="mx-2" color="success"
+              >save</v-btn
+            >
           </div>
         </v-col>
       </v-row>
@@ -88,13 +90,11 @@ export default {
         FirstName: null,
         LastName: null,
         Email: null,
-        Password: null,
         Role: null,
-        City: null,
         Telephone: null,
         Country: null,
         Address: null,
-        Travelled: null,
+        Travelled: 0,
       },
     };
   },
@@ -107,7 +107,7 @@ export default {
       try {
         const id = this.userId;
         const res = await axios.put(this.url + `users/${id}`, this.form);
-        console.log("successsfull upadated", res);
+        console.log("successfully updated", res);
         this.get();
       } catch (err) {
         console.log("error ; save profile", err);
@@ -126,12 +126,12 @@ export default {
   },
   computed: {
     userEmail() {
-      return "test@gmail.com";
-      // return store.state.user.UserID;
+      // return "test@gmail.com";
+      return this.$store.state.user.Email;
     },
     userId() {
-      return 3;
-      // return store.state.user.UserID;
+      // return 3;
+      return this.$store.state.user.UserID;
     },
   },
   mounted() {
