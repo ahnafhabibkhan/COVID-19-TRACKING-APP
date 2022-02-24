@@ -308,16 +308,6 @@ export default {
       this.$router.push("/list-of-appointments");
     },
 
-    // Get all messages to and from this doctor's botchat
-    async getMessages() {
-      try {
-        const DID = this.$store.state.user.UserID;
-        this.messages = await axios.get(`http://localhost:5000/message/${DID}`);
-      } catch (err) {
-        console.log(err);
-      }
-    },
-
     // Get availabilities
     async getAvailabilities() {
       try {

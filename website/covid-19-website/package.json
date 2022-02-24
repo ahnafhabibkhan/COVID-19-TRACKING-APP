@@ -20,11 +20,7 @@
     "nodemailer": "^6.7.2",
     "nyc": "^15.1.0",
     "sinon": "^13.0.1",
-<<<<<<< HEAD
-    "sweetalert2": "^11.4.1",
-=======
     "sweetalert2": "^11.4.2",
->>>>>>> fae6473ffe6e9bbfd8c34b62220a1fa62a5da57e
     "vue": "^2.6.11",
     "vue-apexcharts": "^1.6.2",
     "vue-chartjs": "^3.5.1",
