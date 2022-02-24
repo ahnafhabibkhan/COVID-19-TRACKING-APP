@@ -74,7 +74,7 @@
           <v-btn x-small @click="deleteAvailability(item)"> Delete </v-btn>
         </div>
       </div>
-      <div style="margin-top: 75%; margin-left: 85%">
+      <div style="margin-top: 50%; margin-left: 85%">
         <v-btn @click="ChatboxClick" icon height="80px" width="80px">
           <v-icon color="blue darken-3" style="font-size: 80px">
             mdi-message-text
