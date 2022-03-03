@@ -59,7 +59,9 @@ describe('User related API intergration test',async function(){
             Address: "123 Main", 
             Role: "Patient", 
             Password: "TestPass", 
-            Country: "Canada"});
+            Country: "Canada"}).end((err,res)=>{
+
+            });
     }
     async function checkAfterAdding(){
         chai.request(url).get('/users/testAPIOnly@gmail.com').end((err,res)=>{
@@ -109,36 +111,46 @@ describe('User related API intergration test',async function(){
 });
 
 describe('avaliablilty related',async function(){
-    var id;
-    
+    var id=4;
+    async function iniCheck(){
+        chai.request(url).get('/availability/'+id).end((err,res)=>{
+            assert.equal(res['body'][0],undefined);
+             
+        });
+    }    
     async function addAAvailability(){
         chai.request(url).post('/availability').send({
             DID: id,
             DayOfWeek:"Monday",
             StartTime: new Date("2022-02-07T05:00:00.000Z").toJSON().slice(0, 19).replace('T', ' '),
             EndTime: new Date("2022-02-07T06:00:00.000Z").toJSON().slice(0, 19).replace('T', ' '),
-            SpecificDay: new Date("2022-02-07T05:00:00.000Z").toJSON().slice(0, 19).replace('T', ' '),});
+            SpecificDay: new Date("2022-02-07T05:00:00.000Z").toJSON().slice(0, 19).replace('T', ' '),})
+            .end((err,res)=>{
+                
+            });
     }
     async function checkAfterAdding(){
         chai.request(url).get('/availability/'+id).end((err,res)=>{
-            console.log(res);
-            assert.equal(res['body']['DayOfWeek'],"Monday");
+            assert.equal(res['body'][0]['DayOfWeek'],"Monday");
             
             
         });
     }
     async function deleteTheAvailability(){
-        chai.request(url).delete('/user/'+id);
+        chai.request(url).post('/deleteavailability').send({DID:id})
+        .end((err,res)=>{
+
+        });
     }
     async function runAvailabilityTest(){
-    
+        await iniCheck();
         await addAAvailability();
         await sleep();
         await checkAfterAdding();
-        // await sleep();
-        // await deleteTheAvailability();
-        // await sleep();
-        // await iniCheck();
+        await sleep();
+        await deleteTheAvailability();
+        await sleep();
+        await iniCheck();
     }
 
     it('test add and delete availiablty',async function(){
