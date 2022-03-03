@@ -14,7 +14,7 @@ pipeline {
         stage('Test') {
             steps {
                 dir('website/covid-19-website'){
-                    bat 'npm run test'
+                    bat 'npm run test-unit'
                 }
             }
         }

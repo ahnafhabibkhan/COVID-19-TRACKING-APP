@@ -107,3 +107,45 @@ describe('User related API intergration test',async function(){
     })
     
 });
+
+describe('avaliablilty related',async function(){
+    var id;
+    
+    async function addAAvailability(){
+        chai.request(url).post('/availability').send({
+            DID: id,
+            DayOfWeek:"Monday",
+            StartTime: new Date("2022-02-07T05:00:00.000Z").toJSON().slice(0, 19).replace('T', ' '),
+            EndTime: new Date("2022-02-07T06:00:00.000Z").toJSON().slice(0, 19).replace('T', ' '),
+            SpecificDay: new Date("2022-02-07T05:00:00.000Z").toJSON().slice(0, 19).replace('T', ' '),});
+    }
+    async function checkAfterAdding(){
+        chai.request(url).get('/availability/'+id).end((err,res)=>{
+            console.log(res);
+            assert.equal(res['body']['DayOfWeek'],"Monday");
+            
+            
+        });
+    }
+    async function deleteTheAvailability(){
+        chai.request(url).delete('/user/'+id);
+    }
+    async function runAvailabilityTest(){
+    
+        await addAAvailability();
+        await sleep();
+        await checkAfterAdding();
+        // await sleep();
+        // await deleteTheAvailability();
+        // await sleep();
+        // await iniCheck();
+    }
+
+    it('test add and delete availiablty',async function(){
+        
+        await runAvailabilityTest();
+        
+    })
+
+
+});
