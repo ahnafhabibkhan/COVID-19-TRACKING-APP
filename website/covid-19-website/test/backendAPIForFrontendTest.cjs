@@ -47,7 +47,7 @@ describe('User related API intergration test',async function(){
     async function iniCheck(){
         chai.request(url).get('/users/testAPIOnly@gmail.com').end((err,res)=>{
             assert.equal(res['body']['FirstName'],undefined);
-            console.log(res);
+            //console.log(res);
         });
     }
     async function addAUser(){
@@ -72,7 +72,7 @@ describe('User related API intergration test',async function(){
         });
     }
     async function modifyTheUser(){
-        chai.request(url).put('/user/'+id).send({
+        chai.request(url).put('/users/'+id).send({
             FirstName: "alteredtestFirst"
             }).then((err,res)=>{
             
@@ -84,7 +84,9 @@ describe('User related API intergration test',async function(){
         });
     }
     async function deleteTheUser(){
-        chai.request(url).delete('/user/'+id);
+        chai.request(url).delete('/users/'+id).end((err,res)=>{
+        
+        });
     }
     async function runModifyUserTest(){
         await iniCheck();
@@ -104,7 +106,7 @@ describe('User related API intergration test',async function(){
 
     it('test add and delete user',async function(){
         
-        //await runModifyUserTest();
+        await runModifyUserTest();
         
     })
     
