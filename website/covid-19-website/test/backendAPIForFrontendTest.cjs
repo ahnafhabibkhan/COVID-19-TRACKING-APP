@@ -112,7 +112,7 @@ describe('User related API intergration test',async function(){
     
 });
 
-describe('avaliablilty related',async function(){
+describe('avaliablilty related test',async function(){
     var id=4;
     async function iniCheck(){
         chai.request(url).get('/availability/'+id).end((err,res)=>{
@@ -158,6 +158,171 @@ describe('avaliablilty related',async function(){
     it('test add and delete availiablty',async function(){
         
         await runAvailabilityTest();
+        
+    })
+
+
+});
+
+describe('messages related test',async function(){
+    var rid=4;
+    var sid=1;
+    async function iniCheck(){
+        chai.request(url).get('/messages/'+rid).end((err,res)=>{
+            assert.equal(res['body'][0],undefined);
+             
+        });
+    }    
+    async function addAMessage(){
+        chai.request(url).post('/messages').send({
+            SendUserID:sid,
+            ReceiveUserID: rid,
+            Text:"Hello!",
+            Location: "123 street",
+            MessageType:'Chat',
+            State:'Sent',
+            Time: new Date("2022-02-07T06:00:00.000Z").toJSON().slice(0, 19).replace('T', ' '),
+            Date: new Date("2022-02-07T05:00:00.000Z").toJSON().slice(0, 19).replace('T', ' ')})
+            .end((err,res)=>{
+                
+            });
+    }
+    async function checkAfterAdding(){
+        chai.request(url).get('/messages/'+rid).end((err,res)=>{
+            assert.equal(res['body'][0]['Text'],"Hello!");
+            
+            
+        });
+    }
+    async function deleteTheMessage(){
+        chai.request(url).delete('/messages').send({ReceiveUserID:rid})
+        .end((err,res)=>{
+
+        });
+    }
+    async function runMessageTest(){
+        await iniCheck();
+        await addAMessage();
+        await sleep();
+        await checkAfterAdding();
+        await sleep();
+        await deleteTheMessage();
+        await sleep();
+        await iniCheck();
+    }
+
+    it('test add and delete message',async function(){
+        
+        await runMessageTest();
+        
+    })
+
+
+});
+
+describe('AppointmentRequests related test',async function(){
+    var did=4;
+    var pid=1;
+    async function iniCheck(){
+        chai.request(url).post('/appointmentrequests').send({PID:pid}).end((err,res)=>{
+            assert.equal(res['body'][0],undefined);
+             
+        });
+    }    
+    async function addAAppointmentRequest(){
+        chai.request(url).post('/appointmentrequest').send({
+            PID:pid,
+            DID: did,
+            RequestedBy:"P",
+            LevelOfEmergency: 1,
+            Priority:1,
+            Time: new Date("2022-02-07T06:00:00.000Z").toJSON().slice(0, 19).replace('T', ' '),
+            Date: new Date("2022-02-07T05:00:00.000Z").toJSON().slice(0, 19).replace('T', ' ')})
+            .end((err, results) =>{
+                
+            });
+    }
+    async function checkAfterAdding(){
+        chai.request(url).post('/appointmentrequests').send({PID:pid}).end((err,res)=>{
+            assert.equal(res['body'][0]['RequestedBy'],"P");
+            
+            
+        });
+    }
+    async function deleteTheAppointmentRequest(){
+        chai.request(url).post('/deleteappointmentrequest').send({PID:pid})
+        .end((err,res)=>{
+
+        });
+    }
+    async function runAppointmentRequestTest(){
+        await iniCheck();
+        await addAAppointmentRequest();
+        await sleep();
+        await checkAfterAdding();
+        await sleep();
+        await deleteTheAppointmentRequest();
+        await sleep();
+        await iniCheck();
+    }
+
+    it('test add and delete AppointmentRequest',async function(){
+        
+        await runAppointmentRequestTest();
+        
+    })
+
+
+});
+
+describe('Appointments related test',async function(){
+    var did=4;
+    var pid=1;
+    async function iniCheck(){
+        chai.request(url).post('/appointments').send({PID:pid}).end((err,res)=>{
+            assert.equal(res['body'][0],undefined);
+             
+        });
+    }    
+    async function addAAppointment(){
+        chai.request(url).post('/appointment').send({
+            PID:pid,
+            DID: did,
+            LevelOfEmergency: 1,
+            Priority:1,
+            Time: new Date("2022-02-07T06:00:00.000Z").toJSON().slice(0, 19).replace('T', ' '),
+            Date: new Date("2022-02-07T05:00:00.000Z").toJSON().slice(0, 19).replace('T', ' ')})
+            .end((err, results) =>{
+                
+            });
+    }
+    async function checkAfterAdding(){
+        chai.request(url).post('/appointments').send({PID:pid}).end((err,res)=>{
+            assert.equal(res['body'][0]['DID'],did);
+            
+            
+        });
+    }
+    async function deleteTheAppointment(){
+        chai.request(url).post('/deleteappointment').send({PID:pid})
+        .end((err,res)=>{
+
+        });
+    }
+    async function runAppointmentTest(){
+        await iniCheck();
+        await addAAppointment();
+        await sleep();
+        await checkAfterAdding();
+        await sleep();
+        await deleteTheAppointment();
+        await sleep();
+        await iniCheck();
+    }
+
+    it('test add and delete Appointment',async function(){
+        
+        await runAppointmentTest();
         
     })
 
