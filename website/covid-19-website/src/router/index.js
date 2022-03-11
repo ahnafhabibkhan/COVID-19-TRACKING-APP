@@ -9,6 +9,7 @@ import PatientLayout from "../layout/PatientLayout.vue";
 import Login from "../login/Login.vue";
 import Doctor from "../doctor/Doctor.vue";
 import DoctorListOfPatients from "../doctor/ListOfDoctorPatients.vue";
+import ListOfAppointments from "../doctor/ListOfAppointments.vue";
 import Patient from "../patient/Patient.vue";
 import Profile from "../user-profile/profile-page.vue";
 
@@ -34,7 +35,7 @@ export default [
         children: [
           { path: "/doctor", component: Doctor },
           { path: "/doctor-patients-list", component: DoctorListOfPatients },
-          
+          { path: "/list-of-appointments", component: ListOfAppointments },
         ],
       },
       {

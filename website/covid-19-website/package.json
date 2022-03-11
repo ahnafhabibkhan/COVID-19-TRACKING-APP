@@ -7,15 +7,19 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "test": "mocha",
-    "test-with-report": "nyc --reporter=text mocha"
+    "test": "mocha -exit",
+    "test-with-report": "npx c8 -r html --all --src './src/backend' mocha -exit"
   },
   "dependencies": {
     "axios": "^0.25.0",
+    "c8": "^7.11.0",
+    "chai-http": "^4.3.0",
     "core-js": "^3.6.5",
     "cors": "^2.8.5",
     "dns": "^0.2.2",
     "express": "^4.17.2",
+    "istanbul": "^0.4.5",
+    "mocha-steps": "^1.3.0",
     "mysql2": "^2.3.3",
     "nodemailer": "^6.7.2",
     "nyc": "^15.1.0",

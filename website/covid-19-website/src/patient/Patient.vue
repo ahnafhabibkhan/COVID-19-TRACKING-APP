@@ -1,22 +1,24 @@
 <template>
   <v-container class="bg-image">
     <v-row>
-      <!-- date modal start -->
+      <!-- book modal start -->
       <v-dialog v-model="date_dialoge" width="500px">
         <v-card>
           <v-container>
             <v-row>
-              <v-col cols="12" class="pa-5">
-                <h1>Book an Appointment</h1>
-                <v-date-picker
-                  v-model="date"
-                  :allowed-dates="allowedDates"
-                  full-width
-                ></v-date-picker>
+              <v-col cols="12" class="pa-1">
+                <h2>Book an Appointment</h2>
+                <v-date-picker v-model="date" full-width></v-date-picker>
               </v-col>
               <!-- list -->
-              <v-col cols="12">
-                <v-radio-group v-model="available">
+              <!-- if filteredAvailability exists this will displayed -->
+              <v-col
+                cols="12"
+                class="py-0"
+                v-if="filteredAvailability.length > 0"
+              >
+                select a date
+                <v-radio-group v-model="available" dense hide-details>
                   <v-radio
                     v-for="(item, i) in filteredAvailability"
                     :key="i"
@@ -36,6 +38,20 @@
                   ></v-radio>
                 </v-radio-group>
               </v-col>
+              <v-col cols="12" class="py-0">
+                <h4 class="pt-1 my-0 pb-0">Level of Emergency:</h4>
+                <v-radio-group
+                  v-model="emergencyLevel"
+                  row
+                  dense
+                  :hide-details="true"
+                >
+                  <v-radio label="High" value="High"> </v-radio>
+                  <v-radio label="Medium" value="Medium"> </v-radio>
+                  <v-radio label="Low" value="Low"> </v-radio>
+                </v-radio-group>
+              </v-col>
+
               <v-col cols="6">
                 <v-btn
                   color="error"
@@ -60,177 +76,204 @@
           </v-container>
         </v-card>
       </v-dialog>
-      <!-- date modal end -->
+      <!-- book modal end -->
 
       <!-- status modal start -->
       <v-dialog v-model="status_dialoge" width="500px" v-if="status_dialoge">
         <v-card>
           <v-container>
-            <v-row>
-              <v-col cols="12" class="pa-5">
-                <h1>update status</h1>
-                <!-- <v-switch
+            <!-- wrap all from with validation obs -->
+            <ValidationObserver v-slot="{ handleSubmit }" ref="observer">
+              <v-row>
+                <v-col cols="12" class="pa-5">
+                  <h1>update status</h1>
+                  <!-- <v-switch
                   v-model="form.i_have_covid"
                   label="I have covid 19"
                 ></v-switch> -->
-                <div>
-                  <v-row>
-                    <v-col cols="6">
-                      <v-text-field
-                        :rules="[rules.required, rules.number]"
-                        label="Temperature :"
-                        filled
-                        flat
-                        v-model.number="form.Temperature"
-                        dense
-                        hide-details
-                      ></v-text-field
-                    ></v-col>
-                    <v-col cols="6">
-                      <v-text-field
-                        label="Weight :"
-                        filled
-                        flat
-                        v-model.number="form.Weight"
-                        dense
-                        hide-details
-                      ></v-text-field
-                    ></v-col>
-                    <v-col cols="6">
-                      <v-checkbox
-                        dense
-                        hide-details
-                        label="Headache"
-                        :true-value="1"
-                        :false-value="0"
-                        v-model.number="form.Headache"
-                      ></v-checkbox
-                    ></v-col>
-                    <v-col cols="6">
-                      <v-checkbox
-                        dense
-                        hide-details
-                        label="covid"
-                        :true-value="1"
-                        :false-value="0"
-                        v-model.number="form.Covid"
-                      ></v-checkbox
-                    ></v-col>
-                    <v-col cols="6">
-                      <v-checkbox
-                        dense
-                        hide-details
-                        label="BreathingIssues"
-                        :true-value="1"
-                        :false-value="0"
-                        v-model.number="form.BreathingIssues"
-                      ></v-checkbox
-                    ></v-col>
-                    <v-col cols="6">
-                      <v-checkbox
-                        dense
-                        hide-details
-                        label="Cough"
-                        :true-value="1"
-                        :false-value="0"
-                        v-model.number="form.Cough"
-                      ></v-checkbox
-                    ></v-col>
-                    <v-col cols="6">
-                      <v-checkbox
-                        label="LostTasteSmell"
-                        dense
-                        hide-details
-                        v-model="form.LostTasteSmell"
-                      >
-                      </v-checkbox
-                    ></v-col>
-                    <v-col cols="6">
-                      <v-checkbox
-                        dense
-                        hide-details
-                        label="MusclePain"
-                        :true-value="1"
-                        :false-value="0"
-                        v-model.number="form.MusclePain"
-                      ></v-checkbox
-                    ></v-col>
-                    <v-col cols="6">
-                      <v-checkbox
-                        dense
-                        hide-details
-                        label="Diarrhea"
-                        :true-value="1"
-                        :false-value="0"
-                        v-model.number="form.Diarrhea"
-                      ></v-checkbox
-                    ></v-col>
-                    <v-col cols="6">
-                      <v-checkbox
-                        dense
-                        hide-details
-                        label="Vomitting"
-                        :true-value="1"
-                        :false-value="0"
-                        v-model.number="form.Vomitting"
-                      ></v-checkbox
-                    ></v-col>
-                    <v-col cols="6">
-                      <v-checkbox
-                        dense
-                        hide-details
-                        label="Nausea"
-                        :true-value="1"
-                        :false-value="0"
-                        v-model.number="form.Nausea"
-                      ></v-checkbox
-                    ></v-col>
-                    <v-col cols="6">
-                      <v-checkbox
-                        dense
-                        hide-details
-                        label="SoreThroat"
-                        :true-value="1"
-                        :false-value="0"
-                        v-model.number="form.SoreThroat"
-                      ></v-checkbox
-                    ></v-col>
-                  </v-row>
-                </div>
-              </v-col>
-              <v-col cols="12">
-                <v-textarea
-                  rows="3"
-                  v-model="form.SympDescription"
-                  label="SympDescription :"
-                >
-                </v-textarea>
-              </v-col>
+                  <div>
+                    <v-row>
+                      <v-col cols="6">
+                        <!-- wrap input with validaion comp -->
+                        <ValidationProvider
+                          rules="required|numeric"
+                          v-slot="{ errors }"
+                        >
+                          <v-text-field
+                            name="temp"
+                            label="Temperature :"
+                            filled
+                            flat
+                            v-model.number="form.Temperature"
+                            dense
+                            :hide-details="errors.lenght == 0"
+                            :error-messages="errors[0]"
+                          >
+                            <template slot="append">C&deg;</template>
+                          </v-text-field>
+                        </ValidationProvider>
+                      </v-col>
+                      <v-col cols="6">
+                        <ValidationProvider
+                          rules="required|numeric"
+                          v-slot="{ errors }"
+                        >
+                          <v-text-field
+                            label="Weight :"
+                            filled
+                            flat
+                            v-model.number="form.Weight"
+                            dense
+                            name="weight"
+                            :hide-details="errors.lenght == 0"
+                            :error-messages="errors[0]"
+                          >
+                            <template slot="append">Kg</template>
+                          </v-text-field>
+                        </ValidationProvider>
+                      </v-col>
+                      <v-col cols="6">
+                        <v-checkbox
+                          dense
+                          hide-details
+                          label="Headache"
+                          :true-value="1"
+                          :false-value="0"
+                          v-model.number="form.Headache"
+                        ></v-checkbox
+                      ></v-col>
+                      <v-col cols="6">
+                        <v-checkbox
+                          dense
+                          hide-details
+                          label="covid"
+                          :true-value="1"
+                          :false-value="0"
+                          v-model.number="form.Covid"
+                        ></v-checkbox
+                      ></v-col>
+                      <v-col cols="6">
+                        <v-checkbox
+                          dense
+                          hide-details
+                          label="BreathingIssues"
+                          :true-value="1"
+                          :false-value="0"
+                          v-model.number="form.BreathingIssues"
+                        ></v-checkbox
+                      ></v-col>
+                      <v-col cols="6">
+                        <v-checkbox
+                          dense
+                          hide-details
+                          label="Cough"
+                          :true-value="1"
+                          :false-value="0"
+                          v-model.number="form.Cough"
+                        ></v-checkbox
+                      ></v-col>
+                      <v-col cols="6">
+                        <v-checkbox
+                          label="LostTasteSmell"
+                          dense
+                          hide-details
+                          v-model="form.LostTasteSmell"
+                        >
+                        </v-checkbox
+                      ></v-col>
+                      <v-col cols="6">
+                        <v-checkbox
+                          dense
+                          hide-details
+                          label="MusclePain"
+                          :true-value="1"
+                          :false-value="0"
+                          v-model.number="form.MusclePain"
+                        ></v-checkbox
+                      ></v-col>
+                      <v-col cols="6">
+                        <v-checkbox
+                          dense
+                          hide-details
+                          label="Diarrhea"
+                          :true-value="1"
+                          :false-value="0"
+                          v-model.number="form.Diarrhea"
+                        ></v-checkbox
+                      ></v-col>
+                      <v-col cols="6">
+                        <v-checkbox
+                          dense
+                          hide-details
+                          label="Vomitting"
+                          :true-value="1"
+                          :false-value="0"
+                          v-model.number="form.Vomitting"
+                        ></v-checkbox
+                      ></v-col>
+                      <v-col cols="6">
+                        <v-checkbox
+                          dense
+                          hide-details
+                          label="Nausea"
+                          :true-value="1"
+                          :false-value="0"
+                          v-model.number="form.Nausea"
+                        ></v-checkbox
+                      ></v-col>
+                      <v-col cols="6">
+                        <v-checkbox
+                          dense
+                          hide-details
+                          label="SoreThroat"
+                          :true-value="1"
+                          :false-value="0"
+                          v-model.number="form.SoreThroat"
+                        ></v-checkbox
+                      ></v-col>
+                    </v-row>
+                  </div>
+                </v-col>
+                <v-col cols="12">
+                  <ValidationProvider rules="required" v-slot="{ errors }">
+                    <v-textarea
+                      rows="3"
+                      v-model="form.SympDescription"
+                      label="SympDescription :"
+                      :error-messages="errors[0]"
+                      :hide-details="errors.length == 0"
+                    >
+                    </v-textarea>
+                  </ValidationProvider>
+                </v-col>
 
-              <v-col cols="6">
-                <v-btn
-                  block
-                  color="success"
-                  elevation="0"
-                  @click="addStatus"
-                  :disabled="edit_mode"
-                >
-                  <v-icon left> mdi-plus </v-icon>
-                  add
-                </v-btn>
-              </v-col>
-              <v-col cols="6">
-                <v-btn
-                  block
-                  color="success"
-                  elevation="0"
-                  @click="updateStatus"
-                  :disabled="!edit_mode"
-                >
-                  update
-                </v-btn>
-              </v-col>
-            </v-row>
+                <v-col cols="6">
+                  <v-btn
+                    type="submit"
+                    block
+                    color="success"
+                    elevation="0"
+                    @click="handleSubmit(addStatus)"
+                    :disabled="edit_mode"
+                  >
+                    <v-icon left> mdi-plus </v-icon>
+                    add
+                  </v-btn>
+                </v-col>
+                <v-col cols="6">
+                  <v-btn
+                    type="submit"
+                    block
+                    color="success"
+                    elevation="0"
+                    @click="handleSubmit(updateStatus)"
+                    :disabled="!edit_mode"
+                  >
+                    update
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </ValidationObserver>
           </v-container>
         </v-card>
       </v-dialog>
@@ -423,6 +466,21 @@
             <v-btn x-small @click="deleteApproved(item)"> cancel </v-btn>
           </div>
         </div>
+        <!-- Doctor's Requested apppointments -->
+        <div
+          style="width: 70%; background-color: rgba(256, 256, 256, 0.5)"
+          class="pa-4 rounded-lg mt-5"
+        >
+          <h2>Doctor's Requested Appointments:</h2>
+          <div v-for="(item, i) in doctorRequestedAppointments" :key="i">
+            {{ item.Date.substr(0, 10) + " -- " + item.Time }}
+
+            <v-btn x-small @click="approveRequested(item)"> Approve </v-btn>
+            <v-btn class="mx-2" x-small @click="deleteAppointment(item)">
+              Refuse
+            </v-btn>
+          </div>
+        </div>
       </v-col>
     </v-row>
   </v-container>
@@ -430,21 +488,34 @@
 <script>
 import axios from "axios";
 import Swal from "sweetalert2";
+//import validation
+import { ValidationProvider, extend, ValidationObserver } from "vee-validate";
+// import needed rules for validate
+import { required, numeric } from "vee-validate/dist/rules";
+// extend  rules
+extend("required", {
+  ...required,
+  message: "This field is required",
+});
+extend("numeric", {
+  ...numeric,
+  message: "This field shuold be a number",
+});
+// end
 export default {
   name: "Patient",
-
+  // register as component
+  components: { ValidationProvider, ValidationObserver },
   data() {
     return {
-      rules: {
-        required: (value) => !!value || "Required.",
-        number: (value) => typeof value == "number" || "must be a number",
-      },
       url: "http://localhost:5000/",
       edit_mode: false,
       show_more: false,
       date_dialoge: false,
       status_dialoge: false,
-      date: null,
+      date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+        .toISOString()
+        .substr(0, 10),
       statuses: [],
       form_default: {
         fillOutDate: "2022-02-14",
@@ -452,7 +523,7 @@ export default {
         Weight: null,
         SympDescription: null,
         Temperature: null,
-        BreathingIssues: null,
+        BreathingIssues: 0,
         Cough: 0,
         Covid: 0,
         LostTasteSmell: 0,
@@ -467,7 +538,9 @@ export default {
       form: null,
       availabilities: [],
       available: null,
+      emergencyLevel: 'Low',
       approved: [],
+      doctorRequestedAppointments: [],
     };
   },
   methods: {
@@ -478,22 +551,33 @@ export default {
       if (found > -1) return true;
       return false;
     },
-
     onEdit(item) {
       this.edit_mode = true;
       this.status_dialoge = true;
       this.form = Object.assign({}, item);
     },
-
     allowedDates() {
       return true;
     },
-
-    onUpdateStatus() {
+    async onUpdateStatus() {
+      // first we check if today status exist or not
+      let d = new Date();
+      const today = d.toISOString().split("T")[0];
+      const i = this.statuses.findIndex((item) => {
+        return item.fillOutDate.split("T")[0] === today;
+      });
+      // if exist this alert displayed
+      if (i > -1) {
+        Swal.fire({
+          icon: "error",
+          title: "error",
+          text: "today status exist already , You can edit it",
+        });
+        return;
+      }
       this.form = Object.assign({}, this.form_default);
       this.status_dialoge = !this.status_dialoge;
     },
-
     myInfo() {
       this.$router.push("/profile");
     },
@@ -547,38 +631,55 @@ export default {
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
         confirmButtonText: "Yes, delete it!",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          // del status
-          try {
-            const id = this.userId;
-            status.PID = id;
-            axios.delete(
-              this.url +
-                `healthstatus/${id}/${status.fillOutDate.split("T")[0]}`
-            );
-
-            this.getStatuses();
-          } catch (err) {
-            console.log("err", err);
+      })
+        .then((result) => {
+          if (result.isConfirmed) {
+            // del status
+            try {
+              const id = this.userId;
+              status.PID = id;
+              axios.delete(
+                this.url +
+                  `healthstatus/${id}/${status.fillOutDate.split("T")[0]}`
+              );
+            } catch (err) {
+              console.log("err", err);
+            }
+            Swal.fire("Deleted!", "Your file has been deleted.", "success");
           }
-          Swal.fire("Deleted!", "Your file has been deleted.", "success");
-        }
-      });
+        })
+        .then(() => {
+          this.getStatuses();
+        });
     },
     async bookAppoitment() {
       const did = this.doctorId;
       const pid = this.userId;
+      const covidStatusInt = await axios.get(
+        `http://localhost:5000/healthstatus/${pid}`
+      );
+      var levelOfEmergency = 0;
+      if (this.emergencyLevel == "High") {
+        levelOfEmergency = 2;
+      } else if (this.emergencyLevel == "Medium") {
+        levelOfEmergency = 1;
+      }
       let params = {
         DID: did,
         PID: pid,
         Time: this.available.StartTime,
         Date: this.available.SpecificDay.substr(0, 10),
         RequestedBy: "P",
+        LevelOfEmergency: levelOfEmergency,
+        Priority: covidStatusInt.data.Covid,
       };
       try {
         await axios.post(this.url + "appointmentrequest", params);
-
+        Swal.fire({
+          icon: "success",
+          title: "success",
+          text: "The Appointment Request Booked Successfully",
+        });
         this.date_dialoge = false;
         this.getAppointments();
       } catch (err) {
@@ -595,21 +696,26 @@ export default {
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
         confirmButtonText: "Yes, delete it!",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          item.Date = item.Date.substr(0, 10);
-          delete item.RequestedBy;
-          try {
-            axios.post(this.url + "deleteappointmentrequest", item);
+      })
+        .then((result) => {
+          if (result.isConfirmed) {
+            item.Date = item.Date.substr(0, 10);
+            delete item.RequestedBy;
+            try {
+              axios.post(this.url + "deleteappointmentrequest", item);
 
-            this.getAppointments();
-          } catch (err) {
-            console.log("err", err);
-            alert("Failed ; delete appointment");
+              window.location.reload();
+            } catch (err) {
+              console.log("err", err);
+              alert("Failed ; delete appointment");
+            }
+            Swal.fire("Deleted!", "Your file has been deleted.", "success");
           }
-          Swal.fire("Deleted!", "Your file has been deleted.", "success");
-        }
-      });
+        })
+        .then(() => {
+          this.getAppointments();
+          this.getDoctorAppointmentRequests();
+        });
     },
     async deleteApproved(item) {
       Swal.fire({
@@ -626,7 +732,6 @@ export default {
           delete item.RequestedBy;
           try {
             axios.post(this.url + "deleteappointment", item);
-
             this.getApproved();
           } catch (err) {
             console.log("err", err);
@@ -670,10 +775,67 @@ export default {
         alert("Failed ; get appointment");
       }
     },
-
     async onAppointment() {
       await this.getAvailabilities();
       this.date_dialoge = true;
+    },
+    // Get appointment requests made by this doctor
+    async getDoctorAppointmentRequests() {
+      try {
+        const res = await axios.post(
+          `http://localhost:5000/appointmentrequests`,
+          {
+            DID: this.doctorId,
+            PID: this.userId,
+            RequestedBy: "D",
+          }
+        );
+        this.doctorRequestedAppointments = res.data;
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    //Accept requested appointment
+    approveRequested(item) {
+      console.log(item);
+      this.approveAppointment(
+        item.PID,
+        item.DID,
+        item.Date.substr(0, 10),
+        item.Time,
+        item.LevelOfEmergency,
+        item.Priority
+      );
+      window.location.reload();
+    },
+    // Approve an appointment
+    async approveAppointment(PID, DID, Date, Time, LevelOfEmergency, Priority) {
+      try {
+        this.cancelAppointmentRequest(PID, DID, Date, Time);
+        await axios.post(`http://localhost:5000/appointment`, {
+          PID: PID,
+          DID: DID,
+          Date: Date,
+          Time: Time,
+          LevelOfEmergency: LevelOfEmergency,
+          Priority: Priority,
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    // Cancel an appointment from the doctor
+    async cancelAppointmentRequest(PID, DID, Date, Time) {
+      try {
+        await axios.post(`http://localhost:5000/deleteappointmentrequest`, {
+          PID: PID,
+          DID: DID,
+          Date: Date,
+          Time: Time,
+        });
+      } catch (err) {
+        console.log(err);
+      }
     },
   },
   computed: {
@@ -701,6 +863,7 @@ export default {
     this.getApproved();
     this.getStatuses();
     this.getAppointments();
+    this.getDoctorAppointmentRequests();
     this.form = Object.assign({}, this.form_default);
   },
 };
@@ -743,4 +906,4 @@ th {
   height: 40%;
   margin-left: 100%; */
 }
-</style>
+</style>pull
