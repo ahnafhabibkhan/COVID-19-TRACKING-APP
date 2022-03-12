@@ -1,5 +1,10 @@
 <template>
   <div class="doctor">
+    <!-- ChatBox modal -->
+    <v-dialog v-model="chatbox_modal" width="350px">
+      <Chatbox />
+    </v-dialog>
+    <!-- end of ChatBox modal -->
     <!-- date modal start -->
     <v-dialog v-model="date_dialog" width="600px">
       <v-card>
@@ -187,9 +192,7 @@ export default {
     this.getChartData();
   },
 
-
   methods: {
-
     chatBox() {},
 
     // Get infected and non infected data
@@ -204,31 +207,38 @@ export default {
         let nonInfectedCount = 0;
         let totalCount = 0;
         let patientIDs = [];
-        patientList.forEach(patient => {
+        patientList.forEach((patient) => {
           ++totalCount;
           patientIDs.push(patient.UserID);
         });
-        for(let i=0;i<patientIDs.length;++i){
-          const latestHSResponse = await axios.get(`http://localhost:5000/healthstatus/${patientIDs[i]}`);
+        for (let i = 0; i < patientIDs.length; ++i) {
+          const latestHSResponse = await axios.get(
+            `http://localhost:5000/healthstatus/${patientIDs[i]}`
+          );
           console.log(JSON.stringify(latestHSResponse.data));
-          const infected = (latestHSResponse.data.Covid == 1);
-          if(infected){
+          const infected = latestHSResponse.data.Covid == 1;
+          if (infected) {
             ++infectedCount;
-          }else{
-            ++nonInfectedCount
+          } else {
+            ++nonInfectedCount;
           }
         }
-        this.series = [infectedCount/totalCount * 100, nonInfectedCount/totalCount * 100];
+        this.series = [
+          (infectedCount / totalCount) * 100,
+          (nonInfectedCount / totalCount) * 100,
+        ];
       } catch (err) {
         console.log(err);
       }
     },
-    
+
     // Get all messages to and from this doctor's botchat
     async getMessages() {
       try {
         const DID = this.$store.state.user.UserID;
-        this.messages = await axios.get(`http://localhost:5000/messages/${DID}`);
+        this.messages = await axios.get(
+          `http://localhost:5000/messages/${DID}`
+        );
       } catch (err) {
         console.log(err);
       }
