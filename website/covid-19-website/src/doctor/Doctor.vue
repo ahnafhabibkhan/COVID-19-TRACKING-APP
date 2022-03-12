@@ -142,11 +142,12 @@
 <script>
 import moment from "moment";
 import axios from "axios";
+import Chatbox from "../components/ChatBox.vue";
 
 export default {
   name: "Doctor",
 
-  components: {},
+  components: { Chatbox },
 
   data: function () {
     return {
@@ -182,6 +183,7 @@ export default {
         .substr(0, 10),
       allAvailabilities: [],
       fetchAvailabilities: [],
+      chatbox_modal: false,
     };
   },
 
@@ -193,7 +195,9 @@ export default {
   },
 
   methods: {
-    chatBox() {},
+    chatBox() {
+      this.chatbox_modal = !this.chatbox_modal;
+    },
 
     // Get infected and non infected data
     async getChartData() {
