@@ -21,7 +21,7 @@ export default {
 </script>
 <style>
 .health-layout {
-  background-image: url("../assets/HealthOfficial.png");
+  background-image: url("../assets/HealthOfficial1.png");
   background-size: cover;
   background-repeat: no-repeat;
   min-height: 100%;
@@ -29,5 +29,6 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
+  overflow: scroll;
 }
 </style>

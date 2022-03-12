@@ -463,7 +463,7 @@ export default {
         required: (value) => !!value || "Required.",
         number: (value) => typeof value == "number" || "must be a number",
       },
-      url: "http://localhost:5000/",
+      url: "http://localhost:5001/",
       edit_mode: false,
       show_more: false,
       date_dialoge: false,
@@ -478,7 +478,7 @@ export default {
         Weight: null,
         SympDescription: null,
         Temperature: null,
-        BreathingIssues: null,
+        BreathingIssues: 0,
         Cough: 0,
         Covid: 0,
         LostTasteSmell: 0,
@@ -598,7 +598,7 @@ export default {
       const did = this.doctorId;
       const pid = this.userId;
       const covidStatusInt = await axios.get(
-        `http://localhost:5000/healthstatus/${pid}`
+        `http://localhost:5001/healthstatus/${pid}`
       );
       var levelOfEmergency = 0;
       if (this.emergencyLevel == "High") {
@@ -722,7 +722,7 @@ export default {
     async getDoctorAppointmentRequests() {
       try {
         const res = await axios.post(
-          `http://localhost:5000/appointmentrequests`,
+          `http://localhost:5001/appointmentrequests`,
           {
             DID: this.doctorId,
             PID: this.userId,
@@ -753,7 +753,7 @@ export default {
     async approveAppointment(PID, DID, Date, Time, LevelOfEmergency, Priority) {
       try {
         this.cancelAppointmentRequest(PID, DID, Date, Time);
-        await axios.post(`http://localhost:5000/appointment`, {
+        await axios.post(`http://localhost:5001/appointment`, {
           PID: PID,
           DID: DID,
           Date: Date,
@@ -769,7 +769,7 @@ export default {
     // Cancel an appointment from the doctor
     async cancelAppointmentRequest(PID, DID, Date, Time) {
       try {
-        await axios.post(`http://localhost:5000/deleteappointmentrequest`, {
+        await axios.post(`http://localhost:5001/deleteappointmentrequest`, {
           PID: PID,
           DID: DID,
           Date: Date,

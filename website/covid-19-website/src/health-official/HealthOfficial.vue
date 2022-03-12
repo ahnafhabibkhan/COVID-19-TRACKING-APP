@@ -10,7 +10,6 @@
             class="white--text"
             style="
               font-size: 18px;
-              opacity: 90%;
               margin-left: 30%;
               border-radius: 2px;
             "

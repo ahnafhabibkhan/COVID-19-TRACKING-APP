@@ -89,7 +89,7 @@
             <div>
               <v-btn
                 class="white--text"
-                style="font-size: 18px; opacity: 90%"
+                style="font-size: 18px;"
                 color="blue lighten-2"
                 width="400px"
                 height="75px"
@@ -100,7 +100,7 @@
             <div class="my-6">
               <v-btn
                 class="white--text"
-                style="font-size: 18px; opacity: 90%"
+                style="font-size: 18px;"
                 color="blue lighten-2"
                 width="400px"
                 height="75px"
@@ -111,7 +111,7 @@
             <div class="my-6">
               <v-btn
                 class="white--text"
-                style="font-size: 18px; opacity: 90%"
+                style="font-size: 18px;"
                 color="blue lighten-2"
                 width="400px"
                 height="75px"
@@ -196,7 +196,7 @@ export default {
     async getChartData() {
       try {
         const DID = this.$store.state.user.UserID;
-        const response = await axios.post(`http://localhost:5000/users`, {
+        const response = await axios.post(`http://localhost:5001/users`, {
           Doctor: DID,
         });
         const patientList = response.data;
@@ -209,7 +209,7 @@ export default {
           patientIDs.push(patient.UserID);
         });
         for(let i=0;i<patientIDs.length;++i){
-          const latestHSResponse = await axios.get(`http://localhost:5000/healthstatus/${patientIDs[i]}`);
+          const latestHSResponse = await axios.get(`http://localhost:5001/healthstatus/${patientIDs[i]}`);
           console.log(JSON.stringify(latestHSResponse.data));
           const infected = (latestHSResponse.data.Covid == 1);
           if(infected){
@@ -228,7 +228,7 @@ export default {
     async getMessages() {
       try {
         const DID = this.$store.state.user.UserID;
-        this.messages = await axios.get(`http://localhost:5000/messages/${DID}`);
+        this.messages = await axios.get(`http://localhost:5001/messages/${DID}`);
       } catch (err) {
         console.log(err);
       }
@@ -312,7 +312,7 @@ export default {
     async getAvailabilities() {
       try {
         const res = await axios.get(
-          `http://localhost:5000/availability/${this.$store.state.user.UserID}`
+          `http://localhost:5001/availability/${this.$store.state.user.UserID}`
         );
         this.fetchAvailabilities = res.data;
       } catch (err) {
@@ -323,7 +323,7 @@ export default {
     // Add availability
     async addAvailability(DayOfWeek, StartTime, EndTime, SpecificDay) {
       try {
-        await axios.post(`http://localhost:5000/availability`, {
+        await axios.post(`http://localhost:5001/availability`, {
           DID: this.$store.state.user.UserID,
           DayOfWeek: DayOfWeek,
           StartTime: StartTime,
@@ -338,7 +338,7 @@ export default {
     // Remove availability
     async removeAvailability(DayOfWeek, StartTime, EndTime, SpecificDay) {
       try {
-        await axios.post(`http://localhost:5000/deleteavailability`, {
+        await axios.post(`http://localhost:5001/deleteavailability`, {
           DID: this.$store.state.user.UserID,
           DayOfWeek: DayOfWeek,
           StartTime: StartTime,
@@ -383,7 +383,6 @@ export default {
   margin-top: 5%;
   margin-left: auto;
   margin-right: auto;
-  opacity: 90%;
 }
 .left-side-doctor {
   /* border: 5px solid red; */

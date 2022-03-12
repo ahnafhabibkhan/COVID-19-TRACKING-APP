@@ -14,8 +14,17 @@
       style="width: 50%; margin-left: auto; margin-right: auto"
       v-model="search"
       placeholder="Search Patients"
+      filled
+      rounded
+      dense
+      outlined
     ></v-text-field>
-    <v-card class="patients-list-container" outlined color="transparent">
+    <v-card
+      v-if="userRole == 'immigration-officer'"
+      class="patients-list-container"
+      outlined
+      color="transparent"
+    >
       <v-card
         v-for="(item, UserID) in filteredPatients"
         :key="UserID"
@@ -30,6 +39,32 @@
           Contact:<br />
           Phone: {{ item.Telephone }} <br />
           Email: {{ item.Email }}
+        </p>
+      </v-card>
+    </v-card>
+    <v-card
+      v-if="userRole == 'health-official' || userRole == 'doctor'"
+      class="patients-list-container"
+      outlined
+      color="transparent"
+    >
+      <v-card
+        v-for="(item, UserID) in filteredPatients"
+        :key="UserID"
+        :title="item.title"
+        class="pa-2 mx-8 my-8"
+        style="display: inline-table; opacity: 95%"
+        width="350px"
+        height="100px"
+        @click="onPatientClick()"
+        ><h2 class="my-2">
+          {{ item.patientsList.FirstName }} {{ item.patientsList.LastName }}
+        </h2>
+        <p>
+          Contact:<br />
+          Phone: {{ item.patientsList.Telephone }} <br />
+          Email: {{ item.patientsList.Email }} <br />
+          Covid Status: {{ item.covidStatus }}
         </p>
       </v-card>
     </v-card>
@@ -50,6 +85,7 @@ export default {
       patientList: [],
       search: "",
       userRole: this.user,
+      covidPatientsList: [],
     };
   },
   created() {
@@ -65,20 +101,21 @@ export default {
           const DID = this.$store.state.user.UserID;
           console.log("logged in doctor ID: " + DID);
           // Check if user with that email already exists
-          const response = await axios.post(`http://localhost:5000/users`, {
+          const response = await axios.post(`http://localhost:5001/users`, {
             Doctor: DID,
           });
           this.patientList = response.data;
         } else if (this.userRole == "health-official") {
-          const response = await axios.get(`http://localhost:5000/users`);
+          const response = await axios.get(`http://localhost:5001/users`);
           this.patientList = response.data;
+          this.listOfCovidPatients(this.patientList);
         } else if (this.userRole == "immigration-officer") {
           const response = await axios.get(
-            `http://localhost:5000/usersByCovid`
+            `http://localhost:5001/usersByCovid`
           );
           this.patientList = response.data;
           const travelResponse = await axios.post(
-            `http://localhost:5000/users`,
+            `http://localhost:5001/users`,
             { Role: "Patient", Travelled: 1 }
           );
           this.patientList = this.patientList.concat(travelResponse.data);
@@ -91,26 +128,66 @@ export default {
     onPatientClick() {
       this.$router.push("/");
     },
+    async listOfCovidPatients(patientsList) {
+      for (var i = 0; i < patientsList.length; i++) {
+        const covidStatusInt = await axios.get(
+          `http://localhost:5001/healthstatus/${patientsList[i].UserID}`
+        );
+        var covidStatus = "";
+        if (covidStatusInt.data.Covid == 1) {
+          covidStatus = "Positive";
+        } else {
+          covidStatus = "Negative";
+        }
+        this.covidPatientsList.push({
+          patientsList: patientsList[i],
+          covidStatus: covidStatus,
+        });
+      }
+    },
   },
   computed: {
     filteredPatients: function () {
-      return this.patientList.filter((patient) => {
-        return (
-          patient.FirstName.toLowerCase().match(this.search.toLowerCase()) ||
-          patient.LastName.toLowerCase().match(this.search.toLowerCase()) ||
-          patient.Email.toLowerCase().match(this.search.toLowerCase()) ||
-          patient.Telephone.toLowerCase().match(this.search.toLowerCase())
-        );
-      });
+      if (this.userRole == "immigration-officer") {
+        return this.patientList.filter((patient) => {
+          return (
+            patient.FirstName.toLowerCase().match(this.search.toLowerCase()) ||
+            patient.LastName.toLowerCase().match(this.search.toLowerCase()) ||
+            patient.Email.toLowerCase().match(this.search.toLowerCase()) ||
+            patient.Telephone.toLowerCase().match(this.search.toLowerCase())
+          );
+        });
+      } else if (
+        this.userRole == "health-official" ||
+        this.userRole == "doctor"
+      ) {
+        return this.covidPatientsList.filter((patient) => {
+          return (
+            patient.patientsList.FirstName.toLowerCase().match(
+              this.search.toLowerCase()
+            ) ||
+            patient.patientsList.LastName.toLowerCase().match(
+              this.search.toLowerCase()
+            ) ||
+            patient.patientsList.Email.toLowerCase().match(
+              this.search.toLowerCase()
+            ) ||
+            patient.patientsList.Telephone.toLowerCase().match(
+              this.search.toLowerCase()
+            ) ||
+            patient.covidStatus.toLowerCase().match(this.search.toLowerCase())
+          );
+        });
+      } else return null;
     },
   },
 };
 </script>
 <style>
 .patients-list-container {
-  margin-top: 90px;
-  width: 100%;
-  height: 100%;
+  margin-top: 70px;
+  min-width: 100%;
+  min-height: 100%;
   text-align: center;
 }
 </style>

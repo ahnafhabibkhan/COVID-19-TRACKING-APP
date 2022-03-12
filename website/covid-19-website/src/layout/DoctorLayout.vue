@@ -21,7 +21,7 @@ export default {
 </script>
 <style>
 .doctor-layout {
-  background-image: url("../assets/doctorImage2.jpg");
+  background-image: url("../assets/docimage.png");
   background-size: cover;
   background-repeat: no-repeat;
   min-height: 100%;
