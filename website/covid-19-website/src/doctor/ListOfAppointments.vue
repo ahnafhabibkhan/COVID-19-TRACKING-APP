@@ -148,6 +148,7 @@ export default {
     };
   },
   methods: {
+    // Request an appointment with a patient
     requestAppointmentWithPatient() {
       this.requestAppointment();
       this.appointment_dialog = false;

@@ -27,6 +27,7 @@ export const createPasswordResetRequest = (req, res) => {
         }
     });
 
+    // Send email to User
     const mailData = {
         from: 'soen390proj@gmail.com',  // sender address
         to: data.Email,   // list of receivers
@@ -67,6 +68,7 @@ export const updatePasswordResetRequest = (req, res) => {
         }
     });
 
+    // Send email to User
     const mailData = {
         from: 'soen390proj@gmail.com',  // sender address
         to: data.Email,   // list of receivers

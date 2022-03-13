@@ -12,7 +12,7 @@ export const showUserByEmail = (req, res) => {
     });
 }
 
-// Get Single User by Email
+// Get all users
 export const showUsers = (req, res) => {
     getUsers((err, results) => {
         if (err){
@@ -58,7 +58,7 @@ export const createUser = (req, res) => {
     });
 }
 
-// Delete User
+// Delete User by ID
 export const deleteUser = (req, res) => {
     const id = req.params.id;
     deleteUserById(id, (err, results) => {
