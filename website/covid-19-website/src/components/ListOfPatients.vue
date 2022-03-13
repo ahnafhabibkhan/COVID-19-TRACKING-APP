@@ -30,7 +30,7 @@
         :key="UserID"
         :title="item.title"
         class="pa-2 mx-8 my-8"
-        style="display: inline-table; opacity: 95%"
+        style="display: inline-table;"
         width="30%"
         height="10%"
         @click="onPatientClick()"
@@ -53,7 +53,7 @@
         :key="UserID"
         :title="item.title"
         class="pa-2 mx-8 my-8"
-        style="display: inline-table; opacity: 95%"
+        style="display: inline-table;"
         width="350px"
         height="100px"
         @click="onPatientClick()"
@@ -186,8 +186,8 @@ export default {
 <style>
 .patients-list-container {
   margin-top: 70px;
-  min-width: 100%;
-  min-height: 100%;
+  /* min-width: 100%;
+  min-height: 100%; */
   text-align: center;
 }
 </style>
