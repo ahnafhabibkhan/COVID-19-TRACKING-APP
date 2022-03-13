@@ -57,6 +57,7 @@
         width="350px"
         height="100px"
         @click="onPatientClick()"
+        :color="item.covidStatus === 'Positive'? '#FF4933' : 'white'"
         ><h2 class="my-2">
           {{ item.patientsList.FirstName }} {{ item.patientsList.LastName }}
         </h2>
