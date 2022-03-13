@@ -873,21 +873,6 @@ export default {
   color: red !important;
   background-color: white;
 }
-/* .up::before {
-  content: "Next";
-}
-::before {
-  content: "Next";
-} */
-/* td {
-  padding: 20px 0px;
-  font-size: 0.6rem;
-  text-align: center;
-}
-th {
-  padding: 5px;
-  font-size: 0.6rem;
-} */
 .bg-image {
   min-height: 100%;
   min-width: 100%;
@@ -903,4 +888,4 @@ th {
   height: 40%;
   margin-left: 100%; */
 }
-</style>pull
+</style>

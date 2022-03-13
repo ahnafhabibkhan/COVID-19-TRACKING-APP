@@ -75,19 +75,7 @@ export default {
 
 <style>
 .health-official {
-  /* background-image: url("../assets/HealthOfficial.png");
-  background-size: cover;
-  background-repeat: no-repeat;
-  min-height: 100%;
-  min-width: 100%;
-  position: fixed;
-  top: 0;
-  left: 0; */
 }
-/* .btn {
-  display: block;
-  margin-top: 35px;
-} */
 .btn-container {
   /* border: 5px solid red; */
   padding-top: 25px;
@@ -98,9 +86,6 @@ export default {
   height: 40%;
 }
 .chart {
-  /* border: 2px solid white;
-  background-color: #64B5F6; */
-  /* border: 5px solid red; */
   width: 65%;
   height: 40%;
   margin-top: 2%;

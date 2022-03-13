@@ -15,6 +15,5 @@ export default {
 
 <style>
 .health-off-patients-list {
-  overflow-y: scroll;
 }
 </style>
