@@ -30,7 +30,7 @@
         :key="UserID"
         :title="item.title"
         class="pa-2 mx-8 my-8"
-        style="display: inline-table;"
+        style="display: inline-table"
         width="30%"
         height="10%"
         @click="onPatientClick()"
@@ -53,7 +53,7 @@
         :key="UserID"
         :title="item.title"
         class="pa-2 mx-8 my-8"
-        style="display: inline-table;"
+        style="display: inline-table"
         width="350px"
         height="100px"
         @click="onPatientClick()"
@@ -105,6 +105,7 @@ export default {
             Doctor: DID,
           });
           this.patientList = response.data;
+          this.listOfCovidPatients(this.patientList);
         } else if (this.userRole == "health-official") {
           const response = await axios.get(`http://localhost:5001/users`);
           this.patientList = response.data;
@@ -113,12 +114,13 @@ export default {
           const response = await axios.get(
             `http://localhost:5001/usersByCovid`
           );
-          this.patientList = response.data;
+          var pList = response.data;
           const travelResponse = await axios.post(
             `http://localhost:5001/users`,
             { Role: "Patient", Travelled: 1 }
           );
-          this.patientList = this.patientList.concat(travelResponse.data);
+          pList = pList.concat(travelResponse.data);
+          this.listOfCovidPatients(pList);
         }
       } catch (err) {
         console.log(err);
@@ -129,20 +131,31 @@ export default {
       this.$router.push("/");
     },
     async listOfCovidPatients(patientsList) {
-      for (var i = 0; i < patientsList.length; i++) {
-        const covidStatusInt = await axios.get(
-          `http://localhost:5001/healthstatus/${patientsList[i].UserID}`
-        );
-        var covidStatus = "";
-        if (covidStatusInt.data.Covid == 1) {
-          covidStatus = "Positive";
-        } else {
-          covidStatus = "Negative";
+      if (this.userRole == "doctor" || this.userRole == "health-official") {
+        for (var i = 0; i < patientsList.length; i++) {
+          const covidStatusInt = await axios.get(
+            `http://localhost:5001/healthstatus/${patientsList[i].UserID}`
+          );
+          var covidStatus = "";
+          if (covidStatusInt.data.Covid == 1) {
+            covidStatus = "Positive";
+          } else {
+            covidStatus = "Negative";
+          }
+          this.covidPatientsList.push({
+            patientsList: patientsList[i],
+            covidStatus: covidStatus,
+          });
         }
-        this.covidPatientsList.push({
-          patientsList: patientsList[i],
-          covidStatus: covidStatus,
-        });
+      } else if (this.userRole == "immigration-officer") {
+        for (var j = 0; j < patientsList.length; j++) {
+          const covidStatusInt = await axios.get(
+            `http://localhost:5001/healthstatus/${patientsList[j].UserID}`
+          );
+          if (covidStatusInt.data.Covid == 1) {
+            this.patientList.push(patientsList[j]);
+          }
+        }
       }
     },
   },
