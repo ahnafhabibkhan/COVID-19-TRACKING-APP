@@ -102,22 +102,22 @@ export default {
           const DID = this.$store.state.user.UserID;
           console.log("logged in doctor ID: " + DID);
           // Check if user with that email already exists
-          const response = await axios.post(`http://localhost:5001/users`, {
+          const response = await axios.post(`http://localhost:5000/users`, {
             Doctor: DID,
           });
           this.patientList = response.data;
           this.listOfCovidPatients(this.patientList);
         } else if (this.userRole == "health-official") {
-          const response = await axios.get(`http://localhost:5001/users`);
+          const response = await axios.get(`http://localhost:5000/users`);
           this.patientList = response.data;
           this.listOfCovidPatients(this.patientList);
         } else if (this.userRole == "immigration-officer") {
           const response = await axios.get(
-            `http://localhost:5001/usersByCovid`
+            `http://localhost:5000/usersByCovid`
           );
           var pList = response.data;
           const travelResponse = await axios.post(
-            `http://localhost:5001/users`,
+            `http://localhost:5000/users`,
             { Role: "Patient", Travelled: 1 }
           );
           pList = pList.concat(travelResponse.data);
@@ -135,7 +135,7 @@ export default {
       if (this.userRole == "doctor" || this.userRole == "health-official") {
         for (var i = 0; i < patientsList.length; i++) {
           const covidStatusInt = await axios.get(
-            `http://localhost:5001/healthstatus/${patientsList[i].UserID}`
+            `http://localhost:5000/healthstatus/${patientsList[i].UserID}`
           );
           var covidStatus = "";
           if (covidStatusInt.data.Covid == 1) {
@@ -151,7 +151,7 @@ export default {
       } else if (this.userRole == "immigration-officer") {
         for (var j = 0; j < patientsList.length; j++) {
           const covidStatusInt = await axios.get(
-            `http://localhost:5001/healthstatus/${patientsList[j].UserID}`
+            `http://localhost:5000/healthstatus/${patientsList[j].UserID}`
           );
           if (covidStatusInt.data.Covid == 1) {
             this.patientList.push(patientsList[j]);

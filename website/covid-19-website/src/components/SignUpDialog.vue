@@ -161,7 +161,7 @@ export default {
         console.log(`Form valid, checking if user already exists`);
         // Check if user with that email already exists
         const response = await axios.get(
-          `http://localhost:5001/users/${formStruct.email}`
+          `http://localhost:5000/users/${formStruct.email}`
         );
         if (response.data.UserID == null) {
           console.log(`User does not exist yet`);
@@ -182,7 +182,7 @@ export default {
           // In case of Patient, create account directly
           if (role == "Patient") {
             console.log(`Patient, creating new user`);
-            await axios.post(`http://localhost:5001/user`, {
+            await axios.post(`http://localhost:5000/user`, {
               Email: formStruct.email,
               FirstName: formStruct.firstName,
               LastName: formStruct.lastName,
@@ -200,7 +200,7 @@ export default {
             // If role not patient then need to make an account request instead
             // Check if a request already exists
             const requestExistResponse = await axios.get(
-              `http://localhost:5001/accountRequest/${formStruct.email}`
+              `http://localhost:5000/accountRequest/${formStruct.email}`
             );
             if (requestExistResponse.data.Email == null) {
               console.log(`Account request does not already exist, creating`);
@@ -210,7 +210,7 @@ export default {
               const day = currentDate.getDate();
               const hour = currentDate.getHours();
               const minute = currentDate.getMinutes();
-              await axios.post(`http://localhost:5001/accountRequest`, {
+              await axios.post(`http://localhost:5000/accountRequest`, {
                 Email: formStruct.email,
                 FirstName: formStruct.firstName,
                 LastName: formStruct.lastName,
