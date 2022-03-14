@@ -89,7 +89,7 @@ CREATE TABLE `appointmentrequest` (
   `Time` time NOT NULL,
   `RequestedBy` enum('P','D') NOT NULL,
   `LevelOfEmergency` int NOT NULL,
-  `Priority` tinyint NOT NULL
+  `Priority` tinyint NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -124,6 +124,7 @@ CREATE TABLE `doctoravailability` (
 
 LOCK TABLES `doctoravailability` WRITE;
 /*!40000 ALTER TABLE `doctoravailability` DISABLE KEYS */;
+INSERT INTO `doctoravailability` VALUES (4,'Friday','09:00:00','10:00:00','2022-02-25'),(4,'Friday','15:00:00','16:00:00','2022-02-25');
 /*!40000 ALTER TABLE `doctoravailability` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -177,10 +178,11 @@ CREATE TABLE `message` (
   `ReceiveUserID` int NOT NULL,
   `Text` varchar(250) NOT NULL,
   `Location` varchar(45) NOT NULL,
-  `MessageType` enum('Notification','Chat') NOT NULL,
-  `State` enum('Sending','Sent','Read') NOT NULL,
+  `State` enum('Sent','Read') NOT NULL,
   `Date` date NOT NULL,
-  `Time` time NOT NULL
+  `Time` time NOT NULL,
+  `ID` int unsigned NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -203,7 +205,9 @@ DROP TABLE IF EXISTS `notification`;
 CREATE TABLE `notification` (
   `Message` varchar(250) NOT NULL,
   `Recipient` int unsigned NOT NULL,
-  `Time` time NOT NULL
+  `Time` time NOT NULL,
+  `ID` int NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -236,7 +240,7 @@ CREATE TABLE `passwordresetrequest` (
 
 LOCK TABLES `passwordresetrequest` WRITE;
 /*!40000 ALTER TABLE `passwordresetrequest` DISABLE KEYS */;
-INSERT INTO `passwordresetrequest` VALUES (1,'BE7CUI'),(5,'C3THLR');
+INSERT INTO `passwordresetrequest` VALUES (1,'BE7CUI');
 /*!40000 ALTER TABLE `passwordresetrequest` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -261,7 +265,7 @@ CREATE TABLE `user` (
   `Travelled` tinyint NOT NULL DEFAULT '0',
   PRIMARY KEY (`UserID`),
   UNIQUE KEY `Email_UNIQUE` (`Email`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -270,7 +274,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'first@gmail.com','John','Smith','4504664852','7458 Main','Patient','JSmith0',4,'Canada',0),(2,'admin@gmail.com','Admin','Admin','5144768016','0 Admin','Admin','Admin',NULL,'Canada',0),(3,'test@gmail.com','Tester','Mann','5148758221','436 street montreal','Patient','password',4,'Canada',1),(4,'doctor@gmail.com','Doc','Lessard','7784582102','42 Health','Doctor','Doctor',NULL,'Canada',0),(5,'soucy.tommy@gmail.com','Tommy','Soucy','5144768016','1823 Langevin','Patient','password',NULL,'Canada',0),(6,'immigration@gmail.com','Immigrator','Last','5165470021','84 Kilo','ImmigrationOfficer','password',NULL,'Canada',0),(7,'tester2@gmail.com','Tester','Mann2','5144758450','84 Lane','Patient','Password',NULL,'Canada',0);
+INSERT INTO `user` VALUES (1,'first@gmail.com','John','Smith','4504664852','7458 Main','Patient','JSmith0',4,'Canada',0),(2,'admin@gmail.com','Admin','Admin','5144768016','0 Admin','Admin','Admin',NULL,'Canada',0),(3,'test@gmail.com','Tester','Mann','5148758221','436 street montreal','Patient','password',4,'Canada',1),(4,'doctor@gmail.com','Doc','Lessard','7784582102','42 Health','Doctor','Doctor',NULL,'Canada',1),(5,'soucy.tommy@gmail.com','Tommy','Soucy','5144768016','1823 Langevin','Patient','password',NULL,'Canada',0),(6,'immigration@gmail.com','Immigrator','Last','5165470021','84 Kilo','ImmigrationOfficer','password',NULL,'Canada',0),(7,'tester2@gmail.com','Tester','Mann2','5144758450','84 Lane','Patient','Password',NULL,'Canada',0),(8,'testemail@gmail.com','Test3','Test','5144475801','4684 Street','Patient','password',NULL,'Canada',0),(9,'esgeg','awdawd','awdawd','516845310','se','Patient','wef',NULL,'canada',0),(10,'wef','wef','wef','wef','wwfewf','Patient','wef',NULL,'wef',0),(11,'d','d','d','d','d','Patient','d',NULL,'d',0),(12,'df','dfdfddf','dfdf','d','d','Patient','s',NULL,'d',0),(13,'153','153','153','153153','153','Patient','153',NULL,'153',0),(14,'sef','sef','sef','sef','sef','Patient','wef',NULL,'aefesf',0),(15,'test3@gmail.com','Test','Name','5144785012','34 Street','Patient','password',NULL,'Canada',0);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -283,4 +287,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-02-21 21:54:57
+-- Dump completed on 2022-03-14 14:37:48

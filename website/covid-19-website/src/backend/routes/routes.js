@@ -10,6 +10,7 @@ import {showAppointmentRequests, createAppointmentRequest, removeAppointmentRequ
 import {createAppointment, removeAppointment, showAppointments} from "../controllers/appointment.js";
 import {createAvailability, removeAvailability, showAvailabilities} from "../controllers/doctorAvailability.js";
 import {createMessage, removeMessage, showMessagesByID, showMessagesByData} from "../controllers/message.js";
+import {showNotifications, createNotification, removeNotification} from "../controllers/notification.js";
 
 // init express router
 const router = express.Router();
@@ -58,6 +59,16 @@ router.post('/message', createMessage);
 
 // Delete messages by data
 router.post('/deletemessages', removeMessage);
+
+////////////NOTIFICATION
+// Get notifications by data
+router.post('/notifications', showNotifications);
+
+// Create New notification
+router.post('/notification', createNotification);
+
+// Delete notification by data
+router.post('/deletenotifications', removeNotification);
 
 ////////////APPOINTMENT REQUEST
 // Get appointment requests by data
