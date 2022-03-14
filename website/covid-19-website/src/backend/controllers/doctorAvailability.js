@@ -1,7 +1,7 @@
 // Import function from doctor availability Model
 import { getAvailabilities, insertAvailability, deleteAvailability } from "../models/doctorAvailabilityModel.js";
 
-// Get availabilites
+// Get availabilities by doctor ID
 export const showAvailabilities = (req, res) => {
     getAvailabilities(req.params.id, (err, results) => {
         if (err){

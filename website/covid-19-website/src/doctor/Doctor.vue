@@ -196,6 +196,7 @@ export default {
     async getChartData() {
       try {
         const DID = this.$store.state.user.UserID;
+        // Get all users assigned to this doctor
         const response = await axios.post(`http://localhost:5000/users`, {
           Doctor: DID,
         });
@@ -204,10 +205,12 @@ export default {
         let nonInfectedCount = 0;
         let totalCount = 0;
         let patientIDs = [];
+        // Make a list of their IDs
         patientList.forEach(patient => {
           ++totalCount;
           patientIDs.push(patient.UserID);
         });
+        // For each ID get their latest health status and check if they have covid and calculate count
         for(let i=0;i<patientIDs.length;++i){
           const latestHSResponse = await axios.get(`http://localhost:5000/healthstatus/${patientIDs[i]}`);
           console.log(JSON.stringify(latestHSResponse.data));
@@ -218,6 +221,7 @@ export default {
             ++nonInfectedCount
           }
         }
+        // Write the data to series
         this.series = [infectedCount/totalCount * 100, nonInfectedCount/totalCount * 100];
       } catch (err) {
         console.log(err);
@@ -234,6 +238,7 @@ export default {
       }
     },
 
+    // Get list of availabilities
     listOfAvailabilities() {
       this.allAvailabilities = [];
       var availabilities = [
@@ -266,6 +271,7 @@ export default {
       }
     },
 
+    // Delete a doctor's availability
     deleteAvailability(item) {
       this.removeAvailability(
         item.DayOfWeek,
@@ -276,6 +282,7 @@ export default {
       window.location.reload();
     },
 
+    // Click on a date to get availabilities
     onDateClick() {
       this.available = [];
       this.listOfAvailabilities();
@@ -350,6 +357,7 @@ export default {
       }
     },
 
+    // Open patients list
     onPatientsClick() {
       this.$router.push("/doctor-patients-list");
     },

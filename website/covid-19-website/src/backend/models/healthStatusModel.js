@@ -1,7 +1,7 @@
 // import connection
 import db from "../config/db.js";
 
-// Get Single health status by ID
+// Get Single latest health status by ID
 export const getLatestHealthStatusByID = (pid, result) => {
     db.query("select * from healthstatus where PID = ? order by fillOutDate desc", [pid], (err, results) => {
         if(err) {
