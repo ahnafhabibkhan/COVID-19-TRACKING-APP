@@ -14,7 +14,7 @@ import {
 import {showAppointmentRequests, createAppointmentRequest, removeAppointmentRequest} from "../controllers/appointmentRequest.js";
 import {createAppointment, removeAppointment, showAppointments} from "../controllers/appointment.js";
 import {createAvailability, removeAvailability, showAvailabilities} from "../controllers/doctorAvailability.js";
-import {createMessage, removeMessage, showMessagesByID} from "../controllers/message.js";
+import {createMessage, removeMessage, showMessagesByID, showMessagesByData} from "../controllers/message.js";
 
 // init express router
 const router = express.Router();
@@ -55,8 +55,11 @@ router.post('/deleteavailability', removeAvailability);
 // Get messages by receiver ID
 router.get('/messages/:id', showMessagesByID);
 
+// Get messages by data
+router.post('/messages', showMessagesByData);
+
 // Create New availability
-router.post('/messages', createMessage);
+router.post('/message', createMessage);
 
 // Delete availability
 router.delete('/messages', removeMessage);
