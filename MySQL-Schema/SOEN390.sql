@@ -89,6 +89,7 @@ CREATE TABLE `appointmentrequest` (
   `Time` time NOT NULL,
   `RequestedBy` enum('P','D') NOT NULL,
   `LevelOfEmergency` int NOT NULL,
+  `Priority` tinyint NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
