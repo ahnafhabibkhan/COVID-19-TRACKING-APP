@@ -2,7 +2,7 @@
 import db from "../config/db.js";
 import {formatWhere} from "../config/db.js";
 
-// Get availabilities by data
+// Get availabilities by doctor ID
 export const getAvailabilities = (id, result) => {
     db.query("SELECT * FROM doctoravailability WHERE DID = ?", [id], (err, results) => {
         if(err) {
