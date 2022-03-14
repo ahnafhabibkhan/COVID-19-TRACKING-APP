@@ -98,20 +98,23 @@ export default {
     async getPatients() {
       console.log("getPatients called");
       try {
+        // Display a different list depending on user's role
         if (this.userRole == "doctor") {
           const DID = this.$store.state.user.UserID;
           console.log("logged in doctor ID: " + DID);
-          // Check if user with that email already exists
+          // Get users assigned to this doctor ID
           const response = await axios.post(`http://localhost:5000/users`, {
             Doctor: DID,
           });
           this.patientList = response.data;
           this.listOfCovidPatients(this.patientList);
         } else if (this.userRole == "health-official") {
+          // Get all patients
           const response = await axios.get(`http://localhost:5000/users`);
           this.patientList = response.data;
           this.listOfCovidPatients(this.patientList);
         } else if (this.userRole == "immigration-officer") {
+          // Get all patients who were covid positive in their latest health status
           const response = await axios.get(
             `http://localhost:5000/usersByCovid`
           );
@@ -128,6 +131,7 @@ export default {
       }
     },
 
+    // Go to patient's profile
     onPatientClick() {
       this.$router.push("/");
     },
@@ -161,6 +165,7 @@ export default {
     },
   },
   computed: {
+    // Filter patients list
     filteredPatients: function () {
       if (this.userRole == "immigration-officer") {
         return this.patientList.filter((patient) => {

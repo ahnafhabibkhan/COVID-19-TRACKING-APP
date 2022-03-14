@@ -1,7 +1,7 @@
 // import connection
 import db from "../config/db.js";
 
-// Get Request by Email
+// Get Request by ID
 export const getPasswordResetRequestByID = (id, result) => {
     db.query("SELECT * FROM passwordresetrequest WHERE UserID = ?", [id], (err, results) => {
         if(err) {
@@ -13,7 +13,7 @@ export const getPasswordResetRequestByID = (id, result) => {
     });
 }
 
-// Insert Request to Database
+// Insert Request into Database
 export const insertPasswordResetRequest = (data, result) => {
     db.query("INSERT INTO passwordresetrequest SET UserID = ? , `Key` = ?", [data.UserID, data.Key], (err, results) => {
         if(err) {

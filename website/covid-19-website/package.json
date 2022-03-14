@@ -8,7 +8,8 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "test": "mocha -exit",
-    "test-with-report": "npx c8 -r html --all --src './src/backend' mocha -exit"
+    "test-intergration": "mocha -exit './test/*.cjs'",
+    "test-unit": "npx c8 -r html --all --src './src/backend' mocha -exit './test/*.js'"
   },
   "dependencies": {
     "axios": "^0.25.0",

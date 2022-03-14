@@ -141,6 +141,7 @@ export default {
     // Sign the user up
     async signupUser(formStruct) {
       console.log(`Signup pressed`);
+      // Validate form data
       if (
         !formStruct.role ||
         !formStruct.email ||
@@ -218,7 +219,6 @@ export default {
                 Address: formStruct.address,
                 Role: role,
                 Password: formStruct.password,
-                // City: formStruct.city,
                 Country: formStruct.country,
                 Date:
                   "" +

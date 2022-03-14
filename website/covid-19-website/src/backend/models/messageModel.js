@@ -14,6 +14,20 @@ export const getMessagesByID = (id, result) => {
     });
 }
 
+// Get messages by data
+export const getMessages = (data, result) => {
+    const where = formatWhere(data);
+    const query = "SELECT * FROM message WHERE "+where;
+    db.query(query, [where], (err, results) => {
+        if(err) {
+            console.log(err);
+            result(err, null);
+        } else {
+            result(null, results);
+        }
+    });
+}
+
 // Insert message to Database
 export const insertMessage = (data, result) => {
     db.query("INSERT INTO message SET ?", [data], (err, results) => {
