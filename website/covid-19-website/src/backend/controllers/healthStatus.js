@@ -48,7 +48,7 @@ export const deleteHealthStatus = (req, res) => {
 
 // Delete health statuses by patient ID
 export const deleteHealthStatuses = (req, res) => {
-    deleteHealthStatusByID(req.params, (err, results) => {
+    deleteHealthStatusByID(req.params.pid, (err, results) => {
         if (err){
             res.send(err);
         }else{
