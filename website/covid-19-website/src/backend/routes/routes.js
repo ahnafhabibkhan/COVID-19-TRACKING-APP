@@ -55,7 +55,7 @@ router.post('/deleteavailability', removeAvailability);
 // Get messages by receiver ID
 router.get('/messages/:id', showMessagesByID);
 
-// Create New availability
+// Create New message
 router.post('/messages', createMessage);
 
 // Delete availability

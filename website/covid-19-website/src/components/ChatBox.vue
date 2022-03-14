@@ -20,7 +20,7 @@
 
     <section class="chat-inputs">
       <form @submit.prevent="sendMessage('in')" id="person1-form">
-        <!-- <label for="person1-input">Bob</label> -->
+        <label for="person1-input">Bob</label>
         <input
           v-model="bobMessage"
           id="person1-input"
@@ -31,7 +31,7 @@
         <button type="submit" style="margin-left: 80px">Send</button>
       </form>
 
-      <!-- <form @submit.prevent="sendMessage('out')" id="person2-form">
+      <form @submit.prevent="sentMessages('out')" id="person2-form">
         <label for="person2-input">You</label>
         <input
           v-model="youMessage"
@@ -40,18 +40,20 @@
           placeholder="Type your message"
         />
         <button type="submit">Send</button>
-      </form> -->
+      </form>
     </section>
   </v-card>
 </template>
 <script>
 import Vue from "../App.vue";
+import axios from "axios";
 export default {
   name: "ChatBox",
 
   components: {},
   data: function () {
     return {
+      url: "http://localhost:5001/",
       bobMessage: "",
       youMessage: "",
       messages: [
@@ -78,9 +80,11 @@ export default {
       if (direction === "out") {
         this.messages.push({ body: this.youMessage, author: "you" });
         this.youMessage = "";
+        this.setMessages();
       } else if (direction === "in") {
         this.messages.push({ body: this.bobMessage, author: "bob" });
         this.bobMessage = "";
+        this.getMessages();
       } else {
         alert("something went wrong");
       }
@@ -91,6 +95,41 @@ export default {
     },
     clearAllMessages() {
       this.messages = [];
+    },
+    async getMessages() {
+      try {
+        const DID = this.$store.state.user.UserID;
+        this.messages = await axios.get(
+          `http://localhost:5001/messages/${DID}`
+        );
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async setMessages() {
+      try {
+        const DID = this.$store.state.user.UserID;
+
+        await axios.post(`http://localhost:5001/messages/`, {
+          SendUserID: DID,
+          ReceiveUserID: 1,
+          Text: "hello",
+          Location: "MTL",
+          MessageType: "Chat",
+          State: "Sending",
+          Date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+            .toISOString()
+            .substr(0, 10),
+          Time:
+            new Date().getHours() +
+            ":" +
+            new Date().getMinutes() +
+            ":" +
+            new Date().getSeconds(),
+        });
+      } catch (err) {
+        console.log(err);
+      }
     },
   },
 };
