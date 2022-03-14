@@ -208,7 +208,7 @@ export default {
       try {
         const DID = this.$store.state.user.UserID;
         // Get all users assigned to this doctor
-        const response = await axios.post(`http://localhost:5000/users`, {
+        const response = await axios.post(`http://localhost:5001/users`, {
           Doctor: DID,
         });
         const patientList = response.data;
@@ -224,7 +224,7 @@ export default {
         // For each ID get their latest health status and check if they have covid and calculate count
         for (let i = 0; i < patientIDs.length; ++i) {
           const latestHSResponse = await axios.get(
-            `http://localhost:5000/healthstatus/${patientIDs[i]}`
+            `http://localhost:5001/healthstatus/${patientIDs[i]}`
           );
           console.log(JSON.stringify(latestHSResponse.data));
           const infected = latestHSResponse.data.Covid == 1;
