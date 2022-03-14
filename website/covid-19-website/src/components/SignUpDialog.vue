@@ -240,6 +240,7 @@ export default {
             }
           }
         }
+        this.$emit("onSaveDialogClick");
       } catch (err) {
         console.log(err);
       }

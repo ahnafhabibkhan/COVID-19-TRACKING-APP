@@ -89,7 +89,7 @@
             <div>
               <v-btn
                 class="white--text"
-                style="font-size: 18px; opacity: 90%"
+                style="font-size: 18px;"
                 color="blue lighten-2"
                 width="400px"
                 height="75px"
@@ -100,7 +100,7 @@
             <div class="my-6">
               <v-btn
                 class="white--text"
-                style="font-size: 18px; opacity: 90%"
+                style="font-size: 18px;"
                 color="blue lighten-2"
                 width="400px"
                 height="75px"
@@ -111,7 +111,7 @@
             <div class="my-6">
               <v-btn
                 class="white--text"
-                style="font-size: 18px; opacity: 90%"
+                style="font-size: 18px;"
                 color="blue lighten-2"
                 width="400px"
                 height="75px"
@@ -391,7 +391,6 @@ export default {
   margin-top: 5%;
   margin-left: auto;
   margin-right: auto;
-  opacity: 90%;
 }
 .left-side-doctor {
   /* border: 5px solid red; */

@@ -26,6 +26,7 @@
     "nyc": "^15.1.0",
     "sinon": "^13.0.1",
     "sweetalert2": "^11.4.2",
+    "vee-validate": "^3.4.14",
     "vue": "^2.6.11",
     "vue-apexcharts": "^1.6.2",
     "vue-chartjs": "^3.5.1",

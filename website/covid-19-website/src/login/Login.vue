@@ -2,7 +2,7 @@
   <div class="login">
     <!-- Sign Up modal -->
     <v-dialog v-model="signUp_modal" width="500px">
-      <SignUpDialog />
+      <SignUpDialog  @onSaveDialogClick="onSave()" />
     </v-dialog>
     <!-- End of Sign Up modal -->
 
@@ -348,7 +348,12 @@ export default {
   },
 
   methods: {
-    // Forget Password Cancel Button
+
+    onSave(saveText){
+      console.log(saveText);
+      this.signUp_modal = false;
+    },
+    //Forget Password Cancel Button
     cancelButtonAction() {
       this.login_modal = !this.login_modal;
       this.ForgotPassword_modal = !this.ForgotPassword_modal;

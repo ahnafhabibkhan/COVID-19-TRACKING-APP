@@ -16,7 +16,7 @@ export default {
 
 <style>
 .immigration-officer {
-  background-image: url("../assets/io.jpg");
+  background-image: url("../assets/io1.png");
   background-size: cover;
   background-repeat: no-repeat;
   min-height: 100%;
