@@ -124,6 +124,7 @@ CREATE TABLE `doctoravailability` (
 
 LOCK TABLES `doctoravailability` WRITE;
 /*!40000 ALTER TABLE `doctoravailability` DISABLE KEYS */;
+INSERT INTO `doctoravailability` VALUES (4,'Friday','09:00:00','10:00:00','2022-02-25'),(4,'Friday','15:00:00','16:00:00','2022-02-25');
 /*!40000 ALTER TABLE `doctoravailability` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -286,4 +287,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-03-14 14:35:16
+-- Dump completed on 2022-03-14 14:37:48
