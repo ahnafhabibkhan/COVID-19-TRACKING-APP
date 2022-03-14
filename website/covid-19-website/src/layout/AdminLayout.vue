@@ -21,7 +21,7 @@ export default {
 </script>
 <style>
 .admin-layout {
-  background-image: url("../assets/Admin.png");
+  background-image: url("../assets/Admin1.png");
   min-height: 100%;
   min-width: 100%;
   position: fixed;

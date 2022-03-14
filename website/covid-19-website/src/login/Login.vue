@@ -2,7 +2,7 @@
   <div class="login">
     <!-- Sign Up modal -->
     <v-dialog v-model="signUp_modal" width="500px">
-      <SignUpDialog />
+      <SignUpDialog  @onSaveDialogClick="onSave()" />
     </v-dialog>
     <!-- End of Sign Up modal -->
 
@@ -348,6 +348,11 @@ export default {
   },
 
   methods: {
+
+    onSave(saveText){
+      console.log(saveText);
+      this.signUp_modal = false;
+    },
     //Forget Password Cancel Button
     cancelButtonAction() {
       this.login_modal = !this.login_modal;
@@ -358,11 +363,12 @@ export default {
     //   this.ForgotPassword_modal = !this.ForgotPassword_modal;
     //   this.GeneratedPassword_modal = !this.GeneratedPassword_modal;
     // },
-    //Generated Password UI
+    // Generated Password UI
     cancelGeneratedPasswordAction() {
       this.GeneratedPassword_modal = !this.GeneratedPassword_modal;
       this.login_modal = !this.login_modal;
     },
+    // Display forgot password dialog
     RenderForgotPasswordComponent() {
       this.ForgotPassword_modal = !this.ForgotPassword_modal;
       this.login_modal = !this.login_modal;
@@ -380,6 +386,7 @@ export default {
         console.log(
           `Got response, url: ${`http://localhost:5001/users/${email}`}`
         );
+        // Check if user with entered email exists
         if (response.data.Password != null) {
           console.log(`Retrieved user password: ${response.data.Password}`);
           if (password == response.data.Password) {
@@ -387,6 +394,7 @@ export default {
             this.login_modal = false;
             console.log(`Login credentials valid`);
             console.log(response.data.Role);
+            // Sent user to page depending on role
             if (response.data.Role == "Admin") {
               this.$router.push("/admin");
             } else if (response.data.Role == "Patient") {
@@ -415,12 +423,14 @@ export default {
         return;
       }
       try {
+        // Get user that has this email
         const response = await axios.get(
           `http://localhost:5001/users/${email}`
         );
         console.log(
           `Got response, url: ${`http://localhost:5001/users/${email}`}`
         );
+        // If user exists
         if (response.data.UserID != null) {
           console.log(`Retrieved user ID: ${response.data.UserID}`);
           // Check if a request already exists, if so just change the key to a new one
@@ -474,8 +484,6 @@ export default {
 
           if (requestResponse.data.UserID != null) {
             if (key == requestResponse.data.Key) {
-              //todo
-
               this.GeneratedPassword_modal = !this.GeneratedPassword_modal;
               this.NewPassword_modal = !this.NewPassword_modal;
             } else if (key != requestResponse.data.Key) {
@@ -491,7 +499,7 @@ export default {
       }
     },
 
-    // Changes the user with that email's password
+    // Changes the password of the user with that email
     async changePassword(email, password, passwordConfirmation) {
       console.log(`Change password called for Email: ${email}`);
       if (
@@ -531,6 +539,7 @@ export default {
       }
     },
 
+    // Control display of login and signup modals
     onNavClick(text) {
       if (text == "Sign Up") {
         this.signUp_modal = !this.signUp_modal;

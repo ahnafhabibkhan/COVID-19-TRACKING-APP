@@ -44,7 +44,7 @@ export default {
   data: () => ({}),
   methods: {
     logout() {
-      alert("you will be log out");
+      alert("you will be logged out");
     },
   },
 };

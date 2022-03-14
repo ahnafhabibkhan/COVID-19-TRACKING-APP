@@ -444,7 +444,7 @@
       <v-col cols="12" md="6" class="pt-6 mt-6">
         <!-- requested apppointments -->
         <div
-          style="width: 70%; background-color: rgba(256, 256, 256, 0.5)"
+          style="width: 70%; background-color: rgba(256, 256, 256, 1)"
           class="pa-4 rounded-lg mb-5"
         >
           <h2>Requested Appointments :</h2>
@@ -456,7 +456,7 @@
         </div>
         <!-- approved apppointments -->
         <div
-          style="width: 70%; background-color: rgba(256, 256, 256, 0.5)"
+          style="width: 70%; background-color: rgba(256, 256, 256, 1)"
           class="pa-4 rounded-lg mt-5"
         >
           <h2>Approved Appointments :</h2>
@@ -468,7 +468,7 @@
         </div>
         <!-- Doctor's Requested apppointments -->
         <div
-          style="width: 70%; background-color: rgba(256, 256, 256, 0.5)"
+          style="width: 70%; background-color: rgba(256, 256, 256, 1)"
           class="pa-4 rounded-lg mt-5"
         >
           <h2>Doctor's Requested Appointments:</h2>
@@ -873,25 +873,7 @@ export default {
   color: red !important;
   background-color: white;
 }
-/* .up::before {
-  content: "Next";
-}
-::before {
-  content: "Next";
-} */
-/* td {
-  padding: 20px 0px;
-  font-size: 0.6rem;
-  text-align: center;
-}
-th {
-  padding: 5px;
-  font-size: 0.6rem;
-} */
 .bg-image {
-  background-image: url("../assets/PatientBg.jpeg");
-  background-size: cover;
-  background-repeat: no-repeat;
   min-height: 100%;
   min-width: 100%;
   /* position: fixed; */

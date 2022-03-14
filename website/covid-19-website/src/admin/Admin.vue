@@ -7,7 +7,7 @@
       <div class="my-6 mx-3">
         <v-btn
           class="white--text"
-          style="font-size: 18px; opacity: 90%"
+          style="font-size: 18px;"
           color="blue lighten-2"
           width="400px"
           height="75px"
@@ -17,7 +17,7 @@
       <div class="my-6 mx-3">
         <v-btn
           class="white--text"
-          style="font-size: 18px; opacity: 90%"
+          style="font-size: 18px;"
           color="blue lighten-2"
           width="400px"
           height="75px"
@@ -28,7 +28,7 @@
       <div class="my-6 mx-3">
         <v-btn
           class="white--text"
-          style="font-size: 18px; opacity: 90%"
+          style="font-size: 18px;"
           color="blue lighten-2"
           width="400px"
           height="75px"
@@ -38,7 +38,7 @@
       <div class="my-6 mx-3">
         <v-btn
           class="white--text"
-          style="font-size: 18px; opacity: 90%"
+          style="font-size: 18px;"
           color="blue lighten-2"
           width="400px"
           height="75px"
@@ -48,7 +48,7 @@
       <div class="my-6 mx-3">
         <v-btn
           class="white--text"
-          style="font-size: 18px; opacity: 90%"
+          style="font-size: 18px;"
           color="blue lighten-2"
           width="400px"
           height="75px"
@@ -58,7 +58,7 @@
       <div class="my-6 mx-3">
         <v-btn
           class="white--text"
-          style="font-size: 18px; opacity: 90%"
+          style="font-size: 18px;"
           color="blue lighten-2"
           width="400px"
           height="75px"

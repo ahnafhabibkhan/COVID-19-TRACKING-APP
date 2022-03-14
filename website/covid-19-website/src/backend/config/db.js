@@ -10,6 +10,7 @@ const db = mysql.createConnection({
 
 export default db;
 
+// Formats a string of data into a where clause that can be send to the database
 export function formatWhere(data){
     let where = "";
     var count=0;
