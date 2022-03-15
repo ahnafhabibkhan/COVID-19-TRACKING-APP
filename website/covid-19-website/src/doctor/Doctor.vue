@@ -145,8 +145,11 @@ export default {
 
   data: function () {
     return {
-      messages: [],
-      chatBotMessages: [],
+      sentMessages: [], // Array of array of sent messages per user
+      receivedMessages: [], // Array of array of received messages per user
+      userUnread: [], // Array of bool for each user indicating whether the conversation with this user has an unread message
+      updateUserChat: [], // Array of bool for each user indicating whether we need to update the chat box with new messages
+      previousUserLatestMessage: [], // Array of previous latest message for each user
 
       series: [44, 55],
       chartOptions: {
@@ -190,8 +193,6 @@ export default {
 
   methods: {
 
-    chatBox() {},
-
     // Get infected and non infected data
     async getChartData() {
       try {
@@ -227,11 +228,112 @@ export default {
         console.log(err);
       }
     },
-    
-    // Get all messages to and from this doctor's botchat
+
+    // Get all messages between this doctor and their patients
     async getMessages() {
       try {
+        const ct = true;
         const DID = this.$store.state.user.UserID;
+        this.messages = [];
+        let assignedPatients = [];
+        while(ct){
+          // Get patients assigned to this doctor
+          assignedPatients = await axios.post(`http://localhost:5000/users`, {Doctor: DID});
+          // Get all messages sent to and from the users
+          for(let i = 0; i < assignedPatients.length; ++i){
+            const sentMessages = await axios.post(`http://localhost:5000/messages`, {SendUserID: DID, ReceiveUserID: assignedPatients[i].UserID});
+            const receivedMessages = await axios.post(`http://localhost:5000/messages`, {SendUserID: assignedPatients[i].UserID, ReceiveUserID: DID});
+            // Check if we have any latest messages
+            let latestSent = null;
+            let latestReceived = null;
+            if(sentMessages.length > 0) {
+              latestSent = sentMessages[sentMessages.length - 1];
+            }
+            if(receivedMessages.length > 0) {
+              latestReceived = sentMessages[sentMessages.length - 1];
+            }
+            // Get actual latest
+            let actualLatest = null;
+            if(latestSent && latestReceived){
+              const sentDateSplit = latestSent.Date.split("-");
+              const sentYear = parseInt(sentDateSplit[0]);
+              const sentMonth = parseInt(sentDateSplit[1]);
+              const sentDay = parseInt(sentDateSplit[2]);
+              const sentTimeSplit = latestSent.Time.split(":");
+              const sentHour = parseInt(sentTimeSplit[0]);
+              const sentMinute = parseInt(sentTimeSplit[1]);
+              const sentSecond = parseInt(sentTimeSplit[2]);
+              const receivedDateSplit = latestReceived.Date.split("-");
+              const receivedYear = parseInt(receivedDateSplit[0]);
+              const receivedMonth = parseInt(receivedDateSplit[1]);
+              const receivedDay = parseInt(receivedDateSplit[2]);
+              const receivedTimeSplit = latestReceived.Time.split(":");
+              const receivedHour = parseInt(receivedTimeSplit[0]);
+              const receivedMinute = parseInt(receivedTimeSplit[1]);
+              const receivedSecond = parseInt(receivedTimeSplit[2]);
+              if(sentYear < receivedYear){
+                actualLatest = latestSent;
+              }else if(receivedYear < sentYear){
+                actualLatest = latestReceived;
+              }
+              if(!actualLatest){
+                if(sentMonth < receivedMonth){
+                  actualLatest = latestSent;
+                }else if(receivedMonth < sentMonth){
+                  actualLatest = latestReceived;
+                }
+                if(!actualLatest){
+                  if(sentDay < receivedDay){
+                    actualLatest = latestSent;
+                  }else if(receivedDay < sentDay){
+                    actualLatest = latestReceived;
+                  }
+                  if(!actualLatest){
+                    if(sentHour < receivedHour){
+                      actualLatest = latestSent;
+                    }else if(receivedHour < sentHour){
+                      actualLatest = latestReceived;
+                    }
+                  }
+                  if(!actualLatest){
+                    if(sentMinute < receivedMinute){
+                      actualLatest = latestSent;
+                    }else if(receivedMinute < sentMinute){
+                      actualLatest = latestReceived;
+                    }
+                  }
+                  if(!actualLatest){
+                    if(sentSecond <= receivedSecond){
+                      actualLatest = latestSent;
+                    }else if(receivedSecond < sentSecond){
+                      actualLatest = latestReceived;
+                    }
+                  }
+                }
+              }
+            }else if(latestSent){
+              actualLatest = latestSent;
+            }else if(latestReceived){
+              actualLatest = latestReceived;
+              // Set unread for this user
+              this.userUnread[i] = actualLatest.State == 'Sent';
+            }else{
+              // No messages
+            }
+            // Check is current latest is same as previous, set updateUserChat, and update messages
+            if(this.previousUserLatestMessage[i].ID != actualLatest.ID){
+              this.updateUserChat[i] = true;// TODO: Update frontend, could be done here directly. We could then remove this.updateUserChat
+              this.previousUserLatestMessage[i] = actualLatest;
+              this.sentMessages[i] = sentMessages;
+              this.receivedMessages[i] = receivedMessages;
+            }else{
+              this.updateUserChat[i] = false;
+            }
+          }
+
+          // Wait 2s before checking for new messages
+          await new Promise(r => setTimeout(r, 2000));
+        }
         this.messages = await axios.get(`http://localhost:5000/messages/${DID}`);
       } catch (err) {
         console.log(err);
