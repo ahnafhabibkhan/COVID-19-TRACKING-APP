@@ -28,6 +28,18 @@ export const getMessages = (data, result) => {
     });
 }
 
+// Get messages between
+export const getMessagesBetween = (user0, user1, result) => {
+    db.query("SELECT * FROM message WHERE (SendUserID = ? or SendUserID = ?) and (ReceiveUserID = ? or ReceiveUserID = ?) order by Date, Time asc", [user0, user1, user0, user1], (err, results) => {
+        if(err) {
+            console.log(err);
+            result(err, null);
+        } else {
+            result(null, results);
+        }
+    });
+}
+
 // Insert message to Database
 export const insertMessage = (data, result) => {
     db.query("INSERT INTO message SET ?", [data], (err, results) => {

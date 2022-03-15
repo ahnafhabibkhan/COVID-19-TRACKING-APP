@@ -6,11 +6,11 @@ import { showUserByEmail, showUsers, showUsersByData, showLatestPositiveUsers, c
 import { showPasswordResetRequestByID, createPasswordResetRequest, deletePasswordResetRequest, updatePasswordResetRequest } from "../controllers/passwordResetRequest.js";
 import { createAccountRequest, showAccountRequests, deleteAccountRequest, showAccountRequestByEmail} from "../controllers/accountRequest.js";
 import { createHealthStatus, deleteHealthStatus, deleteHealthStatuses, showHealthStatuses, showLatestHealthStatus, updateHealthStatus } from "../controllers/healthStatus.js";
-import {showAppointmentRequests, createAppointmentRequest, removeAppointmentRequest} from "../controllers/appointmentRequest.js";
-import {createAppointment, removeAppointment, showAppointments} from "../controllers/appointment.js";
-import {createAvailability, removeAvailability, showAvailabilities} from "../controllers/doctorAvailability.js";
-import {createMessage, removeMessage, showMessagesByID, showMessagesByData} from "../controllers/message.js";
-import {showNotifications, createNotification, removeNotification} from "../controllers/notification.js";
+import { showAppointmentRequests, createAppointmentRequest, removeAppointmentRequest} from "../controllers/appointmentRequest.js";
+import { createAppointment, removeAppointment, showAppointments} from "../controllers/appointment.js";
+import { createAvailability, removeAvailability, showAvailabilities} from "../controllers/doctorAvailability.js";
+import { createMessage, removeMessage, showMessagesByID, showMessagesByData, showMessagesBetween} from "../controllers/message.js";
+import { showNotifications, createNotification, removeNotification} from "../controllers/notification.js";
 
 // init express router
 const router = express.Router();
@@ -53,6 +53,9 @@ router.get('/messages/:id', showMessagesByID);
 
 // Get messages by data
 router.post('/messages', showMessagesByData);
+
+// Get messages between
+router.get('/messages/:user0/:user1', showMessagesBetween);
 
 // Create New availability
 router.post('/message', createMessage);

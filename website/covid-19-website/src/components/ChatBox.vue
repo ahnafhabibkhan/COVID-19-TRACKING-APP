@@ -109,9 +109,10 @@ export default {
     },
     async getMessages() {
       try {
+
         const DID = this.$store.state.user.UserID;
         this.messages = await axios.get(
-          `http://localhost:5001/messages/${DID}`
+          `http://localhost:5000/messages/${DID}/USER1`//TODO: USER1 here should be the selected user's ID but frontend implementation doesnt take selected id into account
         );
       } catch (err) {
         console.log(err);
@@ -121,7 +122,7 @@ export default {
       try {
         const DID = this.$store.state.user.UserID;
 
-        await axios.post(`http://localhost:5001/messages/`, {
+        await axios.post(`http://localhost:5000/messages/`, {
           SendUserID: DID,
           ReceiveUserID: 1,
           Text: this.bobMessage,
