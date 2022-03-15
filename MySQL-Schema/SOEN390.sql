@@ -183,7 +183,7 @@ CREATE TABLE `message` (
   `Time` time NOT NULL,
   `ID` int unsigned NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -192,6 +192,7 @@ CREATE TABLE `message` (
 
 LOCK TABLES `message` WRITE;
 /*!40000 ALTER TABLE `message` DISABLE KEYS */;
+INSERT INTO `message` VALUES (4,1,'hello','MTL','Sent','2022-03-15','02:33:00',4),(1,4,'hi','MTL','Sent','2022-03-15','02:50:00',5),(4,3,'hey','MTL','Sent','2022-03-14','15:02:32',6);
 /*!40000 ALTER TABLE `message` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -207,6 +208,7 @@ CREATE TABLE `notification` (
   `Recipient` int unsigned NOT NULL,
   `Time` time NOT NULL,
   `ID` int NOT NULL AUTO_INCREMENT,
+  `Read` tinyint NOT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -287,4 +289,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-03-14 14:37:48
+-- Dump completed on 2022-03-15 14:45:00
