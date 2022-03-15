@@ -1,5 +1,10 @@
 <template>
   <div class="doctor">
+    <!-- ChatBox modal -->
+    <v-dialog v-model="chatbox_modal" width="350px">
+      <Chatbox />
+    </v-dialog>
+    <!-- end of ChatBox modal -->
     <!-- date modal start -->
     <v-dialog v-model="date_dialog" width="600px">
       <v-card>
@@ -75,7 +80,7 @@
         </div>
       </div>
       <div style="margin-top: 50%; margin-left: 85%">
-        <v-btn @click="ChatboxClick" icon height="80px" width="80px">
+        <v-btn @click="onChatBoxClick()" icon height="80px" width="80px">
           <v-icon color="blue darken-3" style="font-size: 80px">
             mdi-message-text
           </v-icon>
@@ -89,7 +94,7 @@
             <div>
               <v-btn
                 class="white--text"
-                style="font-size: 18px;"
+                style="font-size: 18px"
                 color="blue lighten-2"
                 width="400px"
                 height="75px"
@@ -100,7 +105,7 @@
             <div class="my-6">
               <v-btn
                 class="white--text"
-                style="font-size: 18px;"
+                style="font-size: 18px"
                 color="blue lighten-2"
                 width="400px"
                 height="75px"
@@ -111,7 +116,7 @@
             <div class="my-6">
               <v-btn
                 class="white--text"
-                style="font-size: 18px;"
+                style="font-size: 18px"
                 color="blue lighten-2"
                 width="400px"
                 height="75px"
@@ -137,11 +142,12 @@
 <script>
 import moment from "moment";
 import axios from "axios";
+import Chatbox from "../components/ChatBox.vue";
 
 export default {
   name: "Doctor",
 
-  components: {},
+  components: { Chatbox },
 
   data: function () {
     return {
@@ -180,6 +186,7 @@ export default {
         .substr(0, 10),
       allAvailabilities: [],
       fetchAvailabilities: [],
+      chatbox_modal: false,
     };
   },
 
@@ -190,15 +197,17 @@ export default {
     this.getChartData();
   },
 
-
   methods: {
+    chatBox() {
+      this.chatbox_modal = !this.chatbox_modal;
+    },
 
     // Get infected and non infected data
     async getChartData() {
       try {
         const DID = this.$store.state.user.UserID;
         // Get all users assigned to this doctor
-        const response = await axios.post(`http://localhost:5000/users`, {
+        const response = await axios.post(`http://localhost:5001/users`, {
           Doctor: DID,
         });
         const patientList = response.data;
@@ -207,23 +216,28 @@ export default {
         let totalCount = 0;
         let patientIDs = [];
         // Make a list of their IDs
-        patientList.forEach(patient => {
+        patientList.forEach((patient) => {
           ++totalCount;
           patientIDs.push(patient.UserID);
         });
         // For each ID get their latest health status and check if they have covid and calculate count
-        for(let i=0;i<patientIDs.length;++i){
-          const latestHSResponse = await axios.get(`http://localhost:5000/healthstatus/${patientIDs[i]}`);
+        for (let i = 0; i < patientIDs.length; ++i) {
+          const latestHSResponse = await axios.get(
+            `http://localhost:5001/healthstatus/${patientIDs[i]}`
+          );
           console.log(JSON.stringify(latestHSResponse.data));
-          const infected = (latestHSResponse.data.Covid == 1);
-          if(infected){
+          const infected = latestHSResponse.data.Covid == 1;
+          if (infected) {
             ++infectedCount;
-          }else{
-            ++nonInfectedCount
+          } else {
+            ++nonInfectedCount;
           }
         }
         // Write the data to series
-        this.series = [infectedCount/totalCount * 100, nonInfectedCount/totalCount * 100];
+        this.series = [
+          (infectedCount / totalCount) * 100,
+          (nonInfectedCount / totalCount) * 100,
+        ];
       } catch (err) {
         console.log(err);
       }
@@ -421,7 +435,7 @@ export default {
     async getAvailabilities() {
       try {
         const res = await axios.get(
-          `http://localhost:5000/availability/${this.$store.state.user.UserID}`
+          `http://localhost:5001/availability/${this.$store.state.user.UserID}`
         );
         this.fetchAvailabilities = res.data;
       } catch (err) {
@@ -432,7 +446,7 @@ export default {
     // Add availability
     async addAvailability(DayOfWeek, StartTime, EndTime, SpecificDay) {
       try {
-        await axios.post(`http://localhost:5000/availability`, {
+        await axios.post(`http://localhost:5001/availability`, {
           DID: this.$store.state.user.UserID,
           DayOfWeek: DayOfWeek,
           StartTime: StartTime,
@@ -447,7 +461,7 @@ export default {
     // Remove availability
     async removeAvailability(DayOfWeek, StartTime, EndTime, SpecificDay) {
       try {
-        await axios.post(`http://localhost:5000/deleteavailability`, {
+        await axios.post(`http://localhost:5001/deleteavailability`, {
           DID: this.$store.state.user.UserID,
           DayOfWeek: DayOfWeek,
           StartTime: StartTime,
@@ -461,6 +475,9 @@ export default {
 
     // Open patients list
     onPatientsClick() {
+      this.$router.push("/doctor-patients-list");
+    },
+    onChatBoxClick() {
       this.$router.push("/doctor-patients-list");
     },
   },

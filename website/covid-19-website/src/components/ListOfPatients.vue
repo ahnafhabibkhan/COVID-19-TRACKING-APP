@@ -1,5 +1,10 @@
 <template>
   <div>
+    <!-- ChatBox modal -->
+    <v-dialog v-model="chatbox_modal" width="350px">
+      <Chatbox />
+    </v-dialog>
+    <!-- end of ChatBox modal -->
     <h1
       style="
         margin-top: 50px;
@@ -57,7 +62,7 @@
         width="350px"
         height="100px"
         @click="onPatientClick()"
-        :color="item.covidStatus === 'Positive'? '#FF4933' : 'white'"
+        :color="item.covidStatus === 'Positive' ? '#FF4933' : 'white'"
         ><h2 class="my-2">
           {{ item.patientsList.FirstName }} {{ item.patientsList.LastName }}
         </h2>
@@ -73,10 +78,11 @@
 </template>
 <script>
 import axios from "axios";
+import Chatbox from "../components/ChatBox.vue";
 export default {
   name: "ListOfPatients",
 
-  components: {},
+  components: { Chatbox },
   props: {
     user: String,
     title: String,
@@ -87,6 +93,7 @@ export default {
       search: "",
       userRole: this.user,
       covidPatientsList: [],
+      chatbox_modal: false,
     };
   },
   created() {
@@ -103,24 +110,24 @@ export default {
           const DID = this.$store.state.user.UserID;
           console.log("logged in doctor ID: " + DID);
           // Get users assigned to this doctor ID
-          const response = await axios.post(`http://localhost:5000/users`, {
+          const response = await axios.post(`http://localhost:5001/users`, {
             Doctor: DID,
           });
           this.patientList = response.data;
           this.listOfCovidPatients(this.patientList);
         } else if (this.userRole == "health-official") {
           // Get all patients
-          const response = await axios.get(`http://localhost:5000/users`);
+          const response = await axios.get(`http://localhost:5001/users`);
           this.patientList = response.data;
           this.listOfCovidPatients(this.patientList);
         } else if (this.userRole == "immigration-officer") {
           // Get all patients who were covid positive in their latest health status
           const response = await axios.get(
-            `http://localhost:5000/usersByCovid`
+            `http://localhost:5001/usersByCovid`
           );
           var pList = response.data;
           const travelResponse = await axios.post(
-            `http://localhost:5000/users`,
+            `http://localhost:5001/users`,
             { Role: "Patient", Travelled: 1 }
           );
           pList = pList.concat(travelResponse.data);
@@ -133,13 +140,15 @@ export default {
 
     // Go to patient's profile
     onPatientClick() {
-      this.$router.push("/");
+      this.chatbox_modal = !this.chatbox_modal;
+
+      // this.$router.push("/");
     },
     async listOfCovidPatients(patientsList) {
       if (this.userRole == "doctor" || this.userRole == "health-official") {
         for (var i = 0; i < patientsList.length; i++) {
           const covidStatusInt = await axios.get(
-            `http://localhost:5000/healthstatus/${patientsList[i].UserID}`
+            `http://localhost:5001/healthstatus/${patientsList[i].UserID}`
           );
           var covidStatus = "";
           if (covidStatusInt.data.Covid == 1) {
@@ -155,7 +164,7 @@ export default {
       } else if (this.userRole == "immigration-officer") {
         for (var j = 0; j < patientsList.length; j++) {
           const covidStatusInt = await axios.get(
-            `http://localhost:5000/healthstatus/${patientsList[j].UserID}`
+            `http://localhost:5001/healthstatus/${patientsList[j].UserID}`
           );
           if (covidStatusInt.data.Covid == 1) {
             this.patientList.push(patientsList[j]);
