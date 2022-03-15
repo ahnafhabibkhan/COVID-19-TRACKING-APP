@@ -151,9 +151,6 @@ export default {
 
   data: function () {
     return {
-      messages: [],
-      chatBotMessages: [],
-
       series: [44, 55],
       chartOptions: {
         chart: {
@@ -204,7 +201,7 @@ export default {
       try {
         const DID = this.$store.state.user.UserID;
         // Get all users assigned to this doctor
-        const response = await axios.post(`http://localhost:5000/users`, {
+        const response = await axios.post(`http://localhost:5001/users`, {
           Doctor: DID,
         });
         const patientList = response.data;
@@ -220,7 +217,7 @@ export default {
         // For each ID get their latest health status and check if they have covid and calculate count
         for (let i = 0; i < patientIDs.length; ++i) {
           const latestHSResponse = await axios.get(
-            `http://localhost:5000/healthstatus/${patientIDs[i]}`
+            `http://localhost:5001/healthstatus/${patientIDs[i]}`
           );
           console.log(JSON.stringify(latestHSResponse.data));
           const infected = latestHSResponse.data.Covid == 1;
@@ -240,13 +237,41 @@ export default {
       }
     },
 
-    // Get all messages to and from this doctor's botchat
+    // Get all messages between this doctor and their patients
     async getMessages() {
       try {
+        const ct = true;
         const DID = this.$store.state.user.UserID;
-        this.messages = await axios.get(
-          `http://localhost:5000/messages/${DID}`
-        );
+        let messages = [];
+        let assignedPatients = [];
+        while (ct) {
+          // Get patients assigned to this doctor
+          const assignedPatientsResponse = await axios.post(
+            `http://localhost:5001/users`,
+            { Doctor: DID }
+          );
+          assignedPatients = assignedPatientsResponse.data;
+          // Get all messages sent to and from the users
+          for (let i = 0; i < assignedPatients.length; ++i) {
+            const messagesResponse = await axios.post(
+              `http://localhost:5001/messages/${DID}/${assignedPatients[i].UserID}`
+            );
+            messages = messagesResponse.data;
+            if (messages && messages.length > 0) {
+              // Check if latest is read or not
+              if (
+                messages[messages.length - 1].ReceiveUserID ==
+                  this.$store.state.user.UserID &&
+                messages[messages.length - 1].State == "Sent"
+              ) {
+                // TODO: Show that there is new message to read
+              }
+            }
+          }
+
+          // Wait 2s before checking for new messages
+          await new Promise((r) => setTimeout(r, 2000));
+        }
       } catch (err) {
         console.log(err);
       }
@@ -333,7 +358,7 @@ export default {
     async getAvailabilities() {
       try {
         const res = await axios.get(
-          `http://localhost:5000/availability/${this.$store.state.user.UserID}`
+          `http://localhost:5001/availability/${this.$store.state.user.UserID}`
         );
         this.fetchAvailabilities = res.data;
       } catch (err) {
@@ -344,7 +369,7 @@ export default {
     // Add availability
     async addAvailability(DayOfWeek, StartTime, EndTime, SpecificDay) {
       try {
-        await axios.post(`http://localhost:5000/availability`, {
+        await axios.post(`http://localhost:5001/availability`, {
           DID: this.$store.state.user.UserID,
           DayOfWeek: DayOfWeek,
           StartTime: StartTime,
@@ -359,7 +384,7 @@ export default {
     // Remove availability
     async removeAvailability(DayOfWeek, StartTime, EndTime, SpecificDay) {
       try {
-        await axios.post(`http://localhost:5000/deleteavailability`, {
+        await axios.post(`http://localhost:5001/deleteavailability`, {
           DID: this.$store.state.user.UserID,
           DayOfWeek: DayOfWeek,
           StartTime: StartTime,

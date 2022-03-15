@@ -10,19 +10,19 @@
         :key="i"
         class="message"
         :class="{
-          'message-out': message.author !== 'you',
-          'message-in': message.author === 'you',
+          'message-out': message.ReceiveUserID != $store.state.user.UserID,
+          'message-in': message.ReceiveUserID == $store.state.user.UserID,
         }"
       >
-        {{ message.body }}
+        {{ message.Text }}
       </p>
     </section>
 
     <section class="chat-inputs">
-      <form @submit.prevent="sendMessage('out')" id="person1-form">
+      <form @submit.prevent="sendMessage()" id="person1-form">
         <label for="person1-input">Bob</label>
         <input
-          v-model="bobMessage"
+          v-model="youMessage"
           id="person1-input"
           type="text"
           placeholder="Type your message"
@@ -45,7 +45,6 @@
   </v-card>
 </template>
 <script>
-import Vue from "../App.vue";
 import axios from "axios";
 export default {
   name: "ChatBox",
@@ -53,24 +52,11 @@ export default {
   components: {},
   data: function () {
     return {
-      bobMessage: "",
       youMessage: "",
-      messages: [
-        {
-          body: "Welcome to the chat, I'm Bob!",
-          author: "bob",
-        },
-        {
-          body: "Thank you Bob",
-          author: "you",
-        },
-        {
-          body: "You're most welcome",
-          author: "bob",
-        },
-      ],
+      messages: [],
     };
   },
+
   // mounted() {
   //   document.onreadystatechange = () => {
   //     if (document.readyState == "complete") {
@@ -82,63 +68,75 @@ export default {
   //   };
   // },
 
+  created() {
+    this.getMessages();
+  },
+
   methods: {
-    sendMessage(direction) {
-      if (!this.youMessage && !this.bobMessage) {
+    sendMessage() {
+      if (!this.youMessage) {
         return;
       }
-      if (direction === "in") {
-        this.messages.push({ body: this.youMessage, author: "you" });
-        this.youMessage = "";
-        //this.sentMessages();
-      } else if (direction === "out") {
-        this.messages.push({ body: this.bobMessage, author: "bob" });
-
-        this.sentMessages();
-        this.bobMessage = "";
-        //this.getMessages();
-      } else {
-        alert("something went wrong");
-      }
-      Vue.nextTick(() => {
-        let messageDisplay = this.$refs.chatArea;
-        messageDisplay.scrollTop = messageDisplay.scrollHeight;
-      });
+      const currentDate = new Date();
+      const year = currentDate.getFullYear();
+      const month = currentDate.getMonth() + 1;
+      const day = currentDate.getDate();
+      const hour = currentDate.getHours();
+      const minute = currentDate.getMinutes();
+      const second = currentDate.getSeconds();
+      const currentMessage = {
+        SendUserID: this.$store.state.user.UserID,
+        ReceiveUserID: this.$store.state.selectedUser,
+        Text: this.youMessage,
+        Location: "MTL", // TODO: Get user's location from their profile
+        State: "Sent",
+        Date: "" + year + "-" + month + "-" + day,
+        Time: "" + hour + ":" + minute + ":" + second,
+      };
+      this.messages.push(currentMessage);
+      //this.bobMessage = "";
+      this.sentMessages(currentMessage);
+      this.youMessage = "";
+      //this.getMessages();
     },
     clearAllMessages() {
       this.messages = [];
     },
     async getMessages() {
       try {
-        const DID = this.$store.state.user.UserID;
-        this.messages = await axios.get(
-          `http://localhost:5000/messages/${DID}`
-        );
+        const ct = true;
+        while (ct) {
+          console.log(
+            "Getting messages between " +
+              this.$store.state.user.UserID +
+              " and " +
+              this.$store.state.selectedUser
+          );
+          const messagesResponse = await axios.get(
+            `http://localhost:5001/messages/${this.$store.state.user.UserID}/${this.$store.state.selectedUser}`
+          );
+          this.messages = messagesResponse.data;
+          if (this.messages && this.messages.length > 0) {
+            // Check if latest is read or not
+            if (
+              this.messages[this.messages.length - 1].ReceiveUserID ==
+                this.$store.state.user.UserID &&
+              this.messages[this.messages.length - 1].State == "Sent"
+            ) {
+              // TODO: Show that there is new message to read
+            }
+          }
+
+          // Wait 2s before checking for new messages
+          await new Promise((r) => setTimeout(r, 2000));
+        }
       } catch (err) {
         console.log(err);
       }
     },
-    async sentMessages() {
+    async sentMessages(message) {
       try {
-        const DID = this.$store.state.user.UserID;
-
-        await axios.post(`http://localhost:5000/messages/`, {
-          SendUserID: DID,
-          ReceiveUserID: 1,
-          Text: this.bobMessage,
-          Location: "MTL",
-          State: "Sent",
-          Date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
-            .toISOString()
-            .substr(0, 10),
-          Time:
-            new Date().getHours() +
-            ":" +
-            new Date().getMinutes() +
-            ":" +
-            new Date().getSeconds(),
-          ID: 1,
-        });
+        await axios.post(`http://localhost:5001/message/`, message);
       } catch (err) {
         console.log(err);
       }

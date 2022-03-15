@@ -38,7 +38,7 @@
         style="display: inline-table"
         width="30%"
         height="10%"
-        @click="onPatientClick()"
+        @click="onPatientClick(item.UserID)"
         ><h2 class="my-2">{{ item.FirstName }} {{ item.LastName }}</h2>
         <p>
           Contact:<br />
@@ -61,7 +61,7 @@
         style="display: inline-table"
         width="350px"
         height="100px"
-        @click="onPatientClick()"
+        @click="onPatientClick(item.patientsList.UserID)"
         :color="item.covidStatus === 'Positive' ? '#FF4933' : 'white'"
         ><h2 class="my-2">
           {{ item.patientsList.FirstName }} {{ item.patientsList.LastName }}
@@ -99,6 +99,7 @@ export default {
   created() {
     // Call all these on page creation
     this.getPatients();
+    this.getMessages();
   },
   methods: {
     // Get all patients assigned to this doctor
@@ -138,10 +139,54 @@ export default {
       }
     },
 
-    // Go to patient's profile
-    onPatientClick() {
-      this.chatbox_modal = !this.chatbox_modal;
+    // Get all messages between this user any other user
+    async getMessages() {
+      try {
+        const ct = true;
+        let messages = [];
+        while(ct){
+          console.log("GetMessages called");
+          // Get all messages sent to and from this user
+          const messagesResponse = await axios.get(`http://localhost:5000/messages/${this.$store.state.user.UserID}`);
+          messages = messagesResponse.data;
+          if(messages) {
+            let messagesByUser = {};
+            for (let i = 0; i < messages.length; ++i) {
+              let otherUserID = 0;
+              const currentMessage = messages[i];
+              if (currentMessage.ReceiveUserID == this.$store.state.user.UserID) {
+                otherUserID = currentMessage.SendUserID;
+              }else{
+                otherUserID = currentMessage.ReceiveUserID;
+              }
+              if(!messagesByUser[otherUserID]){
+                messagesByUser[otherUserID] = [];
+              }
+              messagesByUser[otherUserID].push(currentMessage);
+            }
+            for(var UserID in messagesByUser){
+              if(messagesByUser[UserID] && messagesByUser[UserID].length > 0) {
+                // Check if latest is read or not
+                if (messagesByUser[UserID][messagesByUser[UserID].length - 1].ReceiveUserID == this.$store.state.user.UserID && messagesByUser[UserID][messagesByUser[UserID].length - 1].State == 'Sent') {
+                  // TODO: Show that there is new message to read
+                }
+              }
+            }
+          }
 
+          // Wait 2s before checking for new messages
+          await new Promise(r => setTimeout(r, 2000));
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    },
+
+    // Go to patient's profile
+    onPatientClick(UserID) {
+      console.log("onPatientCLick called with user id: "+UserID);
+      this.chatbox_modal = !this.chatbox_modal;
+      this.$store.commit("setSelectedUser", UserID);
       // this.$router.push("/");
     },
     async listOfCovidPatients(patientsList) {
