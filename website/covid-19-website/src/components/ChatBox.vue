@@ -77,6 +77,12 @@ export default {
       if (!this.youMessage) {
         return;
       }
+      const userResponse = axios.get(`http://localhost:5000/user/${this.$store.state.user.UserID}`);
+      const user = userResponse.data;
+      let idToUse = this.$store.state.selectedUser;
+      if(user.Role == 'Patient'){
+        idToUse = user.Doctor;
+      }
       const currentDate = new Date();
       const year = currentDate.getFullYear();
       const month = currentDate.getMonth() + 1;
@@ -86,7 +92,7 @@ export default {
       const second = currentDate.getSeconds();
       const currentMessage = {
         SendUserID: this.$store.state.user.UserID,
-        ReceiveUserID: this.$store.state.selectedUser,
+        ReceiveUserID: idToUse,
         Text: this.youMessage,
         Location: "MTL", // TODO: Get user's location from their profile
         State: "Sent",
@@ -105,10 +111,16 @@ export default {
       try {
 
         const ct = true;
-        while(ct) {
-          console.log("Getting messages between "+this.$store.state.user.UserID+" and "+this.$store.state.selectedUser);
+        while(ct){
+          const userResponse = await axios.post(`http://localhost:5000/users`, {UserID: this.$store.state.user.UserID});
+          const user = userResponse.data[0];
+          let idToUse = this.$store.state.selectedUser;
+          if(user.Role == 'Patient'){
+            idToUse = user.Doctor;
+          }
+          console.log("Getting messages between "+this.$store.state.user.UserID+" and "+idToUse);
           const messagesResponse = await axios.get(
-            `http://localhost:5000/messages/${this.$store.state.user.UserID}/${this.$store.state.selectedUser}`
+            `http://localhost:5000/messages/${this.$store.state.user.UserID}/${idToUse}`
           );
           this.messages = messagesResponse.data;
           if(this.messages && this.messages.length > 0) {
