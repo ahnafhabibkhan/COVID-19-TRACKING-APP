@@ -111,24 +111,24 @@ export default {
           const DID = this.$store.state.user.UserID;
           console.log("logged in doctor ID: " + DID);
           // Get users assigned to this doctor ID
-          const response = await axios.post(`http://localhost:5000/users`, {
+          const response = await axios.post(`http://localhost:5001/users`, {
             Doctor: DID,
           });
           this.patientList = response.data;
           this.listOfCovidPatients(this.patientList);
         } else if (this.userRole == "health-official") {
           // Get all patients
-          const response = await axios.get(`http://localhost:5000/users`);
+          const response = await axios.get(`http://localhost:5001/users`);
           this.patientList = response.data;
           this.listOfCovidPatients(this.patientList);
         } else if (this.userRole == "immigration-officer") {
           // Get all patients who were covid positive in their latest health status
           const response = await axios.get(
-            `http://localhost:5000/usersByCovid`
+            `http://localhost:5001/usersByCovid`
           );
           var pList = response.data;
           const travelResponse = await axios.post(
-            `http://localhost:5000/users`,
+            `http://localhost:5001/users`,
             { Role: "Patient", Travelled: 1 }
           );
           pList = pList.concat(travelResponse.data);
@@ -144,30 +144,39 @@ export default {
       try {
         const ct = true;
         let messages = [];
-        while(ct){
+        while (ct) {
           console.log("GetMessages called");
           // Get all messages sent to and from this user
-          const messagesResponse = await axios.get(`http://localhost:5000/messages/${this.$store.state.user.UserID}`);
+          const messagesResponse = await axios.get(
+            `http://localhost:5001/messages/${this.$store.state.user.UserID}`
+          );
           messages = messagesResponse.data;
-          if(messages) {
+          if (messages) {
             let messagesByUser = {};
             for (let i = 0; i < messages.length; ++i) {
               let otherUserID = 0;
               const currentMessage = messages[i];
-              if (currentMessage.ReceiveUserID == this.$store.state.user.UserID) {
+              if (
+                currentMessage.ReceiveUserID == this.$store.state.user.UserID
+              ) {
                 otherUserID = currentMessage.SendUserID;
-              }else{
+              } else {
                 otherUserID = currentMessage.ReceiveUserID;
               }
-              if(!messagesByUser[otherUserID]){
+              if (!messagesByUser[otherUserID]) {
                 messagesByUser[otherUserID] = [];
               }
               messagesByUser[otherUserID].push(currentMessage);
             }
-            for(var UserID in messagesByUser){
-              if(messagesByUser[UserID] && messagesByUser[UserID].length > 0) {
+            for (var UserID in messagesByUser) {
+              if (messagesByUser[UserID] && messagesByUser[UserID].length > 0) {
                 // Check if latest is read or not
-                if (messagesByUser[UserID][messagesByUser[UserID].length - 1].ReceiveUserID == this.$store.state.user.UserID && messagesByUser[UserID][messagesByUser[UserID].length - 1].State == 'Sent') {
+                if (
+                  messagesByUser[UserID][messagesByUser[UserID].length - 1]
+                    .ReceiveUserID == this.$store.state.user.UserID &&
+                  messagesByUser[UserID][messagesByUser[UserID].length - 1]
+                    .State == "Sent"
+                ) {
                   // TODO: Show that there is new message to read
                 }
               }
@@ -175,7 +184,7 @@ export default {
           }
 
           // Wait 2s before checking for new messages
-          await new Promise(r => setTimeout(r, 2000));
+          await new Promise((r) => setTimeout(r, 2000));
         }
       } catch (err) {
         console.log(err);
@@ -184,7 +193,7 @@ export default {
 
     // Go to patient's profile
     onPatientClick(UserID) {
-      console.log("onPatientCLick called with user id: "+UserID);
+      console.log("onPatientCLick called with user id: " + UserID);
       this.chatbox_modal = !this.chatbox_modal;
       this.$store.commit("setSelectedUser", UserID);
       // this.$router.push("/");
@@ -193,7 +202,7 @@ export default {
       if (this.userRole == "doctor" || this.userRole == "health-official") {
         for (var i = 0; i < patientsList.length; i++) {
           const covidStatusInt = await axios.get(
-            `http://localhost:5000/healthstatus/${patientsList[i].UserID}`
+            `http://localhost:5001/healthstatus/${patientsList[i].UserID}`
           );
           var covidStatus = "";
           if (covidStatusInt.data.Covid == 1) {
@@ -209,7 +218,7 @@ export default {
       } else if (this.userRole == "immigration-officer") {
         for (var j = 0; j < patientsList.length; j++) {
           const covidStatusInt = await axios.get(
-            `http://localhost:5000/healthstatus/${patientsList[j].UserID}`
+            `http://localhost:5001/healthstatus/${patientsList[j].UserID}`
           );
           if (covidStatusInt.data.Covid == 1) {
             this.patientList.push(patientsList[j]);

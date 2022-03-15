@@ -9772,7 +9772,7 @@
         },
         {
           "functionName": "setupListenHandle",
-          "ranges": [{ "startOffset": 35000, "endOffset": 37420, "count": 0 }],
+          "ranges": [{ "startOffset": 35001, "endOffset": 37420, "count": 0 }],
           "isBlockCoverage": false
         },
         {
