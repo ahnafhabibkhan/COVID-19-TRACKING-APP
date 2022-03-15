@@ -913,7 +913,7 @@ th {
   font-size: 0.6rem;
 } */
 .bg-image {
-  background-image: url("../assets/PatientBg.jpeg");
+  background-image: url("../assets/Patient.png");
   background-size: cover;
   background-repeat: no-repeat;
   min-height: 100%;
