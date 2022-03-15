@@ -318,6 +318,9 @@
 
         <!-- status rows -->
         <v-row>
+          <v-col  v-if="isOverDue">
+            <v-alert type="error"> You overDue ! </v-alert>
+          </v-col>
           <v-col cols="12">
             <v-expansion-panels>
               <v-expansion-panel v-for="(item, i) in statusesFiltered" :key="i">
@@ -444,7 +447,7 @@
       <v-col cols="12" md="6" class="pt-6 mt-6">
         <!-- requested apppointments -->
         <div
-          style="width: 70%; background-color: rgba(256, 256, 256, 1)"
+          style="width: 70%; background-color: rgba(256, 256, 256, 0.5)"
           class="pa-4 rounded-lg mb-5"
         >
           <h2>Requested Appointments :</h2>
@@ -456,7 +459,7 @@
         </div>
         <!-- approved apppointments -->
         <div
-          style="width: 70%; background-color: rgba(256, 256, 256, 1)"
+          style="width: 70%; background-color: rgba(256, 256, 256, 0.5)"
           class="pa-4 rounded-lg mt-5"
         >
           <h2>Approved Appointments :</h2>
@@ -468,7 +471,7 @@
         </div>
         <!-- Doctor's Requested apppointments -->
         <div
-          style="width: 70%; background-color: rgba(256, 256, 256, 1)"
+          style="width: 70%; background-color: rgba(256, 256, 256, 0.5)"
           class="pa-4 rounded-lg mt-5"
         >
           <h2>Doctor's Requested Appointments:</h2>
@@ -538,7 +541,7 @@ export default {
       form: null,
       availabilities: [],
       available: null,
-      emergencyLevel: 'Low',
+      emergencyLevel: "Low",
       approved: [],
       doctorRequestedAppointments: [],
     };
@@ -779,6 +782,7 @@ export default {
       await this.getAvailabilities();
       this.date_dialoge = true;
     },
+
     // Get appointment requests made by this doctor
     async getDoctorAppointmentRequests() {
       try {
@@ -791,6 +795,9 @@ export default {
           }
         );
         this.doctorRequestedAppointments = res.data;
+        // we send recived data to store to be saved there
+        // this.$store.commit('setNotifs',res.data)
+        // this.$store.commit('setNotifs',['notif1','notif2'])
       } catch (err) {
         console.log(err);
       }
@@ -858,6 +865,23 @@ export default {
         return item.SpecificDay.substr(0, 10) == this.date;
       });
     },
+    // check if user is overdue and if yes show alert to him
+    isOverDue() {
+      if (this.statuses.length == 0) return false;
+      // get last status
+      const last_status = this.statuses[this.statuses.length - 1];
+      const last_status_date = +new Date(last_status.fillOutDate);
+      // get today time stamp
+      const today = +new Date();
+      console.log(today, last_status_date);
+      //compare
+      const diff = today - last_status_date;
+      console.log(diff > 24 * 60 * 60 * 1000);
+      if (diff > 24 * 60 * 60 * 1000 && last_status.Covid) {
+        return true;
+      }
+      return false;
+    },
   },
   mounted() {
     this.getApproved();
@@ -873,7 +897,25 @@ export default {
   color: red !important;
   background-color: white;
 }
+/* .up::before {
+  content: "Next";
+}
+::before {
+  content: "Next";
+} */
+/* td {
+  padding: 20px 0px;
+  font-size: 0.6rem;
+  text-align: center;
+}
+th {
+  padding: 5px;
+  font-size: 0.6rem;
+} */
 .bg-image {
+  background-image: url("../assets/PatientBg.jpeg");
+  background-size: cover;
+  background-repeat: no-repeat;
   min-height: 100%;
   min-width: 100%;
   /* position: fixed; */
@@ -888,4 +930,4 @@ export default {
   height: 40%;
   margin-left: 100%; */
 }
-</style>
+</style>pull
