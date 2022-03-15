@@ -93,8 +93,9 @@ export default {
         //this.sentMessages();
       } else if (direction === "out") {
         this.messages.push({ body: this.bobMessage, author: "bob" });
-        //this.bobMessage = "";
+
         this.sentMessages();
+        this.bobMessage = "";
         //this.getMessages();
       } else {
         alert("something went wrong");
@@ -111,7 +112,7 @@ export default {
       try {
         const DID = this.$store.state.user.UserID;
         this.messages = await axios.get(
-          `http://localhost:5001/messages/${DID}`
+          `http://localhost:5000/messages/${DID}`
         );
       } catch (err) {
         console.log(err);
@@ -121,7 +122,7 @@ export default {
       try {
         const DID = this.$store.state.user.UserID;
 
-        await axios.post(`http://localhost:5001/messages/`, {
+        await axios.post(`http://localhost:5000/messages/`, {
           SendUserID: DID,
           ReceiveUserID: 1,
           Text: this.bobMessage,

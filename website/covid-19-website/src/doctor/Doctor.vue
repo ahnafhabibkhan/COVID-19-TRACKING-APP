@@ -204,7 +204,7 @@ export default {
       try {
         const DID = this.$store.state.user.UserID;
         // Get all users assigned to this doctor
-        const response = await axios.post(`http://localhost:5001/users`, {
+        const response = await axios.post(`http://localhost:5000/users`, {
           Doctor: DID,
         });
         const patientList = response.data;
@@ -220,7 +220,7 @@ export default {
         // For each ID get their latest health status and check if they have covid and calculate count
         for (let i = 0; i < patientIDs.length; ++i) {
           const latestHSResponse = await axios.get(
-            `http://localhost:5001/healthstatus/${patientIDs[i]}`
+            `http://localhost:5000/healthstatus/${patientIDs[i]}`
           );
           console.log(JSON.stringify(latestHSResponse.data));
           const infected = latestHSResponse.data.Covid == 1;
@@ -245,7 +245,7 @@ export default {
       try {
         const DID = this.$store.state.user.UserID;
         this.messages = await axios.get(
-          `http://localhost:5001/messages/${DID}`
+          `http://localhost:5000/messages/${DID}`
         );
       } catch (err) {
         console.log(err);
@@ -333,7 +333,7 @@ export default {
     async getAvailabilities() {
       try {
         const res = await axios.get(
-          `http://localhost:5001/availability/${this.$store.state.user.UserID}`
+          `http://localhost:5000/availability/${this.$store.state.user.UserID}`
         );
         this.fetchAvailabilities = res.data;
       } catch (err) {
@@ -344,7 +344,7 @@ export default {
     // Add availability
     async addAvailability(DayOfWeek, StartTime, EndTime, SpecificDay) {
       try {
-        await axios.post(`http://localhost:5001/availability`, {
+        await axios.post(`http://localhost:5000/availability`, {
           DID: this.$store.state.user.UserID,
           DayOfWeek: DayOfWeek,
           StartTime: StartTime,
@@ -359,7 +359,7 @@ export default {
     // Remove availability
     async removeAvailability(DayOfWeek, StartTime, EndTime, SpecificDay) {
       try {
-        await axios.post(`http://localhost:5001/deleteavailability`, {
+        await axios.post(`http://localhost:5000/deleteavailability`, {
           DID: this.$store.state.user.UserID,
           DayOfWeek: DayOfWeek,
           StartTime: StartTime,
