@@ -1,11 +1,7 @@
 <template>
   <div class="doctor">
     <!-- ChatBox modal -->
-    <v-dialog
-      v-model="chatbox_modal"
-      width="350px"
-      v-on:click="this.chatbox_modal = !this.chatbox_modal"
-    >
+    <v-dialog v-model="chatbox_modal" width="350px">
       <Chatbox />
     </v-dialog>
     <!-- end of ChatBox modal -->
@@ -84,7 +80,7 @@
         </div>
       </div>
       <div style="margin-top: 50%; margin-left: 85%">
-        <v-btn @click="chatBox()" icon height="80px" width="80px">
+        <v-btn @click="onChatBoxClick()" icon height="80px" width="80px">
           <v-icon color="blue darken-3" style="font-size: 80px">
             mdi-message-text
           </v-icon>
@@ -377,6 +373,9 @@ export default {
 
     // Open patients list
     onPatientsClick() {
+      this.$router.push("/doctor-patients-list");
+    },
+    onChatBoxClick() {
       this.$router.push("/doctor-patients-list");
     },
   },

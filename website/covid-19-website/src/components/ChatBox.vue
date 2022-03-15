@@ -10,8 +10,8 @@
         :key="i"
         class="message"
         :class="{
-          'message-out': message.author === 'you',
-          'message-in': message.author !== 'you',
+          'message-out': message.author !== 'you',
+          'message-in': message.author === 'you',
         }"
       >
         {{ message.body }}
@@ -19,7 +19,7 @@
     </section>
 
     <section class="chat-inputs">
-      <form @submit.prevent="sendMessage('in')" id="person1-form">
+      <form @submit.prevent="sendMessage('out')" id="person1-form">
         <label for="person1-input">Bob</label>
         <input
           v-model="bobMessage"
@@ -31,7 +31,7 @@
         <button type="submit" style="margin-left: 80px">Send</button>
       </form>
 
-      <form @submit.prevent="sentMessages('out')" id="person2-form">
+      <!-- <form @submit.prevent="sentMessages('out')" id="person2-form">
         <label for="person2-input">You</label>
         <input
           v-model="youMessage"
@@ -40,7 +40,7 @@
           placeholder="Type your message"
         />
         <button type="submit">Send</button>
-      </form>
+      </form> -->
     </section>
   </v-card>
 </template>
@@ -53,7 +53,6 @@ export default {
   components: {},
   data: function () {
     return {
-      url: "http://localhost:5001/",
       bobMessage: "",
       youMessage: "",
       messages: [
@@ -72,19 +71,31 @@ export default {
       ],
     };
   },
+  // mounted() {
+  //   document.onreadystatechange = () => {
+  //     if (document.readyState == "complete") {
+  //       console.log("Page completed with image and files!");
+  //       setInterval(function () {
+  //         this.getMessages();
+  //       }, 1000); // fetch
+  //     }
+  //   };
+  // },
+
   methods: {
     sendMessage(direction) {
       if (!this.youMessage && !this.bobMessage) {
         return;
       }
-      if (direction === "out") {
+      if (direction === "in") {
         this.messages.push({ body: this.youMessage, author: "you" });
         this.youMessage = "";
-        this.setMessages();
-      } else if (direction === "in") {
+        //this.sentMessages();
+      } else if (direction === "out") {
         this.messages.push({ body: this.bobMessage, author: "bob" });
-        this.bobMessage = "";
-        this.getMessages();
+        //this.bobMessage = "";
+        this.sentMessages();
+        //this.getMessages();
       } else {
         alert("something went wrong");
       }
@@ -106,17 +117,16 @@ export default {
         console.log(err);
       }
     },
-    async setMessages() {
+    async sentMessages() {
       try {
         const DID = this.$store.state.user.UserID;
 
         await axios.post(`http://localhost:5001/messages/`, {
           SendUserID: DID,
           ReceiveUserID: 1,
-          Text: "hello",
+          Text: this.bobMessage,
           Location: "MTL",
-          MessageType: "Chat",
-          State: "Sending",
+          State: "Sent",
           Date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
             .toISOString()
             .substr(0, 10),
@@ -126,6 +136,7 @@ export default {
             new Date().getMinutes() +
             ":" +
             new Date().getSeconds(),
+          ID: 1,
         });
       } catch (err) {
         console.log(err);

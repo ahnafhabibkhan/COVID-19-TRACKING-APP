@@ -1,5 +1,9 @@
 <template>
   <v-container class="bg-image">
+    <!-- ChatBox modal -->
+    <v-dialog v-model="chatbox_modal" width="350px">
+      <Chatbox />
+    </v-dialog>
     <v-row>
       <!-- book modal start -->
       <v-dialog v-model="date_dialoge" width="500px">
@@ -483,11 +487,19 @@
         </div>
       </v-col>
     </v-row>
+    <div class="chatbox-css">
+      <v-btn @click="openChatBoxModal()" icon height="80px" width="80px">
+        <v-icon color="blue darken-3" style="font-size: 80px">
+          mdi-message-text
+        </v-icon>
+      </v-btn>
+    </div>
   </v-container>
 </template>
 <script>
 import axios from "axios";
 import Swal from "sweetalert2";
+import Chatbox from "../components/ChatBox.vue";
 //import validation
 import { ValidationProvider, extend, ValidationObserver } from "vee-validate";
 // import needed rules for validate
@@ -505,7 +517,7 @@ extend("numeric", {
 export default {
   name: "Patient",
   // register as component
-  components: { ValidationProvider, ValidationObserver },
+  components: { ValidationProvider, ValidationObserver, Chatbox },
   data() {
     return {
       url: "http://localhost:5001/",
@@ -541,9 +553,13 @@ export default {
       emergencyLevel: "Low",
       approved: [],
       doctorRequestedAppointments: [],
+      chatbox_modal: false,
     };
   },
   methods: {
+    openChatBoxModal() {
+      this.chatbox_modal = !this.chatbox_modal;
+    },
     disAvail(item) {
       const found = this.appointments.findIndex((a) => {
         return a.Time == item.StartTime && a.Date == item.SpecificDay;
@@ -887,6 +903,11 @@ export default {
   width: 30%;
   height: 40%;
   margin-left: 100%; */
+}
+.chatbox-css {
+  float: right;
+  bottom: 0;
+  margin-top: 7%;
 }
 </style>
 pull

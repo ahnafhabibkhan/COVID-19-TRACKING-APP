@@ -1,5 +1,10 @@
 <template>
   <div>
+    <!-- ChatBox modal -->
+    <v-dialog v-model="chatbox_modal" width="350px">
+      <Chatbox />
+    </v-dialog>
+    <!-- end of ChatBox modal -->
     <h1
       style="
         margin-top: 50px;
@@ -73,10 +78,11 @@
 </template>
 <script>
 import axios from "axios";
+import Chatbox from "../components/ChatBox.vue";
 export default {
   name: "ListOfPatients",
 
-  components: {},
+  components: { Chatbox },
   props: {
     user: String,
     title: String,
@@ -87,6 +93,7 @@ export default {
       search: "",
       userRole: this.user,
       covidPatientsList: [],
+      chatbox_modal: false,
     };
   },
   created() {
@@ -133,7 +140,9 @@ export default {
 
     // Go to patient's profile
     onPatientClick() {
-      this.$router.push("/");
+      this.chatbox_modal = !this.chatbox_modal;
+
+      // this.$router.push("/");
     },
     async listOfCovidPatients(patientsList) {
       if (this.userRole == "doctor" || this.userRole == "health-official") {
