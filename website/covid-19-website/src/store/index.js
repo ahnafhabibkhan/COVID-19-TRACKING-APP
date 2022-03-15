@@ -14,12 +14,16 @@ export default new Vuex.Store({
     ],
     state: {
 
-        user: null
+        user: null,
+        selectedUser: null
     },
     mutations: {
 
         setUser(state, p) {
             state.user = p
+        },
+        setSelectedUser(state, p) {
+            state.selectedUser = p
         }
     }
 })

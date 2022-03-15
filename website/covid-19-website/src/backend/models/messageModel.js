@@ -4,7 +4,7 @@ import {formatWhere} from "../config/db.js";
 
 // Get messages by receiverID
 export const getMessagesByID = (id, result) => {
-    db.query("SELECT * FROM message WHERE ReceiveUserID = ?", [id], (err, results) => {
+    db.query("SELECT * FROM message WHERE ReceiveUserID = ? or SendUserID = ? order by Date, Time asc", [id, id], (err, results) => {
         if(err) {
             console.log(err);
             result(err, null);

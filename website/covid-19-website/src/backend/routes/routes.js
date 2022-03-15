@@ -57,7 +57,7 @@ router.post('/messages', showMessagesByData);
 // Get messages between
 router.get('/messages/:user0/:user1', showMessagesBetween);
 
-// Create New availability
+// Create New message
 router.post('/message', createMessage);
 
 // Delete messages by data
