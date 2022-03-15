@@ -556,6 +556,9 @@ export default {
       chatbox_modal: false,
     };
   },
+  created(){
+    this.getMessages();
+  },
   methods: {
     openChatBoxModal() {
       this.chatbox_modal = !this.chatbox_modal;
@@ -849,6 +852,32 @@ export default {
           Date: Date,
           Time: Time,
         });
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async getMessages() {
+      try {
+        const ct = true;
+        while(ct){
+          const userResponse = await axios.post(`http://localhost:5000/users`, {UserID: this.$store.state.user.UserID});
+          const user = userResponse.data[0];
+          let idToUse = user.Doctor;
+          console.log("Getting messages between "+this.$store.state.user.UserID+" and "+idToUse);
+          const messagesResponse = await axios.get(
+            `http://localhost:5000/messages/${this.$store.state.user.UserID}/${idToUse}`
+          );
+          this.messages = messagesResponse.data;
+          if(this.messages && this.messages.length > 0) {
+            // Check if latest is read or not
+            if (this.messages[this.messages.length - 1].ReceiveUserID == this.$store.state.user.UserID && this.messages[this.messages.length - 1].State == 'Sent') {
+              // TODO: Show that there is new message to read
+            }
+          }
+
+          // Wait 2s before checking for new messages
+          await new Promise(r => setTimeout(r, 2000));
+        }
       } catch (err) {
         console.log(err);
       }
