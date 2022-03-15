@@ -104,8 +104,15 @@ export default {
     },
     async getMessages() {
       try {
+        var i = 0;
+
+        console.log(i);
         const ct = true;
         while (ct) {
+          i = i + 1;
+          if (i > 15) {
+            break;
+          }
           console.log(
             "Getting messages between " +
               this.$store.state.user.UserID +
@@ -125,10 +132,11 @@ export default {
             ) {
               // TODO: Show that there is new message to read
             }
+            //console.log(this.messages.);
           }
 
           // Wait 2s before checking for new messages
-          await new Promise((r) => setTimeout(r, 2000));
+          //  await new Promise((r) => setTimeout(r, 2000));
         }
       } catch (err) {
         console.log(err);
