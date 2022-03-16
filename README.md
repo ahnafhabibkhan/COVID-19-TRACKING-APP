@@ -72,7 +72,7 @@ This will install dependencies, run the frontend, then the backend server.
 ## How to run Docker:
 -first download docker on your computer.
 - There are three docker files for front end, backend and server.
-- Once its downloaded, Through the terminal go in the direstories of each docker fie and and first build the docker image.
+- Once its downloaded, Through the terminal go in the directories of each docker fie and and first build the docker image.
 - Once its build, run the image.
  
      ## For server side:
