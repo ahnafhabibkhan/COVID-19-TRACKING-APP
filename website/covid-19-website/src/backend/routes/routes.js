@@ -6,11 +6,11 @@ import { showUserByEmail, showUsers, showUsersByData, showLatestPositiveUsers, c
 import { showPasswordResetRequestByID, createPasswordResetRequest, deletePasswordResetRequest, updatePasswordResetRequest } from "../controllers/passwordResetRequest.js";
 import { createAccountRequest, showAccountRequests, deleteAccountRequest, showAccountRequestByEmail} from "../controllers/accountRequest.js";
 import { createHealthStatus, deleteHealthStatus, deleteHealthStatuses, showHealthStatuses, showLatestHealthStatus, updateHealthStatus } from "../controllers/healthStatus.js";
-import {showAppointmentRequests, createAppointmentRequest, removeAppointmentRequest} from "../controllers/appointmentRequest.js";
-import {createAppointment, removeAppointment, showAppointments} from "../controllers/appointment.js";
-import {createAvailability, removeAvailability, showAvailabilities} from "../controllers/doctorAvailability.js";
-import {createMessage, removeMessage, showMessagesByID, showMessagesByData} from "../controllers/message.js";
-import {showNotifications, createNotification, removeNotification} from "../controllers/notification.js";
+import { showAppointmentRequests, createAppointmentRequest, removeAppointmentRequest} from "../controllers/appointmentRequest.js";
+import { createAppointment, removeAppointment, showAppointments} from "../controllers/appointment.js";
+import { createAvailability, removeAvailability, showAvailabilities} from "../controllers/doctorAvailability.js";
+import { createMessage, removeMessage, showMessagesByID, showMessagesByData, showMessagesBetween, updateMessage} from "../controllers/message.js";
+import { showNotifications, createNotification, removeNotification, updateNotification} from "../controllers/notification.js";
 
 // init express router
 const router = express.Router();
@@ -60,6 +60,9 @@ router.post('/message', createMessage);
 // Delete messages by data
 router.post('/deletemessages', removeMessage);
 
+// Update a Message
+router.put('/message/:id', updateMessage);
+
 ////////////NOTIFICATION
 // Get notifications by data
 router.post('/notifications', showNotifications);
@@ -69,6 +72,9 @@ router.post('/notification', createNotification);
 
 // Delete notification by data
 router.post('/deletenotifications', removeNotification);
+
+// Update a Notification
+router.put('/notification/:id', updateNotification);
 
 ////////////APPOINTMENT REQUEST
 // Get appointment requests by data
