@@ -41,3 +41,15 @@ export const deleteNotification = (data, result) => {
         }
     });
 }
+
+// Update notification
+export const modifyNotification = (data, id, result) => {
+    db.query("UPDATE notification SET ? WHERE ID = ?", [data, id], (err, results) => {
+        if(err) {
+            console.log(err);
+            result(err, null);
+        } else {
+            result(null, results);
+        }
+    });
+}
