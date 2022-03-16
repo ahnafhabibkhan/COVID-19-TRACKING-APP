@@ -9,7 +9,7 @@ import { createHealthStatus, deleteHealthStatus, deleteHealthStatuses, showHealt
 import { showAppointmentRequests, createAppointmentRequest, removeAppointmentRequest} from "../controllers/appointmentRequest.js";
 import { createAppointment, removeAppointment, showAppointments} from "../controllers/appointment.js";
 import { createAvailability, removeAvailability, showAvailabilities} from "../controllers/doctorAvailability.js";
-import { createMessage, removeMessage, showMessagesByID, showMessagesByData, showMessagesBetween, updateMessage} from "../controllers/message.js";
+import { createMessage, removeMessage, showMessagesByID, showMessagesByData, updateMessage} from "../controllers/message.js";
 import { showNotifications, createNotification, removeNotification, updateNotification} from "../controllers/notification.js";
 
 // init express router

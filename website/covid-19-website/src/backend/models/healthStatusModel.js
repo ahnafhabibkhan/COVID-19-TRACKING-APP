@@ -15,7 +15,7 @@ export const getLatestHealthStatusByID = (pid, result) => {
 
 // Get health statuses by ID
 export const getHealthStatusesByID = (pid, result) => {
-    db.query("select * from healthstatus where PID = ?", [pid], (err, results) => {
+    db.query("select * from healthstatus where PID = ? order by fillOutDate desc", [pid], (err, results) => {
         if(err) {
             console.log(err);
             result(err, null);
