@@ -1,12 +1,14 @@
 import { assert } from 'chai';
 import { getMessagesByID, insertMessage, deleteMessage} from"../src/backend/models/messageModel.js";
 import {sleep} from "./commonFunctions.js";
-
+// import the class for testing
 
 
 
 
 describe('message related test',function(){
+    
+    //some functions and veriable to test insert and delete
     var rid=4;
     var sid=1;
     
@@ -51,7 +53,7 @@ describe('message related test',function(){
     
     it('test insert modify and delete message',async function(){
         
-        
+        //add first, check after adding, then delete and check again
         await insertAMessage();
         await sleep();
         await checkMessagesInsertion();

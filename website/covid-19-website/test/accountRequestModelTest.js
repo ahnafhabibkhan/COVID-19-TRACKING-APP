@@ -1,3 +1,5 @@
+
+// import the class for testing
 import { assert } from 'chai';
 import { getAccountRequests,getAccountRequestByEmail, insertAccountRequest, deleteAccountRequestById} from"../src/backend/models/accountRequestModel.js";
 import {sleep} from "./commonFunctions.js";
@@ -7,6 +9,7 @@ import {sleep} from "./commonFunctions.js";
 
 
 describe('AccountRequest related test',function(){
+    // test get account related functions
     it('test get account request',async function(){
         getAccountRequestByEmail('benoit@gmail.com',(err,results)=>{
             assert.equal(results['FirstName'],'Benoit');
@@ -16,6 +19,8 @@ describe('AccountRequest related test',function(){
         });
     });
 
+
+    //some functions and veriable to test insert and delete
     var did=4;
     var pid=1;
     
@@ -62,7 +67,7 @@ describe('AccountRequest related test',function(){
 
     
     it('test insert modify and delete AccountRequest',async function(){
-        
+        //add first, check after adding, then delete and check again
         
         await insertAAccountRequest();
         await sleep();

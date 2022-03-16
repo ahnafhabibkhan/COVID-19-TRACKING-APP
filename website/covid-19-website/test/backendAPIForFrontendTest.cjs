@@ -1,13 +1,16 @@
+//import necessary librarys
 var chai = require('chai')
   , chaiHttp = require('chai-http');
 var assert = chai.assert;
 var step= require('mocha-steps');
 
+chai.use(chaiHttp);
 
-
+//local database address, need to change if move to other address
 var url='http://localhost:5000'
 
-chai.use(chaiHttp);
+
+//similiar sleep with unit testing
 async function sleep(ms) {
     if(ms==undefined)
         ms=50;

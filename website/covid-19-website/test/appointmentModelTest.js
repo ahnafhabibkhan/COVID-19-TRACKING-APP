@@ -1,12 +1,14 @@
 import { assert } from 'chai';
 import { getAppointments, insertAppointment, deleteAppointment} from"../src/backend/models/appointmentModel.js";
 import {sleep} from "./commonFunctions.js";
-
+// import the class for testing
 
 
 
 
 describe('Appointment related test',function(){
+    
+    //some functions and veriable to test insert and delete
     var did=4;
     var pid=1;
     
@@ -48,7 +50,7 @@ describe('Appointment related test',function(){
 
     
     it('test insert modify and delete Appointment',async function(){
-        
+        //add first, check after adding, then delete and check again
         
         await insertAAppointment();
         await sleep();
