@@ -240,6 +240,7 @@ export default {
   top: 0;
   left: 0;
   opacity: 1;
+  
 }
 .btn-container {
   /* border: 5px solid red; */
