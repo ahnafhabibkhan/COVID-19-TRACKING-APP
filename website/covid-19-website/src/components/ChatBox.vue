@@ -78,9 +78,9 @@ export default {
         return;
       }
       const userResponse = axios.get(
-        `http://localhost:5000/user/${this.$store.state.user.UserID}`
+        `http://localhost:5001/user/${this.$store.state.user.UserID}`
       );
-      const user = userResponse.data;
+      const user = userResponse.data[0];
       let idToUse = this.$store.state.selectedUser;
       if (user.Role == "Patient") {
         idToUse = user.Doctor;
@@ -112,15 +112,13 @@ export default {
     },
     async getMessages() {
       try {
-        var i = 0;
-
-        console.log(i);
         const ct = true;
         while (ct) {
-          const userResponse = await axios.post(`http://localhost:5000/users`, {
+          const userResponse = await axios.post(`http://localhost:5001/users`, {
             UserID: this.$store.state.user.UserID,
           });
           const user = userResponse.data[0];
+          console.log(user);
           let idToUse = this.$store.state.selectedUser;
           if (user.Role == "Patient") {
             idToUse = user.Doctor;
@@ -132,7 +130,7 @@ export default {
               idToUse
           );
           const messagesResponse = await axios.get(
-            `http://localhost:5000/messages/${this.$store.state.user.UserID}/${idToUse}`
+            `http://localhost:5001/messages/${this.$store.state.user.UserID}/${idToUse}`
           );
           this.messages = messagesResponse.data;
           if (this.messages && this.messages.length > 0) {
@@ -148,7 +146,7 @@ export default {
           }
 
           // Wait 2s before checking for new messages
-          //  await new Promise((r) => setTimeout(r, 2000));
+          await new Promise((r) => setTimeout(r, 2000));
         }
       } catch (err) {
         console.log(err);
