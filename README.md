@@ -76,22 +76,22 @@ This will install dependencies, run the frontend, then the backend server.
 - Once its build, run the image.
  
      ## For server side:
-     1- **\soen390Project\COVID-19-TRACKING-APP\MySQL-Schema>** --> here is the docker file. once you are there run this command to built the docker image
-     docker build -t mysql .  
-     2- once the image has been built run this command:
-     docker run -p 3306:3306 -d  mysql
+     - **\soen390Project\COVID-19-TRACKING-APP\MySQL-Schema>** --> here is the docker file. once you are there run this command to built the docker image
+     - docker build -t mysql .  
+     - once the image has been built run this command:
+     - docker run -p 3306:3306 -d  mysql
      
      ## for frontend
-     1- **\COVID-19-TRACKING-APP\website\covid-19-website>** --> here is the docker file. once you are there run this command to built the docker image
-     docker build -t vuejs-cookbook/dockerize-vuejs-app .
-     2- once the image has been built run this command:
-     docker run -it -p 8080:8080 --rm --name dockerize-vuejs-app-1 vuejs-cookbook/dockerize-vuejs-app
+     - **\COVID-19-TRACKING-APP\website\covid-19-website>** --> here is the docker file. once you are there run this command to built the docker image
+     - docker build -t vuejs-cookbook/dockerize-vuejs-app .
+     - once the image has been built run this command:
+     - docker run -it -p 8080:8080 --rm --name dockerize-vuejs-app-1 vuejs-cookbook/dockerize-vuejs-app
      
      ## for backend
-     1- **\COVID-19-TRACKING-APP\website>** --> here is the docker file. once you are there run this command to built the docker image
-     docker build . -t backend/node-web-app
-     2- once the image has been built run this command:
-     docker run -p 5000:5000 -d backend/node-web-app
+     - **\COVID-19-TRACKING-APP\website>** --> here is the docker file. once you are there run this command to built the docker image
+     - docker build . -t backend/node-web-app
+     - Once the image has been built run this command:
+     - docker run -p 5000:5000 -d backend/node-web-app
      
     ## Note: make sure the ports specified in the run command are free.
      
