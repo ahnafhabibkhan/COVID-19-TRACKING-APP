@@ -53,3 +53,15 @@ export const deleteMessage = (data, result) => {
         }
     });
 }
+
+// Update message
+export const modifyMessage = (data, id, result) => {
+    db.query("UPDATE message SET ? WHERE ID = ?", [data, id], (err, results) => {
+        if(err) {
+            console.log(err);
+            result(err, null);
+        } else {
+            result(null, results);
+        }
+    });
+}
