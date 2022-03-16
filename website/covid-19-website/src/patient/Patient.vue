@@ -5,6 +5,7 @@
       <v-dialog v-model="date_dialoge" width="500px">
         <v-card>
           <v-container>
+            <ValidationObserver v-slot="{ handleSubmit }" ref="observer">   
             <v-row>
               <v-col cols="12" class="pa-1">
                 <h2>Book an Appointment</h2>
@@ -18,25 +19,33 @@
                 v-if="filteredAvailability.length > 0"
               >
                 select a date
-                <v-radio-group v-model="available" dense hide-details>
-                  <v-radio
-                    v-for="(item, i) in filteredAvailability"
-                    :key="i"
-                    :color="disAvail(item) ? 'error' : ''"
-                    :disabled="disAvail(item)"
-                    :class="{
-                      'text-decoration-line-through red--text': disAvail(item),
-                    }"
-                    :label="
-                      item.SpecificDay.substr(0, 10) +
-                      ' -- ' +
-                      item.StartTime +
-                      ' - ' +
-                      item.EndTime
-                    "
-                    :value="item"
-                  ></v-radio>
-                </v-radio-group>
+                <ValidationProvider
+                  rules="required"
+                  v-slot="{ errors }"
+                >
+                  <v-radio-group v-model="available" dense hide-details>
+                    <v-radio
+                      v-for="(item, i) in filteredAvailability"
+                      :key="i"
+                      :color="disAvail(item) ? 'error' : ''"
+                      :disabled="disAvail(item)"
+                          :hide-details="errors.lenght == 0"
+                            :error-messages="errors[0]"
+                      :class="{
+                        'text-decoration-line-through red--text':
+                          disAvail(item),
+                      }"
+                      :label="
+                        item.SpecificDay.substr(0, 10) +
+                        ' -- ' +
+                        item.StartTime +
+                        ' - ' +
+                        item.EndTime
+                      "
+                      :value="item"
+                    ></v-radio>
+                  </v-radio-group>
+                </ValidationProvider>
               </v-col>
               <v-col cols="12" class="py-0">
                 <h4 class="pt-1 my-0 pb-0">Level of Emergency:</h4>
@@ -67,12 +76,14 @@
                   block
                   color="success"
                   elevation="0"
-                  @click="bookAppoitment"
+                  :disabled="!available"
+                  @click="handleSubmit(bookAppoitment)"
                 >
                   book
                 </v-btn>
               </v-col>
             </v-row>
+            </ValidationObserver>
           </v-container>
         </v-card>
       </v-dialog>
@@ -96,7 +107,7 @@
                       <v-col cols="6">
                         <!-- wrap input with validaion comp -->
                         <ValidationProvider
-                          rules="required|numeric"
+                          rules="required|double"
                           v-slot="{ errors }"
                         >
                           <v-text-field
@@ -115,7 +126,7 @@
                       </v-col>
                       <v-col cols="6">
                         <ValidationProvider
-                          rules="required|numeric"
+                          rules="required|double"
                           v-slot="{ errors }"
                         >
                           <v-text-field
@@ -318,7 +329,7 @@
 
         <!-- status rows -->
         <v-row>
-          <v-col  v-if="isOverDue">
+          <v-col v-if="isOverDue">
             <v-alert type="error"> You overDue ! </v-alert>
           </v-col>
           <v-col cols="12">
@@ -337,6 +348,13 @@
                     v-model="item.Covid"
                   >
                   </v-checkbox>
+                  
+                    <v-btn @click="onEdit(item)" icon color="primary" small>
+                      <v-icon> mdi-pencil </v-icon>
+                    </v-btn>
+                    <v-btn @click="deleteStatus(item)" icon color="error" small>
+                      <v-icon> mdi-close </v-icon>
+                    </v-btn>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
                   <div
@@ -418,12 +436,6 @@
                     >
                     </v-checkbox>
 
-                    <v-btn @click="onEdit(item)" icon color="primary" small>
-                      <v-icon> mdi-pencil </v-icon>
-                    </v-btn>
-                    <v-btn @click="deleteStatus(item)" icon color="error" small>
-                      <v-icon> mdi-close </v-icon>
-                    </v-btn>
                   </div>
                   <div>SympDescription: {{ item.SympDescription }}</div>
                 </v-expansion-panel-content>
@@ -494,7 +506,7 @@ import Swal from "sweetalert2";
 //import validation
 import { ValidationProvider, extend, ValidationObserver } from "vee-validate";
 // import needed rules for validate
-import { required, numeric } from "vee-validate/dist/rules";
+import { required, numeric,double } from "vee-validate/dist/rules";
 // extend  rules
 extend("required", {
   ...required,
@@ -503,6 +515,10 @@ extend("required", {
 extend("numeric", {
   ...numeric,
   message: "This field shuold be a number",
+});
+extend("double", {
+  ...double,
+  message: "This field shuold be a double",
 });
 // end
 export default {
@@ -681,8 +697,9 @@ export default {
         Swal.fire({
           icon: "success",
           title: "success",
-          text: "The Appointment Request Booked Successfully",
+          text: "The Appointment Request Booked Successfully*",
         });
+        this.available = null;
         this.date_dialoge = false;
         this.getAppointments();
       } catch (err) {
@@ -893,25 +910,7 @@ export default {
 };
 </script>
 <style>
-.red {
-  color: red !important;
-  background-color: white;
-}
-/* .up::before {
-  content: "Next";
-}
-::before {
-  content: "Next";
-} */
-/* td {
-  padding: 20px 0px;
-  font-size: 0.6rem;
-  text-align: center;
-}
-th {
-  padding: 5px;
-  font-size: 0.6rem;
-} */
+
 .bg-image {
   background-image: url("../assets/Patient.png");
   background-size: cover;
@@ -923,11 +922,5 @@ th {
   left: 0;
   /* filter: opacity(0.5); */
 }
-.btn-container {
-  /* border: 5px solid red; */
-  /* margin-top: 100px;
-  width: 30%;
-  height: 40%;
-  margin-left: 100%; */
-}
+
 </style>pull

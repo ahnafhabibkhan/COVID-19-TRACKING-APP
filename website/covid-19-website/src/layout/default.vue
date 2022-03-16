@@ -15,7 +15,8 @@
             class="mx-6 white--text"
             color="red"
             dark
-            :content="notifs.length"
+            :content="newCount"
+            :value="newCount"
             overlap
           >
             <v-icon large color="blue darken-3" v-bind="attrs" v-on="on"
@@ -25,9 +26,11 @@
         </template>
         <v-list>
           <v-list-item v-for="(item, i) in notifs" :key="i">
-            <v-list-item-title>{{ item.Text }}</v-list-item-title>
+            <v-list-item-title>{{ item.Message }}
+              <span style="font-size:10px;" class="error--text" v-if="item.Read==0">new</span>
+            </v-list-item-title>
             <v-list-item-action>
-              <v-btn icon small color="redpull" @click="del(item)">
+              <v-btn icon small color="redpull" @click="del(item.ID)">
                 <v-icon>
                   mdi-close
                 </v-icon>
@@ -79,7 +82,7 @@ export default {
     async getNotifs() {
       try {
         const res = await axios.post(`http://localhost:5000/notifications`, {
-          PID: this.userId,
+          Recipient: this.userId,
         });
         this.notifs = res.data;
         // we send recived data to store to be saved there
@@ -90,12 +93,17 @@ export default {
       }
     },
     // delete notifs
-    async del() {
+    async del(id) {
       
       try {
-        const res = await axios.delete(`http://localhost:5000/notifications`);
-        
-       console.log(res)
+         await axios.post(`http://localhost:5000/deletenotifications`,{
+          ID:id
+        });
+     //delete imiidate notifications
+     const i=this.notifs.findIndex(item=>{
+       return item.ID==id
+     })
+     this.notifs.splice(i,1)
       } catch (err) {
         console.log(err);
       }
@@ -106,9 +114,18 @@ export default {
       // return 3;
       return this.$store.state.user.UserID;
     },
+    newCount(){
+    return  this.notifs.filter(item=>{
+        return item.Read==0
+      }).length
+    }
   },
   mounted() {
     this.getNotifs();
+    setInterval(() => {
+      
+      this.getNotifs();
+    }, 5000);
   },
 };
 </script>
