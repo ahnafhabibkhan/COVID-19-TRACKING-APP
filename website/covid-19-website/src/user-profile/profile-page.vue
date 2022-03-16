@@ -1,6 +1,6 @@
 <template>
   <!--Profile-->
-  <div class="bg-image">
+  <div class="profile-page">
     <v-container>
       <!-- wrap all from with validation obs -->
       <ValidationObserver v-slot="{ handleSubmit }" ref="observer">
@@ -16,7 +16,7 @@
                 v-model="form.FirstName"
                 label="FirstName"
                 :autocomplete="false"
-                :hide-details="errors.lenght == 0"
+                :hide-details="errors.length == 0"
                 :error-messages="errors[0]"
               />
             </ValidationProvider>
@@ -24,7 +24,7 @@
           <v-col cols="12" md="6">
             <ValidationProvider rules="required" v-slot="{ errors }">
               <v-text-field
-                :hide-details="errors.lenght == 0"
+                :hide-details="errors.length == 0"
                 :error-messages="errors[0]"
                 v-model="form.LastName"
                 label="LastName"
@@ -34,7 +34,7 @@
           <v-col cols="12" md="6">
             <ValidationProvider rules="required|email" v-slot="{ errors }">
               <v-text-field
-                :hide-details="errors.lenght == 0"
+                :hide-details="errors.length == 0"
                 :error-messages="errors[0]"
                 v-model="form.Email"
                 label="Email"
@@ -50,7 +50,7 @@
               <v-text-field
                 v-model="form.Telephone"
                 label="phone"
-                :hide-details="errors.lenght == 0"
+                :hide-details="errors.length == 0"
                 :error-messages="errors[0]"
               />
             </ValidationProvider>
@@ -61,27 +61,26 @@
                 v-model="form.Country"
                 label="country"
                 type="text"
-                :hide-details="errors.lenght == 0"
+                :hide-details="errors.length == 0"
                 :error-messages="errors[0]"
               />
             </ValidationProvider>
           </v-col>
           <v-col cols="12" md="6">
             <ValidationProvider rules="required" v-slot="{ errors }">
-              <v-select
+              <v-text-field
                 readonly
-                :hide-details="errors.lenght == 0"
                 :error-messages="errors[0]"
                 v-model="form.Role"
-                :items="roles"
                 label="role"
-              ></v-select>
+                disabled
+              ></v-text-field>
             </ValidationProvider>
           </v-col>
           <v-col cols="12" md="6">
             <ValidationProvider rules="required" v-slot="{ errors }">
               <v-text-field
-                :hide-details="errors.lenght == 0"
+                :hide-details="errors.length == 0"
                 :error-messages="errors[0]"
                 v-model="form.Password"
                 label="password"
@@ -92,7 +91,7 @@
           <v-col cols="12" md="6">
             <ValidationProvider rules="required" v-slot="{ errors }">
               <v-textarea
-                :hide-details="errors.lenght == 0"
+                :hide-details="errors.length == 0"
                 :error-messages="errors[0]"
                 v-model="form.Address"
                 dense
@@ -230,8 +229,8 @@ export default {
 };
 </script>
 <style>
-.bg-image {
-  background-image: url("../assets/Patient.png");
+.profile-page {
+  background-image: url("../assets/profilepage.png");
   background-size: cover;
   background-repeat: no-repeat;
   min-height: 100%;
@@ -239,7 +238,7 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
-  opacity: 1;
+  
 }
 .btn-container {
   /* border: 5px solid red; */
