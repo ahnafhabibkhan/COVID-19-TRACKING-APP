@@ -1,3 +1,5 @@
+// a function used to wait sertain time for testing
+
 export function sleep(ms) {
     if(ms==undefined)
         ms=50;

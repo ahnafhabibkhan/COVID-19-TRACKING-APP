@@ -2,10 +2,10 @@
 import { assert } from 'chai';
 import { getUserByEmail, insertUser, deleteUserById, modifyUser,getUsersByData,getLatestPositiveUsers,getUsers } from"../src/backend/models/userModel.js";
 import {sleep} from "./commonFunctions.js";
-
+// import the class for testing
 
 describe('GET USER BY EMAIL TEST',function(){
-
+    // test different get users 
     it('test get user by email',function(){
         getUserByEmail("admin@gmail.com",(err, results) => {
             assert.equal(results["FirstName"], "Admin");
@@ -36,6 +36,7 @@ describe('GET USER BY EMAIL TEST',function(){
 
 
 describe('insert modify and delete user test',function(){
+    //some functions and veriable to test insert modify and delete
     var id;
     
     async function checkUserNotExsist(){
@@ -106,7 +107,7 @@ describe('insert modify and delete user test',function(){
 
     
     it('test insert modify and delete user',async function(){
-        
+        //add first, check after adding, then modify and check, then delete and check again
         await checkUserNotExsist();
         await insertAUser();
         await sleep();
