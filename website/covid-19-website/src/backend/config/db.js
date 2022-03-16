@@ -20,6 +20,7 @@ export function formatWhere(data){
             ++count;
         }
     }
+
     const keys = Object.keys(data);
     for(let i = 0; i < count; ++i){
         const element = data[keys[i]];
