@@ -167,8 +167,8 @@ describe('avaliablilty related test',async function(){
 });
 
 describe('messages related test',async function(){
-    var rid=4;
-    var sid=1;
+    var rid=7;
+    var sid=4;
     async function iniCheck(){
         chai.request(url).get('/messages/'+rid).end((err,res)=>{
             assert.equal(res['body'][0],undefined);
@@ -181,7 +181,6 @@ describe('messages related test',async function(){
             ReceiveUserID: rid,
             Text:"Hello!",
             Location: "123 street",
-            MessageType:'Chat',
             State:'Sent',
             Time: new Date("2022-02-07T06:00:00.000Z").toJSON().slice(0, 19).replace('T', ' '),
             Date: new Date("2022-02-07T05:00:00.000Z").toJSON().slice(0, 19).replace('T', ' ')})
