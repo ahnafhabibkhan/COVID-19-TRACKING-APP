@@ -1,6 +1,5 @@
 <template>
   <v-container class="bg-image">
-
     <v-row>
       <!-- book modal start -->
       <v-dialog v-model="date_dialoge" width="500px">
@@ -624,17 +623,19 @@ export default {
         // alert("statuse added successfully");
         this.getStatuses();
         this.status_dialoge = false;
+        this.addNotif("Status Added!", this.userId);
+        this.addNotif("Patient Added Status!", this.doctorId);
       } catch (err) {
         console.log("err", err);
         // alert("Failed ; add new status");
       }
     },
-    async addNotif(Message) {
+    async addNotif(Message, id) {
       let d = new Date();
       let Time = d.toTimeString().split(" ")[0];
       const params = {
         Message,
-        Recipient: this.userId,
+        Recipient: id,
         Read: 0,
         Time,
       };
@@ -658,6 +659,8 @@ export default {
         this.status_dialoge = false;
         this.edit_mode = false;
         this.getStatuses();
+        this.addNotif("Status Updated!", this.userId);
+        this.addNotif("Patient Updated Status!", this.doctorId);
       } catch (err) {
         console.log("err", err);
         // alert("Failed ; add new status");
@@ -716,7 +719,8 @@ export default {
       };
       try {
         await axios.post(this.url + "appointmentrequest", params);
-        this.addNotif('an appointment booked')
+        this.addNotif("Appointment requested!", this.userId);
+        this.addNotif("Appointment requested by the Patient!", this.doctorId);
         Swal.fire({
           icon: "success",
           title: "success",
@@ -748,7 +752,11 @@ export default {
               axios.post(this.url + "deleteappointmentrequest", item);
 
               // window.location.reload();
-this.addNotif('an appointment deleted')
+              this.addNotif("Appointment Request Deleted!", this.userId);
+              this.addNotif(
+                "Patient Deleted Appointment Request!",
+                this.doctorId
+              );
             } catch (err) {
               console.log("err", err);
               alert("Failed ; delete appointment");
@@ -777,6 +785,8 @@ this.addNotif('an appointment deleted')
           try {
             axios.post(this.url + "deleteappointment", item);
             this.getApproved();
+            this.addNotif("Appointment Deleted!", this.userId);
+            this.addNotif("Patient Deleted Appointment!", this.doctorId);
           } catch (err) {
             console.log("err", err);
             alert("Failed ; delete appointment");
@@ -854,6 +864,8 @@ this.addNotif('an appointment deleted')
         item.LevelOfEmergency,
         item.Priority
       );
+      this.addNotif("Appointment Approved", item.PID);
+      this.addNotif("Patient Approved Appointment!", item.DID);
       window.location.reload();
     },
     // Approve an appointment
@@ -868,6 +880,8 @@ this.addNotif('an appointment deleted')
           LevelOfEmergency: LevelOfEmergency,
           Priority: Priority,
         });
+        this.addNotif("Appointment Approved", PID);
+        this.addNotif("Patient Approved Appointment!", DID);
       } catch (err) {
         console.log(err);
       }
@@ -933,4 +947,3 @@ this.addNotif('an appointment deleted')
   },
 };
 </script>
-
