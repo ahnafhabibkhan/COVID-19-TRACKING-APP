@@ -75,10 +75,6 @@ export default {
   },
 
   methods: {
-    //  pendingNotification(){
-    //   return true;
-    // },
-
     async sendMessage() {
       if (!this.youMessage) {
         return;
@@ -88,6 +84,7 @@ export default {
       });
       const user = userResponse.data[0];
       let idToUse = this.$store.state.selectedUser;
+
       // console.log(user);
       if (user.Role == "Patient") {
         idToUse = user.Doctor;
@@ -109,10 +106,9 @@ export default {
         Time: "" + hour + ":" + minute + ":" + second,
       };
       this.messages.push(currentMessage);
-      //this.bobMessage = "";
+
       this.sentMessages(currentMessage);
       this.youMessage = "";
-      //this.getMessages();
     },
     clearAllMessages() {
       this.messages = [];
@@ -143,23 +139,14 @@ export default {
 
           if (this.messages && this.messages.length > 0) {
             // Check if latest is read or not
-
+            this.$emit("clicked", false);
             if (
               this.messages[this.messages.length - 1].ReceiveUserID ==
                 this.$store.state.user.UserID &&
-              this.messages[this.messages.length - 1].State == "Sent" &&
-              this.notification
+              this.messages[this.messages.length - 1].State == "Sent"
             ) {
-              this.$emit("clicked", true);
-
-              await axios.put(
-                `http://localhost:5001/message/${this.$store.state.user.UserID}`,
-                {
-                  State: "Read",
-                }
-              );
+              //TODO show that a new message arrived
             }
-            //console.log(this.messages.);
           }
 
           // Wait 2s before checking for new messages
@@ -170,6 +157,7 @@ export default {
       }
     },
     async sentMessages(message) {
+      console.log(message.ReceiveUserID);
       try {
         await axios.post(`http://localhost:5001/message/`, message);
       } catch (err) {

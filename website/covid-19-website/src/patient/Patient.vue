@@ -2,10 +2,7 @@
   <v-container class="bg-image">
     <!-- ChatBox modal -->
     <v-dialog v-model="chatbox_modal" width="350px">
-      <Chatbox
-        @clicked="openChatBoxModal($event)"
-        :notification="chatbox_modal"
-      />
+      <Chatbox />
     </v-dialog>
     <v-row>
       <!-- book modal start -->
@@ -503,7 +500,7 @@
     </v-row>
 
     <div class="chatbox-css">
-      <v-badge class="mx-6" color="red" overlap>
+      <v-badge :value="flag" class="mx-6" color="red" overlap>
         <v-btn @click="openChatBoxModal()" icon height="80px" width="80px">
           <v-icon color="blue darken-3" style="font-size: 80px">
             mdi-message-text
@@ -576,16 +573,19 @@ export default {
       doctorRequestedAppointments: [],
       chatbox_modal: false,
       notification: false,
+      flag: false,
     };
   },
   created() {
     this.getMessages();
+    this.notification;
   },
+
   methods: {
     openChatBoxModal() {
       this.chatbox_modal = !this.chatbox_modal;
       //console.log(event);
-      this.notification = this.chatbox_modal;
+      this.notification = true;
     },
     disAvail(item) {
       const found = this.appointments.findIndex((a) => {
@@ -888,6 +888,7 @@ export default {
     async getMessages() {
       try {
         const ct = true;
+        var count = 0;
         while (ct) {
           const userResponse = await axios.post(`http://localhost:5001/users`, {
             UserID: this.$store.state.user.UserID,
@@ -909,8 +910,30 @@ export default {
             if (
               this.messages[this.messages.length - 1].ReceiveUserID ==
                 this.$store.state.user.UserID &&
-              this.messages[this.messages.length - 1].State == "Sent"
+              this.messages[this.messages.length - 1].State == "Sent" &&
+              this.notification
             ) {
+              console.log("There's a new message");
+              this.flag = true;
+              if (count == 0) {
+                count++;
+              }
+              if (this.messages[this.messages.length - 1].State != "Sent") {
+                this.notification = false;
+              }
+              if (this.chatbox_modal == true && count > 0) {
+                await axios.put(
+                  `http://localhost:5001/message/${
+                    this.messages[this.messages.length - 1].ID
+                  }`,
+                  {
+                    State: "Read",
+                  }
+                );
+                this.flag = false;
+                count = 0;
+              }
+              //console.log("Value inside:", this.flag);
               // TODO: Show that there is new message to read
             }
           }
@@ -960,7 +983,11 @@ export default {
       }
       return false;
     },
+    getNotificationValue() {
+      return this.notification;
+    },
   },
+
   mounted() {
     this.getApproved();
     this.getStatuses();
@@ -970,4 +997,10 @@ export default {
   },
 };
 </script>
-<style></style>
+
+<style>
+.chatbox-css {
+  float: right;
+  margin-left: 500px;
+}
+</style>

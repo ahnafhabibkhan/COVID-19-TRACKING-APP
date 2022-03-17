@@ -26,14 +26,18 @@
         </template>
         <v-list>
           <v-list-item v-for="(item, i) in notifs" :key="i">
-            <v-list-item-title>{{ item.Message }}
-              <span style="font-size:10px;" class="error--text" v-if="item.Read==0">new</span>
+            <v-list-item-title
+              >{{ item.Message }}
+              <span
+                style="font-size: 10px"
+                class="error--text"
+                v-if="item.Read == 0"
+                >new</span
+              >
             </v-list-item-title>
             <v-list-item-action>
               <v-btn icon small color="redpull" @click="del(item.ID)">
-                <v-icon>
-                  mdi-close
-                </v-icon>
+                <v-icon> mdi-close </v-icon>
               </v-btn>
             </v-list-item-action>
           </v-list-item>
@@ -81,7 +85,7 @@ export default {
     // get notifs
     async getNotifs() {
       try {
-        const res = await axios.post(`http://localhost:5000/notifications`, {
+        const res = await axios.post(`http://localhost:5001/notifications`, {
           Recipient: this.userId,
         });
         this.notifs = res.data;
@@ -94,16 +98,15 @@ export default {
     },
     // delete notifs
     async del(id) {
-      
       try {
-         await axios.post(`http://localhost:5000/deletenotifications`,{
-          ID:id
+        await axios.post(`http://localhost:5001/deletenotifications`, {
+          ID: id,
         });
-     //delete imiidate notifications
-     const i=this.notifs.findIndex(item=>{
-       return item.ID==id
-     })
-     this.notifs.splice(i,1)
+        //delete imiidate notifications
+        const i = this.notifs.findIndex((item) => {
+          return item.ID == id;
+        });
+        this.notifs.splice(i, 1);
       } catch (err) {
         console.log(err);
       }
@@ -114,18 +117,17 @@ export default {
       // return 3;
       return this.$store.state.user.UserID;
     },
-    newCount(){
-    return  this.notifs.filter(item=>{
-        return item.Read==0
-      }).length
-    }
+    newCount() {
+      return this.notifs.filter((item) => {
+        return item.Read == 0;
+      }).length;
+    },
   },
   mounted() {
     this.getNotifs();
     setInterval(() => {
-      
       this.getNotifs();
-    }, 5000);
+    }, 5001);
   },
 };
 </script>

@@ -53,26 +53,28 @@
       outlined
       color="transparent"
     >
-      <v-card
-        v-for="(item, UserID) in filteredPatients"
-        :key="UserID"
-        :title="item.title"
-        class="pa-2 mx-8 my-8"
-        style="display: inline-table"
-        width="350px"
-        height="100px"
-        @click="onPatientClick()"
-        :color="item.covidStatus === 'Positive' ? '#FF4933' : 'white'"
-        ><h2 class="my-2">
-          {{ item.patientsList.FirstName }} {{ item.patientsList.LastName }}
-        </h2>
-        <p>
-          Contact:<br />
-          Phone: {{ item.patientsList.Telephone }} <br />
-          Email: {{ item.patientsList.Email }} <br />
-          Covid Status: {{ item.covidStatus }}
-        </p>
-      </v-card>
+      <v-badge :value="false" class="mx-6" color="red" overlap>
+        <v-card
+          v-for="(item, UserID) in filteredPatients"
+          :key="UserID"
+          :title="item.title"
+          class="pa-2 mx-8 my-8"
+          style="display: inline-table"
+          width="350px"
+          height="100px"
+          @click="onPatientClick(item.patientsList.UserID)"
+          :color="item.covidStatus === 'Positive' ? '#FF4933' : 'white'"
+          ><h2 class="my-2">
+            {{ item.patientsList.FirstName }} {{ item.patientsList.LastName }}
+          </h2>
+          <p>
+            Contact:<br />
+            Phone: {{ item.patientsList.Telephone }} <br />
+            Email: {{ item.patientsList.Email }} <br />
+            Covid Status: {{ item.covidStatus }}
+          </p>
+        </v-card>
+      </v-badge>
     </v-card>
   </div>
 </template>
@@ -100,6 +102,7 @@ export default {
     // Call all these on page creation
     this.getPatients();
     this.getMessages();
+    //this.notification;
   },
   methods: {
     // Get all patients assigned to this doctor
@@ -160,6 +163,7 @@ export default {
             `http://localhost:5001/messages/${this.$store.state.user.UserID}`
           );
           messages = messagesResponse.data;
+          // console.log("message value", this.messages);
           if (messages) {
             let messagesByUser = {};
             for (let i = 0; i < messages.length; ++i) {
@@ -180,13 +184,33 @@ export default {
             for (var UserID in messagesByUser) {
               if (messagesByUser[UserID] && messagesByUser[UserID].length > 0) {
                 // Check if latest is read or not
+
                 if (
                   messagesByUser[UserID][messagesByUser[UserID].length - 1]
                     .ReceiveUserID == this.$store.state.user.UserID &&
                   messagesByUser[UserID][messagesByUser[UserID].length - 1]
                     .State == "Sent"
+                  //this.notification
                 ) {
                   // TODO: Show that there is new message to read
+
+                  // console.log("There's a new message");
+                  // this.flag = !this.flag;
+                  //  console.log(this.messages);
+
+                  if (this.messages[this.messages.length - 1].State != "Sent") {
+                    // this.notification = false;
+                  }
+                  if (this.chatbox_modal == true) {
+                    await axios.put(
+                      `http://localhost:5001/message/${
+                        this.messages[this.messages.length - 1].ID
+                      }`,
+                      {
+                        State: "Read",
+                      }
+                    );
+                  }
                 }
               }
             }
@@ -204,7 +228,9 @@ export default {
     onPatientClick(UserID) {
       console.log("onPatientCLick called with user id: " + UserID);
       this.chatbox_modal = !this.chatbox_modal;
+      this.notification = true;
       this.$store.commit("setSelectedUser", UserID);
+      this.getMessages();
       // this.$router.push("/");
     },
     async listOfCovidPatients(patientsList) {
@@ -236,6 +262,7 @@ export default {
       }
     },
   },
+
   computed: {
     // Filter patients list
     filteredPatients: function () {

@@ -1,5 +1,5 @@
 // Import function from message Model
-import { getMessagesByID, getMessages, insertMessage, deleteMessage, modifyMessage } from "../models/messageModel.js";
+import { getMessagesByID, getMessagesBetween, getMessages, insertMessage, deleteMessage, modifyMessage } from "../models/messageModel.js";
 
 // Get messages by receiver ID
 export const showMessagesByID = (req, res) => {
