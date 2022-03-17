@@ -1,7 +1,9 @@
 import { assert } from 'chai';
 import {sleep} from "./commonFunctions.js";
 import { getPasswordResetRequestByID, insertPasswordResetRequest, deletePasswordResetRequestById, updatePasswordResetRequestById } from "../src/backend/models/passwordResetRequestModel.js";
+// import the class for testing
 
+//test get password method 
 describe('GET Password ResetRequest TEST',function(){
 
     it('get Password resetRequest test',function(){
@@ -15,6 +17,8 @@ describe('GET Password ResetRequest TEST',function(){
     
 });
 
+
+//add first, check after adding, then modify and check, then delete and check again
 describe('insert modify and delete passwordreset test',function(){
 
     it('insert modify and delete passwordrest test',function(){
