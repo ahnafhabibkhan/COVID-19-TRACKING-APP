@@ -169,7 +169,7 @@ export default {
         Time,
       };
       try {
-        await axios.post(this.url + "notification", params);
+        await axios.post("http://localhost:5000/notification", params);
         // alert("statuse added successfully");
         this.getStatuses();
         this.status_dialoge = false;
@@ -189,6 +189,8 @@ export default {
         item.LevelOfEmergency,
         item.Priority
       );
+      this.addNotif("Appointment approved!", item.DID);
+      this.addNotif("Appointment approved!", item.PID);
       window.location.reload();
     },
 
@@ -200,6 +202,8 @@ export default {
         item.Date.substr(0, 10),
         item.Time
       );
+      this.addNotif("Appointment request deleted!", item.DID);
+      this.addNotif("Appointment resquest deleted!", item.PID);
       window.location.reload();
     },
 
@@ -211,6 +215,8 @@ export default {
         item.Date.substr(0, 10),
         item.Time
       );
+      this.addNotif("Appointment deleted!", item.DID);
+      this.addNotif("Appointment deleted!", item.PID);
       window.location.reload();
     },
 
@@ -319,7 +325,7 @@ export default {
           Priority: covidStatusInt.data.Covid,
         });
         this.addNotif("Appointment requested!", DID);
-        this.addNotif("Appointment requested!", this.appointmentRequestForm.PID);
+        this.addNotif("Appointment requested!", PID);
       } catch (err) {
         console.log(err);
       }

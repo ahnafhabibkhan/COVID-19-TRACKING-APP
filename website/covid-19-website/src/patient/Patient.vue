@@ -864,6 +864,8 @@ export default {
         item.LevelOfEmergency,
         item.Priority
       );
+      this.addNotif("Appointment Approved", item.PID);
+      this.addNotif("Patient Approved Appointment!", item.DID);
       window.location.reload();
     },
     // Approve an appointment
@@ -878,8 +880,8 @@ export default {
           LevelOfEmergency: LevelOfEmergency,
           Priority: Priority,
         });
-        this.addNotif("Appointment Approved", this.userId);
-        this.addNotif("Patient Approved Appointment!", this.doctorId);
+        this.addNotif("Appointment Approved", PID);
+        this.addNotif("Patient Approved Appointment!", DID);
       } catch (err) {
         console.log(err);
       }
