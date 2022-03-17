@@ -13,7 +13,7 @@ var url='http://localhost:5000'
 //similiar sleep with unit testing
 async function sleep(ms) {
     if(ms==undefined)
-        ms=50;
+        ms=100;
     return new Promise((resolve) => {
       setTimeout(resolve, ms);
     });
@@ -106,7 +106,7 @@ describe('User related API intergration test',async function(){
         await iniCheck();
     }
 
-    it('test add and delete user',async function(){
+    it('test add, modify, and delete user',async function(){
         
         await runModifyUserTest();
         
@@ -115,7 +115,7 @@ describe('User related API intergration test',async function(){
 });
 
 describe('avaliablilty related test',async function(){
-    var id=4;
+    var id=100;
     async function iniCheck(){
         chai.request(url).get('/availability/'+id).end((err,res)=>{
             assert.equal(res['body'][0],undefined);
@@ -167,8 +167,9 @@ describe('avaliablilty related test',async function(){
 });
 
 describe('messages related test',async function(){
-    var rid=7;
-    var sid=4;
+    var rid=101;
+    var sid=100;
+    var mid;
     async function iniCheck(){
         chai.request(url).get('/messages/'+rid).end((err,res)=>{
             assert.equal(res['body'][0],undefined);
@@ -176,7 +177,7 @@ describe('messages related test',async function(){
         });
     }    
     async function addAMessage(){
-        chai.request(url).post('/messages').send({
+        chai.request(url).post('/message').send({
             SendUserID:sid,
             ReceiveUserID: rid,
             Text:"Hello!",
@@ -196,7 +197,7 @@ describe('messages related test',async function(){
         });
     }
     async function deleteTheMessage(){
-        chai.request(url).delete('/messages').send({ReceiveUserID:rid})
+        chai.request(url).post('/deletemessages').send({ReceiveUserID:rid})
         .end((err,res)=>{
 
         });
@@ -222,8 +223,8 @@ describe('messages related test',async function(){
 });
 
 describe('AppointmentRequests related test',async function(){
-    var did=4;
-    var pid=1;
+    var did=100;
+    var pid=101;
     async function iniCheck(){
         chai.request(url).post('/appointmentrequests').send({PID:pid}).end((err,res)=>{
             assert.equal(res['body'][0],undefined);
@@ -277,8 +278,8 @@ describe('AppointmentRequests related test',async function(){
 });
 
 describe('Appointments related test',async function(){
-    var did=4;
-    var pid=1;
+    var did=100;
+    var pid=101;
     async function iniCheck(){
         chai.request(url).post('/appointments').send({PID:pid}).end((err,res)=>{
             assert.equal(res['body'][0],undefined);
@@ -399,14 +400,14 @@ describe('Account request related test',async function(){
 
 describe('password reset request related test',async function(){
     it('test get passwordresetrequest',async function(){
-        chai.request(url).get('/passwordresetrequest/5').end((err,res)=>{
+        chai.request(url).get('/passwordresetrequest/1').end((err,res)=>{
             
-            assert.equal(res['body']['Key'],'C3THLR');
+            assert.equal(res['body']['Key'],'BE7CUI');
              
         });
     });
     
-    var id=20;
+    var id=200;
     
     async function iniCheck(){
         chai.request(url).get('/passwordresetrequest/'+id).end((err,res)=>{
@@ -416,7 +417,7 @@ describe('password reset request related test',async function(){
     }    
     async function addAPasswordresetrequest(){
         chai.request(url).post('/passwordresetrequest').send({
-            UserID: 20,
+            UserID: id,
             Key: "TEST11"})
             .end((err, results) =>{
                 
