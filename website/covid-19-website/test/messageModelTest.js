@@ -1,14 +1,16 @@
 import { assert } from 'chai';
 import { getMessagesByID, insertMessage, deleteMessage} from"../src/backend/models/messageModel.js";
 import {sleep} from "./commonFunctions.js";
-
+// import the class for testing
 
 
 
 
 describe('message related test',function(){
-    var rid=4;
-    var sid=1;
+    
+    //some functions and veriable to test insert and delete
+    var rid=7;
+    var sid=4;
     
     
     async function insertAMessage(){
@@ -17,7 +19,6 @@ describe('message related test',function(){
             ReceiveUserID: rid,
             Text:"Hello!",
             Location: "123 street",
-            MessageType:'Chat',
             State:'Sent',
             Time: new Date("2022-02-07T06:00:00.000Z").toJSON().slice(0, 19).replace('T', ' '),
             Date: new Date("2022-02-07T05:00:00.000Z").toJSON().slice(0, 19).replace('T', ' ')},
@@ -51,7 +52,7 @@ describe('message related test',function(){
     
     it('test insert modify and delete message',async function(){
         
-        
+        //add first, check after adding, then delete and check again
         await insertAMessage();
         await sleep();
         await checkMessagesInsertion();

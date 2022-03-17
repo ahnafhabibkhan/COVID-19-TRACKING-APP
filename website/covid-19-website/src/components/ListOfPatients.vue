@@ -61,7 +61,7 @@
         style="display: inline-table"
         width="350px"
         height="100px"
-        @click="onPatientClick(item.patientsList.UserID)"
+        @click="onPatientClick()"
         :color="item.covidStatus === 'Positive' ? '#FF4933' : 'white'"
         ><h2 class="my-2">
           {{ item.patientsList.FirstName }} {{ item.patientsList.LastName }}
@@ -131,8 +131,17 @@ export default {
             `http://localhost:5001/users`,
             { Role: "Patient", Travelled: 1 }
           );
-          pList = pList.concat(travelResponse.data);
-          this.listOfCovidPatients(pList);
+          var travelledList = travelResponse.data;
+
+          var listOfP = [];
+          pList.forEach((patient) => {
+            travelledList.forEach((travelledPatient) => {
+              if (patient.UserID == travelledPatient.UserID) {
+                listOfP.push(patient);
+              }
+            });
+          });
+          this.listOfCovidPatients(listOfP);
         }
       } catch (err) {
         console.log(err);

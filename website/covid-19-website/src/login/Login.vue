@@ -334,7 +334,7 @@ export default {
       },
       login_modal: false,
       signUp_modal: false,
-      //ForgotPassword_modal: false,
+      ForgotPassword_modal: false,
       form: {
         email: null,
         password: null,
@@ -388,6 +388,7 @@ export default {
         // Check if user with entered email exists
         if (response.data.Password != null) {
           console.log(`Retrieved user password: ${response.data.Password}`);
+
           if (password == response.data.Password) {
             this.$store.commit("setUser", response.data);
             this.login_modal = false;
@@ -397,6 +398,7 @@ export default {
             if (response.data.Role == "Admin") {
               this.$router.push("/admin");
             } else if (response.data.Role == "Patient") {
+              console.log("push router");
               this.$router.push("/Patient");
             } else if (response.data.Role == "Doctor") {
               this.$router.push("/Doctor");

@@ -21,7 +21,7 @@ export default {
 </script>
 <style>
 .patient-layout {
-  background-image: url("../assets/Patient.png");
+  background-image: url("../assets/patient1.png");
   background-size: cover;
   background-repeat: no-repeat;
   min-height: 100%;
