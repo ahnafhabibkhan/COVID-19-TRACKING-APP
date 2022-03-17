@@ -20,13 +20,15 @@
 
     <section class="chat-inputs">
       <form @submit.prevent="sendMessage()" id="person1-form">
-        <label for="person1-input">Bob</label>
         <input
           v-model="youMessage"
           id="person1-input"
           type="text"
           placeholder="Type your message"
-          width="50"
+          width="70"
+          color="red"
+          dark
+          class="font-change"
         />
         <button type="submit" style="margin-left: 80px">Send</button>
       </form>
@@ -48,7 +50,7 @@
 import axios from "axios";
 export default {
   name: "ChatBox",
-
+  props: ["notification"],
   components: {},
   data: function () {
     return {
@@ -73,15 +75,20 @@ export default {
   },
 
   methods: {
-    sendMessage() {
+    //  pendingNotification(){
+    //   return true;
+    // },
+
+    async sendMessage() {
       if (!this.youMessage) {
         return;
       }
-      const userResponse = axios.get(
-        `http://localhost:5001/user/${this.$store.state.user.UserID}`
-      );
+      const userResponse = await axios.post(`http://localhost:5001/users`, {
+        UserID: this.$store.state.user.UserID,
+      });
       const user = userResponse.data[0];
       let idToUse = this.$store.state.selectedUser;
+      // console.log(user);
       if (user.Role == "Patient") {
         idToUse = user.Doctor;
       }
@@ -118,7 +125,7 @@ export default {
             UserID: this.$store.state.user.UserID,
           });
           const user = userResponse.data[0];
-          console.log(user);
+
           let idToUse = this.$store.state.selectedUser;
           if (user.Role == "Patient") {
             idToUse = user.Doctor;
@@ -133,14 +140,24 @@ export default {
             `http://localhost:5001/messages/${this.$store.state.user.UserID}/${idToUse}`
           );
           this.messages = messagesResponse.data;
+
           if (this.messages && this.messages.length > 0) {
             // Check if latest is read or not
+
             if (
               this.messages[this.messages.length - 1].ReceiveUserID ==
                 this.$store.state.user.UserID &&
-              this.messages[this.messages.length - 1].State == "Sent"
+              this.messages[this.messages.length - 1].State == "Sent" &&
+              this.notification
             ) {
-              // TODO: Show that there is new message to read
+              this.$emit("clicked", true);
+
+              await axios.put(
+                `http://localhost:5001/message/${this.$store.state.user.UserID}`,
+                {
+                  State: "Read",
+                }
+              );
             }
             //console.log(this.messages.);
           }
@@ -190,7 +207,8 @@ html {
 
   height: 50%;
   padding: 1em;
-  overflow: auto;
+  overflow-y: scroll;
+  /* // overflow: auto; */
   max-width: 350px;
   margin: 0 auto 2em auto;
   box-shadow: 2px 2px 5px 2px rgba(0, 0, 0, 0.3);
@@ -203,13 +221,16 @@ html {
   font-size: 0.8em;
 }
 .message-out {
-  background: #407fff;
-  color: white;
+  background: #1b56cd;
+  /* #407fff */
+  color: whitesmoke;
   margin-left: 50%;
+  font-family: Arial, Helvetica, sans-serif;
 }
 .message-in {
-  background: #f1f0f0;
-  color: black;
+  background: #aca9a9;
+  color: whitesmoke;
+  font-family: Arial, Helvetica, sans-serif;
 }
 .chat-inputs {
   display: flex;
@@ -220,5 +241,8 @@ html {
 }
 #person2-input {
   padding: 0.5em;
+}
+.font-change {
+  color: black;
 }
 </style>

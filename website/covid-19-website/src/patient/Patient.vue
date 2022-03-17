@@ -2,7 +2,10 @@
   <v-container class="bg-image">
     <!-- ChatBox modal -->
     <v-dialog v-model="chatbox_modal" width="350px">
-      <Chatbox />
+      <Chatbox
+        @clicked="openChatBoxModal($event)"
+        :notification="chatbox_modal"
+      />
     </v-dialog>
     <v-row>
       <!-- book modal start -->
@@ -487,12 +490,15 @@
         </div>
       </v-col>
     </v-row>
+
     <div class="chatbox-css">
-      <v-btn @click="openChatBoxModal()" icon height="80px" width="80px">
-        <v-icon color="blue darken-3" style="font-size: 80px">
-          mdi-message-text
-        </v-icon>
-      </v-btn>
+      <v-badge class="mx-6" color="red" overlap>
+        <v-btn @click="openChatBoxModal()" icon height="80px" width="80px">
+          <v-icon color="blue darken-3" style="font-size: 80px">
+            mdi-message-text
+          </v-icon>
+        </v-btn>
+      </v-badge>
     </div>
   </v-container>
 </template>
@@ -554,6 +560,7 @@ export default {
       approved: [],
       doctorRequestedAppointments: [],
       chatbox_modal: false,
+      notification: false,
     };
   },
   created() {
@@ -562,6 +569,8 @@ export default {
   methods: {
     openChatBoxModal() {
       this.chatbox_modal = !this.chatbox_modal;
+      //console.log(event);
+      this.notification = this.chatbox_modal;
     },
     disAvail(item) {
       const found = this.appointments.findIndex((a) => {
