@@ -1,6 +1,5 @@
 <template>
   <v-container class="bg-image">
-
     <v-row>
       <!-- book modal start -->
       <v-dialog v-model="date_dialoge" width="500px">
@@ -530,7 +529,7 @@ export default {
   components: { ValidationProvider, ValidationObserver },
   data() {
     return {
-      url: "http://localhost:5000/",
+      url: "http://localhost:5001/",
       edit_mode: false,
       show_more: false,
       date_dialoge: false,
@@ -624,17 +623,19 @@ export default {
         // alert("statuse added successfully");
         this.getStatuses();
         this.status_dialoge = false;
+        this.addNotif("Status Added!", this.userId);
+        this.addNotif("Patient Added Status!", this.doctorId);
       } catch (err) {
         console.log("err", err);
         // alert("Failed ; add new status");
       }
     },
-    async addNotif(Message) {
+    async addNotif(Message, id) {
       let d = new Date();
       let Time = d.toTimeString().split(" ")[0];
       const params = {
         Message,
-        Recipient: this.userId,
+        Recipient: id,
         Read: 0,
         Time,
       };
@@ -658,6 +659,8 @@ export default {
         this.status_dialoge = false;
         this.edit_mode = false;
         this.getStatuses();
+        this.addNotif("Status Updated!", this.userId);
+        this.addNotif("Patient Updated Status!", this.doctorId);
       } catch (err) {
         console.log("err", err);
         // alert("Failed ; add new status");
@@ -697,7 +700,7 @@ export default {
       const did = this.doctorId;
       const pid = this.userId;
       const covidStatusInt = await axios.get(
-        `http://localhost:5000/healthstatus/${pid}`
+        `http://localhost:5001/healthstatus/${pid}`
       );
       var levelOfEmergency = 0;
       if (this.emergencyLevel == "High") {
@@ -716,7 +719,8 @@ export default {
       };
       try {
         await axios.post(this.url + "appointmentrequest", params);
-        this.addNotif('an appointment booked')
+        this.addNotif("Appointment requested!", this.userId);
+        this.addNotif("Appointment requested by the Patient!", this.doctorId);
         Swal.fire({
           icon: "success",
           title: "success",
@@ -748,7 +752,11 @@ export default {
               axios.post(this.url + "deleteappointmentrequest", item);
 
               // window.location.reload();
-this.addNotif('an appointment deleted')
+              this.addNotif("Appointment Request Deleted!", this.userId);
+              this.addNotif(
+                "Patient Deleted Appointment Request!",
+                this.doctorId
+              );
             } catch (err) {
               console.log("err", err);
               alert("Failed ; delete appointment");
@@ -777,6 +785,8 @@ this.addNotif('an appointment deleted')
           try {
             axios.post(this.url + "deleteappointment", item);
             this.getApproved();
+            this.addNotif("Appointment Deleted!", this.userId);
+            this.addNotif("Patient Deleted Appointment!", this.doctorId);
           } catch (err) {
             console.log("err", err);
             alert("Failed ; delete appointment");
@@ -828,7 +838,7 @@ this.addNotif('an appointment deleted')
     async getDoctorAppointmentRequests() {
       try {
         const res = await axios.post(
-          `http://localhost:5000/appointmentrequests`,
+          `http://localhost:5001/appointmentrequests`,
           {
             DID: this.doctorId,
             PID: this.userId,
@@ -860,7 +870,7 @@ this.addNotif('an appointment deleted')
     async approveAppointment(PID, DID, Date, Time, LevelOfEmergency, Priority) {
       try {
         this.cancelAppointmentRequest(PID, DID, Date, Time);
-        await axios.post(`http://localhost:5000/appointment`, {
+        await axios.post(`http://localhost:5001/appointment`, {
           PID: PID,
           DID: DID,
           Date: Date,
@@ -868,6 +878,8 @@ this.addNotif('an appointment deleted')
           LevelOfEmergency: LevelOfEmergency,
           Priority: Priority,
         });
+        this.addNotif("Appointment Approved", this.userId);
+        this.addNotif("Patient Approved Appointment!", this.doctorId);
       } catch (err) {
         console.log(err);
       }
@@ -875,7 +887,7 @@ this.addNotif('an appointment deleted')
     // Cancel an appointment from the doctor
     async cancelAppointmentRequest(PID, DID, Date, Time) {
       try {
-        await axios.post(`http://localhost:5000/deleteappointmentrequest`, {
+        await axios.post(`http://localhost:5001/deleteappointmentrequest`, {
           PID: PID,
           DID: DID,
           Date: Date,
@@ -933,4 +945,3 @@ this.addNotif('an appointment deleted')
   },
 };
 </script>
-

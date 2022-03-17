@@ -158,6 +158,26 @@ export default {
     allowedDates() {
       return true;
     },
+    //Add notifications
+    async addNotif(Message, id) {
+      let d = new Date();
+      let Time = d.toTimeString().split(" ")[0];
+      const params = {
+        Message,
+        Recipient: id,
+        Read: 0,
+        Time,
+      };
+      try {
+        await axios.post(this.url + "notification", params);
+        // alert("statuse added successfully");
+        this.getStatuses();
+        this.status_dialoge = false;
+      } catch (err) {
+        console.log("err", err);
+        // alert("Failed ; add new status");
+      }
+    },
 
     //Accept appointment
     acceptAppointment(item) {
@@ -197,7 +217,7 @@ export default {
     // Get appointments
     async getAppointments() {
       try {
-        const res = await axios.post(`http://localhost:5000/appointments`, {
+        const res = await axios.post(`http://localhost:5001/appointments`, {
           DID: this.$store.state.user.UserID,
         });
         this.appointments = res.data;
@@ -210,7 +230,7 @@ export default {
     async getAppointmentRequests() {
       try {
         const res = await axios.post(
-          `http://localhost:5000/appointmentrequests`,
+          `http://localhost:5001/appointmentrequests`,
           {
             DID: this.$store.state.user.UserID,
             RequestedBy: "P",
@@ -226,7 +246,7 @@ export default {
     async approveAppointment(PID, DID, Date, Time, LevelOfEmergency, Priority) {
       try {
         this.cancelAppointmentRequest(PID, DID, Date, Time);
-        await axios.post(`http://localhost:5000/appointment`, {
+        await axios.post(`http://localhost:5001/appointment`, {
           PID: PID,
           DID: DID,
           Date: Date,
@@ -234,6 +254,8 @@ export default {
           LevelOfEmergency: LevelOfEmergency,
           Priority: Priority,
         });
+        this.addNotif("Appointment approved!", DID);
+        this.addNotif("Appointment approved!", PID);
       } catch (err) {
         console.log(err);
       }
@@ -242,12 +264,14 @@ export default {
     // Cancel an appointment
     async cancelAppointment(PID, DID, Date, Time) {
       try {
-        await axios.post(`http://localhost:5000/deleteappointment`, {
+        await axios.post(`http://localhost:5001/deleteappointment`, {
           PID: PID,
           DID: DID,
           Date: Date,
           Time: Time,
         });
+        this.addNotif("Appointment cancelled!", DID);
+        this.addNotif("Appointment cancelled!", PID);
       } catch (err) {
         console.log(err);
       }
@@ -256,12 +280,14 @@ export default {
     // Cancel an appointment request
     async cancelAppointmentRequest(PID, DID, Date, Time) {
       try {
-        await axios.post(`http://localhost:5000/deleteappointmentrequest`, {
+        await axios.post(`http://localhost:5001/deleteappointmentrequest`, {
           PID: PID,
           DID: DID,
           Date: Date,
           Time: Time,
         });
+        this.addNotif("Appointment request cancelled!", DID);
+        this.addNotif("Appointment request cancelled!", PID);
       } catch (err) {
         console.log(err);
       }
@@ -279,9 +305,9 @@ export default {
         const DID = this.$store.state.user.UserID;
         const PID = parseInt(this.appointmentRequestForm.PID);
         const covidStatusInt = await axios.get(
-          `http://localhost:5000/healthstatus/${PID}`
+          `http://localhost:5001/healthstatus/${PID}`
         );
-        await axios.post(`http://localhost:5000/appointmentrequest`, {
+        await axios.post(`http://localhost:5001/appointmentrequest`, {
           PID: PID,
           DID: DID,
           Date: Date,
@@ -292,6 +318,8 @@ export default {
           ),
           Priority: covidStatusInt.data.Covid,
         });
+        this.addNotif("Appointment requested!", DID);
+        this.addNotif("Appointment requested!", this.appointmentRequestForm.PID);
       } catch (err) {
         console.log(err);
       }
@@ -302,7 +330,7 @@ export default {
     async getOwnAppointmentRequests() {
       try {
         const res = await axios.post(
-          `http://localhost:5000/appointmentrequests`,
+          `http://localhost:5001/appointmentrequests`,
           {
             DID: this.$store.state.user.UserID,
             RequestedBy: "D",
