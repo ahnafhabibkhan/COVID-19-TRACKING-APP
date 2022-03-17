@@ -7,7 +7,7 @@ var step = require("mocha-steps");
 chai.use(chaiHttp);
 
 //local database address, need to change if move to other address
-var url='http://localhost:5001'
+var url='http://localhost:5000'
 
 
 //similiar sleep with unit testing

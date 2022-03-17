@@ -498,7 +498,7 @@
         </div>
       </v-col>
     </v-row>
-
+    <!-- To open the chatbox but also to mark red if there is a notification  -->
     <div class="chatbox-css">
       <v-badge :value="flag" class="mx-6" color="red" overlap>
         <v-btn @click="openChatBoxModal()" icon height="80px" width="80px">
@@ -538,7 +538,7 @@ export default {
   components: { ValidationProvider, ValidationObserver, Chatbox },
   data() {
     return {
-      url: "http://localhost:5001/",
+      url: "http://localhost:5000/",
       edit_mode: false,
       show_more: false,
       date_dialoge: false,
@@ -699,7 +699,7 @@ export default {
       const did = this.doctorId;
       const pid = this.userId;
       const covidStatusInt = await axios.get(
-        `http://localhost:5001/healthstatus/${pid}`
+        `http://localhost:5000/healthstatus/${pid}`
       );
       var levelOfEmergency = 0;
       if (this.emergencyLevel == "High") {
@@ -828,7 +828,7 @@ export default {
     async getDoctorAppointmentRequests() {
       try {
         const res = await axios.post(
-          `http://localhost:5001/appointmentrequests`,
+          `http://localhost:5000/appointmentrequests`,
           {
             DID: this.doctorId,
             PID: this.userId,
@@ -860,7 +860,7 @@ export default {
     async approveAppointment(PID, DID, Date, Time, LevelOfEmergency, Priority) {
       try {
         this.cancelAppointmentRequest(PID, DID, Date, Time);
-        await axios.post(`http://localhost:5001/appointment`, {
+        await axios.post(`http://localhost:5000/appointment`, {
           PID: PID,
           DID: DID,
           Date: Date,
@@ -875,7 +875,7 @@ export default {
     // Cancel an appointment from the doctor
     async cancelAppointmentRequest(PID, DID, Date, Time) {
       try {
-        await axios.post(`http://localhost:5001/deleteappointmentrequest`, {
+        await axios.post(`http://localhost:5000/deleteappointmentrequest`, {
           PID: PID,
           DID: DID,
           Date: Date,
@@ -886,13 +886,16 @@ export default {
       }
     },
     async getMessages() {
+      // updating the messages in patient side
       try {
         const ct = true;
         var count = 0;
         while (ct) {
-          const userResponse = await axios.post(`http://localhost:5001/users`, {
+          const userResponse = await axios.post(`http://localhost:5000/users`, {
             UserID: this.$store.state.user.UserID,
           });
+
+          // Getting users ID
           const user = userResponse.data[0];
           let idToUse = user.Doctor;
           console.log(
@@ -902,8 +905,10 @@ export default {
               idToUse
           );
           const messagesResponse = await axios.get(
-            `http://localhost:5001/messages/${this.$store.state.user.UserID}/${idToUse}`
+            `http://localhost:5000/messages/${this.$store.state.user.UserID}/${idToUse}`
           );
+
+          //Getting the array of message exchange between Docter and patient
           this.messages = messagesResponse.data;
           if (this.messages && this.messages.length > 0) {
             // Check if latest is read or not
@@ -913,17 +918,22 @@ export default {
               this.messages[this.messages.length - 1].State == "Sent" &&
               this.notification
             ) {
+              // if there's a new message flag will be true
               console.log("There's a new message");
               this.flag = true;
               if (count == 0) {
                 count++;
               }
+
+              // verifying the state of the message
               if (this.messages[this.messages.length - 1].State != "Sent") {
                 this.notification = false;
               }
+
+              //when the chatbox is open change the flag to false
               if (this.chatbox_modal == true && count > 0) {
                 await axios.put(
-                  `http://localhost:5001/message/${
+                  `http://localhost:5000/message/${
                     this.messages[this.messages.length - 1].ID
                   }`,
                   {
@@ -1001,6 +1011,5 @@ export default {
 <style>
 .chatbox-css {
   float: right;
-  margin-left: 500px;
 }
 </style>

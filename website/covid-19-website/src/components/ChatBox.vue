@@ -4,6 +4,7 @@
     width="340"
     style="border-radius: 15px; opacity: 95%; margin: auto"
   >
+    <!-- going through the messages to know if it's an outbound or inbound message -->
     <section ref="chatArea" class="chat-area">
       <p
         v-for="(message, i) in messages"
@@ -17,7 +18,7 @@
         {{ message.Text }}
       </p>
     </section>
-
+    <!-- The form that will submit the message -->
     <section class="chat-inputs">
       <form @submit.prevent="sendMessage()" id="person1-form">
         <input
@@ -79,16 +80,19 @@ export default {
       if (!this.youMessage) {
         return;
       }
-      const userResponse = await axios.post(`http://localhost:5001/users`, {
+
+      const userResponse = await axios.post(`http://localhost:5000/users`, {
         UserID: this.$store.state.user.UserID,
       });
       const user = userResponse.data[0];
       let idToUse = this.$store.state.selectedUser;
 
       // console.log(user);
+      // checking if's a doctor or patient
       if (user.Role == "Patient") {
         idToUse = user.Doctor;
       }
+      // getting the time stamps
       const currentDate = new Date();
       const year = currentDate.getFullYear();
       const month = currentDate.getMonth() + 1;
@@ -117,7 +121,7 @@ export default {
       try {
         const ct = true;
         while (ct) {
-          const userResponse = await axios.post(`http://localhost:5001/users`, {
+          const userResponse = await axios.post(`http://localhost:5000/users`, {
             UserID: this.$store.state.user.UserID,
           });
           const user = userResponse.data[0];
@@ -133,7 +137,7 @@ export default {
               idToUse
           );
           const messagesResponse = await axios.get(
-            `http://localhost:5001/messages/${this.$store.state.user.UserID}/${idToUse}`
+            `http://localhost:5000/messages/${this.$store.state.user.UserID}/${idToUse}`
           );
           this.messages = messagesResponse.data;
 
@@ -159,7 +163,7 @@ export default {
     async sentMessages(message) {
       console.log(message.ReceiveUserID);
       try {
-        await axios.post(`http://localhost:5001/message/`, message);
+        await axios.post(`http://localhost:5000/message/`, message);
       } catch (err) {
         console.log(err);
       }
