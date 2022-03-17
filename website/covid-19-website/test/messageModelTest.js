@@ -9,8 +9,8 @@ import {sleep} from "./commonFunctions.js";
 describe('message related test',function(){
     
     //some functions and veriable to test insert and delete
-    var rid=7;
-    var sid=4;
+    var rid=101;
+    var sid=100;
     
     
     async function insertAMessage(){
