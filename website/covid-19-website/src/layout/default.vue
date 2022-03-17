@@ -25,15 +25,23 @@
           </v-badge>
         </template>
         <v-list>
-          <v-list-item v-for="(item, i) in notifs" :key="i">
-            <v-list-item-title>{{ item.Message }}
-              <span style="font-size:10px;" class="error--text" v-if="item.Read==0">new</span>
+          <v-list-item
+            v-for="(item, i) in notifs"
+            :key="i"
+            @mousemove="update(item)"
+          >
+            <v-list-item-title
+              >{{ item.Message }}
+              <span
+                style="font-size: 10px"
+                class="error--text"
+                v-if="item.Read == 0"
+                >(new)</span
+              >
             </v-list-item-title>
             <v-list-item-action>
               <v-btn icon small color="redpull" @click="del(item.ID)">
-                <v-icon>
-                  mdi-close
-                </v-icon>
+                <v-icon> mdi-close </v-icon>
               </v-btn>
             </v-list-item-action>
           </v-list-item>
@@ -56,7 +64,7 @@
         </v-list>
       </v-menu>
     </v-app-bar>
-    <v-main>
+    <v-main class="bg-img">
       <v-container>
         <router-view></router-view>
       </v-container>
@@ -73,6 +81,7 @@ export default {
 
   data: () => ({
     notifs: [],
+    pending:false
   }),
   methods: {
     logout() {
@@ -94,19 +103,41 @@ export default {
     },
     // delete notifs
     async del(id) {
-      
       try {
-         await axios.post(`http://localhost:5000/deletenotifications`,{
-          ID:id
+        await axios.post(`http://localhost:5000/deletenotifications`, {
+          ID: id,
         });
-     //delete imiidate notifications
-     const i=this.notifs.findIndex(item=>{
-       return item.ID==id
-     })
-     this.notifs.splice(i,1)
+        //delete imiidate notifications
+        const i = this.notifs.findIndex((item) => {
+          return item.ID == id;
+        });
+        this.notifs.splice(i, 1);
       } catch (err) {
         console.log(err);
       }
+    },
+    async update(item) {
+      if (item.Read === 1) {
+        return;
+      }
+      if (this.pending) {
+        return;
+      }
+      this.pending = true;
+      try {
+        await axios.put(`http://localhost:5000/notification/${item.ID}`, {
+          ID: item.ID,
+          Read: 1,
+        });
+        
+        const i = this.notifs.findIndex((item) => {
+          return item.ID == item.ID;
+        });
+        this.notifs[i].Read=1
+      } catch (err) {
+        console.log(err);
+      }
+      this.pending = false;
     },
   },
   computed: {
@@ -114,18 +145,18 @@ export default {
       // return 3;
       return this.$store.state.user.UserID;
     },
-    newCount(){
-    return  this.notifs.filter(item=>{
-        return item.Read==0
-      }).length
-    }
+    newCount() {
+      return this.notifs.filter((item) => {
+        return item.Read == 0;
+      }).length;
+    },
   },
   mounted() {
     this.getNotifs();
     setInterval(() => {
-      
       this.getNotifs();
     }, 5000);
   },
 };
 </script>
+
