@@ -1,88 +1,86 @@
 <template>
   <v-container class="bg-image">
+
     <v-row>
       <!-- book modal start -->
       <v-dialog v-model="date_dialoge" width="500px">
         <v-card>
           <v-container>
-            <ValidationObserver v-slot="{ handleSubmit }" ref="observer">   
-            <v-row>
-              <v-col cols="12" class="pa-1">
-                <h2>Book an Appointment</h2>
-                <v-date-picker v-model="date" full-width></v-date-picker>
-              </v-col>
-              <!-- list -->
-              <!-- if filteredAvailability exists this will displayed -->
-              <v-col
-                cols="12"
-                class="py-0"
-                v-if="filteredAvailability.length > 0"
-              >
-                select a date
-                <ValidationProvider
-                  rules="required"
-                  v-slot="{ errors }"
+            <ValidationObserver v-slot="{ handleSubmit }" ref="observer">
+              <v-row>
+                <v-col cols="12" class="pa-1">
+                  <h2>Book an Appointment</h2>
+                  <v-date-picker v-model="date" full-width></v-date-picker>
+                </v-col>
+                <!-- list -->
+                <!-- if filteredAvailability exists this will displayed -->
+                <v-col
+                  cols="12"
+                  class="py-0"
+                  v-if="filteredAvailability.length > 0"
                 >
-                  <v-radio-group v-model="available" dense hide-details>
-                    <v-radio
-                      v-for="(item, i) in filteredAvailability"
-                      :key="i"
-                      :color="disAvail(item) ? 'error' : ''"
-                      :disabled="disAvail(item)"
-                          :hide-details="errors.lenght == 0"
-                            :error-messages="errors[0]"
-                      :class="{
-                        'text-decoration-line-through red--text':
-                          disAvail(item),
-                      }"
-                      :label="
-                        item.SpecificDay.substr(0, 10) +
-                        ' -- ' +
-                        item.StartTime +
-                        ' - ' +
-                        item.EndTime
-                      "
-                      :value="item"
-                    ></v-radio>
+                  select a date
+                  <ValidationProvider rules="required" v-slot="{ errors }">
+                    <v-radio-group v-model="available" dense hide-details>
+                      <v-radio
+                        v-for="(item, i) in filteredAvailability"
+                        :key="i"
+                        :color="disAvail(item) ? 'error' : ''"
+                        :disabled="disAvail(item)"
+                        :hide-details="errors.lenght == 0"
+                        :error-messages="errors[0]"
+                        :class="{
+                          'text-decoration-line-through red--text':
+                            disAvail(item),
+                        }"
+                        :label="
+                          item.SpecificDay.substr(0, 10) +
+                          ' -- ' +
+                          item.StartTime +
+                          ' - ' +
+                          item.EndTime
+                        "
+                        :value="item"
+                      ></v-radio>
+                    </v-radio-group>
+                  </ValidationProvider>
+                </v-col>
+                <v-col cols="12" class="py-0">
+                  <h4 class="pt-1 my-0 pb-0">Level of Emergency:</h4>
+                  <v-radio-group
+                    v-model="emergencyLevel"
+                    row
+                    dense
+                    :hide-details="true"
+                  >
+                    <v-radio label="High" value="High"> </v-radio>
+                    <v-radio label="Medium" value="Medium"> </v-radio>
+                    <v-radio label="Low" value="Low"> </v-radio>
                   </v-radio-group>
-                </ValidationProvider>
-              </v-col>
-              <v-col cols="12" class="py-0">
-                <h4 class="pt-1 my-0 pb-0">Level of Emergency:</h4>
-                <v-radio-group
-                  v-model="emergencyLevel"
-                  row
-                  dense
-                  :hide-details="true"
-                >
-                  <v-radio label="High" value="High"> </v-radio>
-                  <v-radio label="Medium" value="Medium"> </v-radio>
-                  <v-radio label="Low" value="Low"> </v-radio>
-                </v-radio-group>
-              </v-col>
+                </v-col>
 
-              <v-col cols="6">
-                <v-btn
-                  color="error"
-                  block
-                  @click="date_dialoge = false"
-                  elevation="0"
-                >
-                  cancel
-                </v-btn>
-              </v-col>
-              <v-col cols="6">
-                <v-btn
-                  block
-                  color="success"
-                  elevation="0"
-                  :disabled="!available"
-                  @click="handleSubmit(bookAppoitment)"
-                >
-                  book
-                </v-btn>
-              </v-col>
-            </v-row>
+                <v-col cols="6">
+                  <v-btn
+                    color="error"
+                    block
+                    @click="date_dialoge = false"
+                    elevation="0"
+                  >
+                    cancel
+                  </v-btn>
+                </v-col>
+                <v-col cols="6">
+                  <v-btn
+                    block
+                    color="success"
+                    elevation="0"
+                    :disabled="!available"
+                    @click="handleSubmit(bookAppoitment)"
+                  >
+                    book
+                  </v-btn>
+                </v-col>
+              </v-row>
             </ValidationObserver>
           </v-container>
         </v-card>
@@ -289,10 +287,10 @@
         </v-card>
       </v-dialog>
       <!-- status modal end -->
-      <v-col cols="12" md="6">
+      <v-col cols="12" md="6" class="my-0">
         <!-- buttons -->
-        <div class="d-flex flex-column align-center mt-5">
-          <div class="my-6 mx-3">
+        <div class="d-flex flex-column align-center">
+          <div class="my-2 mx-3">
             <v-btn
               class="white--text"
               style="font-size: 18px; opacity: 90%"
@@ -314,7 +312,7 @@
               >Book an Appointment</v-btn
             >
           </div>
-          <div class="my-6 mx-3">
+          <div class="my-2 mx-3">
             <v-btn
               class="white--text"
               style="font-size: 18px; opacity: 90%"
@@ -330,11 +328,17 @@
         <!-- status rows -->
         <v-row>
           <v-col v-if="isOverDue">
-            <v-alert type="error"> You overDue ! </v-alert>
+            <v-alert type="error" dense>
+              Your updated status is overdue!
+            </v-alert>
           </v-col>
-          <v-col cols="12">
+          <v-col cols="12" class="my-0">
             <v-expansion-panels>
-              <v-expansion-panel v-for="(item, i) in statusesFiltered" :key="i">
+              <v-expansion-panel
+                d
+                v-for="(item, i) in statusesFiltered"
+                :key="i"
+              >
                 <v-expansion-panel-header>
                   <span> Date: {{ item.fillOutDate.substr(0, 10) }} </span>
                   <span>
@@ -348,13 +352,13 @@
                     v-model="item.Covid"
                   >
                   </v-checkbox>
-                  
-                    <v-btn @click="onEdit(item)" icon color="primary" small>
-                      <v-icon> mdi-pencil </v-icon>
-                    </v-btn>
-                    <v-btn @click="deleteStatus(item)" icon color="error" small>
-                      <v-icon> mdi-close </v-icon>
-                    </v-btn>
+
+                  <v-btn @click="onEdit(item)" icon color="primary" small>
+                    <v-icon> mdi-pencil </v-icon>
+                  </v-btn>
+                  <v-btn @click="deleteStatus(item)" icon color="error" small>
+                    <v-icon> mdi-close </v-icon>
+                  </v-btn>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
                   <div
@@ -435,7 +439,6 @@
                       v-model="item.Nausea"
                     >
                     </v-checkbox>
-
                   </div>
                   <div>SympDescription: {{ item.SympDescription }}</div>
                 </v-expansion-panel-content>
@@ -506,19 +509,19 @@ import Swal from "sweetalert2";
 //import validation
 import { ValidationProvider, extend, ValidationObserver } from "vee-validate";
 // import needed rules for validate
-import { required, numeric,double } from "vee-validate/dist/rules";
+import { required, numeric, double } from "vee-validate/dist/rules";
 // extend  rules
 extend("required", {
   ...required,
-  message: "This field is required",
+  message: "This field is required!",
 });
 extend("numeric", {
   ...numeric,
-  message: "This field shuold be a number",
+  message: "Please enter a number",
 });
 extend("double", {
   ...double,
-  message: "This field shuold be a double",
+  message: "Please enter a number",
 });
 // end
 export default {
@@ -537,8 +540,8 @@ export default {
         .substr(0, 10),
       statuses: [],
       form_default: {
-        fillOutDate: "2022-02-14",
-        lastUpdateTime: "13:30:30",
+        fillOutDate: "2022-03-17",
+        lastUpdateTime: "15:30:30",
         Weight: null,
         SympDescription: null,
         Temperature: null,
@@ -626,6 +629,25 @@ export default {
         // alert("Failed ; add new status");
       }
     },
+    async addNotif(Message) {
+      let d = new Date();
+      let Time = d.toTimeString().split(" ")[0];
+      const params = {
+        Message,
+        Recipient: this.userId,
+        Read: 0,
+        Time,
+      };
+      try {
+        await axios.post(this.url + "notification", params);
+        // alert("statuse added successfully");
+        this.getStatuses();
+        this.status_dialoge = false;
+      } catch (err) {
+        console.log("err", err);
+        // alert("Failed ; add new status");
+      }
+    },
     async updateStatus() {
       const PID = this.userId;
       const date = this.form.fillOutDate.substr(0, 10);
@@ -694,6 +716,7 @@ export default {
       };
       try {
         await axios.post(this.url + "appointmentrequest", params);
+        this.addNotif('an appointment booked')
         Swal.fire({
           icon: "success",
           title: "success",
@@ -724,7 +747,8 @@ export default {
             try {
               axios.post(this.url + "deleteappointmentrequest", item);
 
-              window.location.reload();
+              // window.location.reload();
+this.addNotif('an appointment deleted')
             } catch (err) {
               console.log("err", err);
               alert("Failed ; delete appointment");
@@ -886,7 +910,7 @@ export default {
     isOverDue() {
       if (this.statuses.length == 0) return false;
       // get last status
-      const last_status = this.statuses[this.statuses.length - 1];
+      const last_status = this.statuses[0];
       const last_status_date = +new Date(last_status.fillOutDate);
       // get today time stamp
       const today = +new Date();
@@ -909,7 +933,4 @@ export default {
   },
 };
 </script>
-<style>
 
-
-</style>
