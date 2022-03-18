@@ -1,6 +1,5 @@
 <template>
   <v-container class="bg-image">
-
     <v-row>
       <!-- book modal start -->
       <v-dialog v-model="date_dialoge" width="500px">
@@ -629,12 +628,12 @@ export default {
         // alert("Failed ; add new status");
       }
     },
-    async addNotif(Message) {
+    async addNotif(Message, Recipient) {
       let d = new Date();
       let Time = d.toTimeString().split(" ")[0];
       const params = {
         Message,
-        Recipient: this.userId,
+        Recipient,
         Read: 0,
         Time,
       };
@@ -716,7 +715,10 @@ export default {
       };
       try {
         await axios.post(this.url + "appointmentrequest", params);
-        this.addNotif('an appointment booked')
+        this.addNotif(
+          `an appointment [${Date + "-" + params.Time}]`,
+          this.userId
+        );
         Swal.fire({
           icon: "success",
           title: "success",
@@ -733,7 +735,7 @@ export default {
     async deleteAppointment(item) {
       Swal.fire({
         title: "Are you sure?",
-        text: "You won't be able to revert this!",
+        text: "delete appointment ?",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -748,7 +750,10 @@ export default {
               axios.post(this.url + "deleteappointmentrequest", item);
 
               // window.location.reload();
-this.addNotif('an appointment deleted')
+              this.addNotif(
+                `an appointment[${item.Date}] deleted`,
+                this.userId
+              );
             } catch (err) {
               console.log("err", err);
               alert("Failed ; delete appointment");
@@ -776,6 +781,10 @@ this.addNotif('an appointment deleted')
           delete item.RequestedBy;
           try {
             axios.post(this.url + "deleteappointment", item);
+            this.addNotif(
+              `an approver appointment[${item.Date}] was deleted`,
+              item.DID
+            );
             this.getApproved();
           } catch (err) {
             console.log("err", err);
@@ -845,16 +854,28 @@ this.addNotif('an appointment deleted')
     },
     //Accept requested appointment
     approveRequested(item) {
-      console.log(item);
-      this.approveAppointment(
-        item.PID,
-        item.DID,
-        item.Date.substr(0, 10),
-        item.Time,
-        item.LevelOfEmergency,
-        item.Priority
-      );
-      window.location.reload();
+      Swal.fire({
+        title: "Are you sure?",
+        text: "Approve this appointment?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Approve it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.approveAppointment(
+            item.PID,
+            item.DID,
+            item.Date.substr(0, 10),
+            item.Time,
+            item.LevelOfEmergency,
+            item.Priority
+          );
+          // window.location.reload();
+          this.init();
+        }
+      });
     },
     // Approve an appointment
     async approveAppointment(PID, DID, Date, Time, LevelOfEmergency, Priority) {
@@ -868,6 +889,10 @@ this.addNotif('an appointment deleted')
           LevelOfEmergency: LevelOfEmergency,
           Priority: Priority,
         });
+        this.addNotif(
+          `an appoitment on [${Date + "-" + Time}]approved by patient`,
+          DID
+        );
       } catch (err) {
         console.log(err);
       }
@@ -881,9 +906,20 @@ this.addNotif('an appointment deleted')
           Date: Date,
           Time: Time,
         });
+        this.addNotif(
+          `the appointment[${Date + "-" + Time}] reuest was deleted`,
+          DID
+        );
       } catch (err) {
         console.log(err);
       }
+    },
+    init() {
+      this.getApproved();
+      this.getStatuses();
+      this.getAppointments();
+      this.getDoctorAppointmentRequests();
+      this.form = Object.assign({}, this.form_default);
     },
   },
   computed: {
@@ -925,11 +961,7 @@ this.addNotif('an appointment deleted')
     },
   },
   mounted() {
-    this.getApproved();
-    this.getStatuses();
-    this.getAppointments();
-    this.getDoctorAppointmentRequests();
-    this.form = Object.assign({}, this.form_default);
+    this.init();
   },
 };
 </script>

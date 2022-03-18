@@ -153,9 +153,9 @@ export default {
   },
   mounted() {
     this.getNotifs();
-    setInterval(() => {
-      this.getNotifs();
-    }, 5000);
+    // setInterval(() => {
+    //   this.getNotifs();
+    // }, 5000);
   },
 };
 </script>
