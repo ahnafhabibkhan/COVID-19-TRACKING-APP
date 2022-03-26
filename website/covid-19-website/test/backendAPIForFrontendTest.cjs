@@ -115,6 +115,8 @@ describe('User related API intergration test',async function(){
 });
 
 describe('avaliablilty related test',async function(){
+    
+    
     var id=100;
     async function iniCheck(){
         chai.request(url).get('/availability/'+id).then((err,res)=>{
@@ -167,6 +169,21 @@ describe('avaliablilty related test',async function(){
 });
 
 describe('messages related test',async function(){
+    it('test get messages by ID',async function(){
+        chai.request(url).get('/messages/'+3).then((err,res)=>{
+            assert.equal(res['body'][0],'hey');
+             
+        });
+
+    })
+    it('test get messages by data',async function(){
+        chai.request(url).post('/messages').send({ReceiveUserID:1}).then((err,res)=>{
+            assert.equal(res['body'][0],'hello');
+            assert.equal(res['body'][1],"w4tw4t");
+        });
+
+    })
+    
     var rid=101;
     var sid=100;
     var mid;
@@ -192,6 +209,18 @@ describe('messages related test',async function(){
     async function checkAfterAdding(){
         chai.request(url).get('/messages/'+rid).then((err,res)=>{
             assert.equal(res['body'][0]['Text'],"Hello!");
+            mid=res['body'][0]['ID'];
+            
+        });
+    }
+    async function modifyTheMessage(){
+        chai.request(url).put('message/'+mid).send({Text:"Modified"}).then((err,res)=>{
+
+        })
+    }
+    async function checkAfterModifying(){
+        chai.request(url).get('/messages/'+rid).then((err,res)=>{
+            assert.equal(res['body'][0]['Text'],"Modified");
             
             
         });
@@ -208,6 +237,10 @@ describe('messages related test',async function(){
         await sleep();
         await checkAfterAdding();
         await sleep();
+        await modifyTheMessage();
+        await sleep();
+        await checkAfterModifying();
+        await sleep();
         await deleteTheMessage();
         await sleep();
         await iniCheck();
@@ -216,6 +249,77 @@ describe('messages related test',async function(){
     it('test add and delete message',async function(){
         
         await runMessageTest();
+        
+    })
+
+
+});
+
+describe('notifications related test',async function(){
+    
+    
+    var rid=101;
+    
+    var mid;
+    async function iniCheck(){
+        chai.request(url).post('/notifications').send({Recipient: rid}).then((err,res)=>{
+            assert.equal(res['body'][0],undefined);
+             
+        });
+    }    
+    async function addANotification(){
+        chai.request(url).post('/notification').send({
+            Message:"Hello!",
+            Recipient: rid,
+            Read:0,
+            Time: new Date("2022-02-07T06:00:00.000Z").toJSON().slice(0, 19).replace('T', ' ')})
+            .then((err,res)=>{
+                
+            });
+    }
+    async function checkAfterAdding(){
+        chai.request(url).post('/notifications').send({Recipient: rid}).then((err,res)=>{
+            assert.equal(res['body'][0]['Message'],"Hello!");
+            mid=res['body'][0]['ID'];
+            
+        });
+    }
+    async function modifyTheNotification(){
+        chai.request(url).put('notification/'+mid).send({Message:"Modified"}).then((err,res)=>{
+
+        })
+    }
+    async function checkAfterModifying(){
+        chai.request(url).post('/notifications').send({Recipient: rid}).then((err,res)=>{
+            assert.equal(res['body'][0]['Message'],"Modified");
+            
+            
+        });
+    }
+    async function deleteTheNotification(){
+        chai.request(url).post('/deletenotifications').send({Recipient: rid})
+        .then((err,res)=>{
+
+        });
+    }
+    async function runNotificationTest(){
+        await iniCheck();
+        await addANotification();
+        await sleep();
+        await checkAfterAdding();
+        await sleep();
+        await modifyTheNotification();
+        await sleep();
+        await checkAfterModifying();
+        await sleep();
+        await deleteTheNotification();
+        await sleep();
+        await iniCheck();
+    }
+
+    it('test add and delete notification',async function(){
+        
+        await runNotificationTest();
         
     })
 
