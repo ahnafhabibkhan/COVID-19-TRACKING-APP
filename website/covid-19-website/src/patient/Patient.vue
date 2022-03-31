@@ -623,19 +623,17 @@ export default {
         // alert("statuse added successfully");
         this.getStatuses();
         this.status_dialoge = false;
-        this.addNotif("Status Added!", this.userId);
-        this.addNotif("Patient Added Status!", this.doctorId);
       } catch (err) {
         console.log("err", err);
         // alert("Failed ; add new status");
       }
     },
-    async addNotif(Message, id) {
+    async addNotif(Message, Recipient) {
       let d = new Date();
       let Time = d.toTimeString().split(" ")[0];
       const params = {
         Message,
-        Recipient: id,
+        Recipient,
         Read: 0,
         Time,
       };
@@ -659,8 +657,6 @@ export default {
         this.status_dialoge = false;
         this.edit_mode = false;
         this.getStatuses();
-        this.addNotif("Status Updated!", this.userId);
-        this.addNotif("Patient Updated Status!", this.doctorId);
       } catch (err) {
         console.log("err", err);
         // alert("Failed ; add new status");
@@ -719,8 +715,10 @@ export default {
       };
       try {
         await axios.post(this.url + "appointmentrequest", params);
-        this.addNotif("Appointment requested!", this.userId);
-        this.addNotif("Appointment requested by the Patient!", this.doctorId);
+        this.addNotif(
+          `an appointment [${Date + "-" + params.Time}]`,
+          this.userId
+        );
         Swal.fire({
           icon: "success",
           title: "success",
@@ -737,7 +735,7 @@ export default {
     async deleteAppointment(item) {
       Swal.fire({
         title: "Are you sure?",
-        text: "You won't be able to revert this!",
+        text: "delete appointment ?",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -752,10 +750,9 @@ export default {
               axios.post(this.url + "deleteappointmentrequest", item);
 
               // window.location.reload();
-              this.addNotif("Appointment Request Deleted!", this.userId);
               this.addNotif(
-                "Patient Deleted Appointment Request!",
-                this.doctorId
+                `an appointment[${item.Date}] deleted`,
+                this.userId
               );
             } catch (err) {
               console.log("err", err);
@@ -784,9 +781,11 @@ export default {
           delete item.RequestedBy;
           try {
             axios.post(this.url + "deleteappointment", item);
+            this.addNotif(
+              `an approver appointment[${item.Date}] was deleted`,
+              item.DID
+            );
             this.getApproved();
-            this.addNotif("Appointment Deleted!", this.userId);
-            this.addNotif("Patient Deleted Appointment!", this.doctorId);
           } catch (err) {
             console.log("err", err);
             alert("Failed ; delete appointment");
@@ -855,18 +854,28 @@ export default {
     },
     //Accept requested appointment
     approveRequested(item) {
-      console.log(item);
-      this.approveAppointment(
-        item.PID,
-        item.DID,
-        item.Date.substr(0, 10),
-        item.Time,
-        item.LevelOfEmergency,
-        item.Priority
-      );
-      this.addNotif("Appointment Approved", item.PID);
-      this.addNotif("Patient Approved Appointment!", item.DID);
-      window.location.reload();
+      Swal.fire({
+        title: "Are you sure?",
+        text: "Approve this appointment?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Approve it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.approveAppointment(
+            item.PID,
+            item.DID,
+            item.Date.substr(0, 10),
+            item.Time,
+            item.LevelOfEmergency,
+            item.Priority
+          );
+          // window.location.reload();
+          this.init();
+        }
+      });
     },
     // Approve an appointment
     async approveAppointment(PID, DID, Date, Time, LevelOfEmergency, Priority) {
@@ -880,8 +889,10 @@ export default {
           LevelOfEmergency: LevelOfEmergency,
           Priority: Priority,
         });
-        this.addNotif("Appointment Approved", PID);
-        this.addNotif("Patient Approved Appointment!", DID);
+        this.addNotif(
+          `an appoitment on [${Date + "-" + Time}]approved by patient`,
+          DID
+        );
       } catch (err) {
         console.log(err);
       }
@@ -895,9 +906,20 @@ export default {
           Date: Date,
           Time: Time,
         });
+        this.addNotif(
+          `the appointment[${Date + "-" + Time}] reuest was deleted`,
+          DID
+        );
       } catch (err) {
         console.log(err);
       }
+    },
+    init() {
+      this.getApproved();
+      this.getStatuses();
+      this.getAppointments();
+      this.getDoctorAppointmentRequests();
+      this.form = Object.assign({}, this.form_default);
     },
   },
   computed: {
@@ -939,11 +961,8 @@ export default {
     },
   },
   mounted() {
-    this.getApproved();
-    this.getStatuses();
-    this.getAppointments();
-    this.getDoctorAppointmentRequests();
-    this.form = Object.assign({}, this.form_default);
+    this.init();
   },
 };
 </script>
+

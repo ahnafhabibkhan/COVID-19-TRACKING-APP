@@ -131,6 +131,7 @@ export default {
   name: "ListOfAppointments",
   data() {
     return {
+      url: "http://localhost:5000/",
       appointments: [],
       appointment_dialog: false,
       requestedAppointments: [],
@@ -158,26 +159,8 @@ export default {
     allowedDates() {
       return true;
     },
-    //Add notifications
-    async addNotif(Message, id) {
-      let d = new Date();
-      let Time = d.toTimeString().split(" ")[0];
-      const params = {
-        Message,
-        Recipient: id,
-        Read: 0,
-        Time,
-      };
-      try {
-        await axios.post("http://localhost:5000/notification", params);
-        // alert("statuse added successfully");
-        this.getStatuses();
-        this.status_dialoge = false;
-      } catch (err) {
-        console.log("err", err);
-        // alert("Failed ; add new status");
-      }
-    },
+
+
 
     //Accept appointment
     acceptAppointment(item) {
@@ -260,8 +243,10 @@ export default {
           LevelOfEmergency: LevelOfEmergency,
           Priority: Priority,
         });
-        this.addNotif("Appointment approved!", DID);
-        this.addNotif("Appointment approved!", PID);
+
+        this.addNotif(`Your requested appointment on [${Date+'-'+Time}] was approved`, PID);
+
+    
       } catch (err) {
         console.log(err);
       }
@@ -276,8 +261,9 @@ export default {
           Date: Date,
           Time: Time,
         });
-        this.addNotif("Appointment cancelled!", DID);
-        this.addNotif("Appointment cancelled!", PID);
+
+        this.addNotif("an appointment is booked for you by doctor", PID);
+
       } catch (err) {
         console.log(err);
       }
@@ -292,8 +278,10 @@ export default {
           Date: Date,
           Time: Time,
         });
-        this.addNotif("Appointment request cancelled!", DID);
-        this.addNotif("Appointment request cancelled!", PID);
+
+        // added by me
+        this.addNotif(`Your requested appointment on [${Date + '-' + Time}] was declined`, PID);
+
       } catch (err) {
         console.log(err);
       }
@@ -324,12 +312,17 @@ export default {
           ),
           Priority: covidStatusInt.data.Covid,
         });
-        this.addNotif("Appointment requested!", DID);
-        this.addNotif("Appointment requested!", PID);
+
+        this.addNotif(
+          `an appointment on[${Date + '-'+Time}]is booked for you by doctor`,
+          parseInt(this.appointmentRequestForm.PID)
+        );
+
       } catch (err) {
         console.log(err);
       }
-      window.location.reload();
+      // window.location.reload();
+      this.init();
     },
 
     // Get appointment requests made by this doctor
@@ -347,11 +340,33 @@ export default {
         console.log(err);
       }
     },
+    async addNotif(Message, Recipient) {
+      let d = new Date();
+      let Time = d.toTimeString().split(" ")[0];
+      const params = {
+        Message,
+        Recipient,
+        Read: 0,
+        Time,
+      };
+      try {
+        await axios.post(this.url + "notification", params);
+        // alert("statuse added successfully");
+        this.getStatuses();
+        this.status_dialoge = false;
+      } catch (err) {
+        console.log("err", err);
+        // alert("Failed ; add new status");
+      }
+    },
+    init() {
+      this.getAppointments();
+      this.getAppointmentRequests();
+      this.getOwnAppointmentRequests();
+    },
   },
   mounted() {
-    this.getAppointments();
-    this.getAppointmentRequests();
-    this.getOwnAppointmentRequests();
+    this.init();
   },
 };
 </script>
