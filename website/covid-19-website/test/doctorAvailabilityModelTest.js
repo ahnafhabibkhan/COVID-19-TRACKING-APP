@@ -9,7 +9,7 @@ import {sleep} from "./commonFunctions.js";
 describe('doctor related test',function(){
     
     //some functions and veriable to test insert and delete
-    var id=4;
+    var id=100;
     
     
     async function insertAAvailability(){

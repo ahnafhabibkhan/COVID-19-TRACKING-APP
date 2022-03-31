@@ -18,6 +18,7 @@ import HealthOfficial from "../health-official/HealthOfficial.vue";
 import HealthOfficialListOfPatients from "../health-official/ListOfHOPatients.vue";
 import Admin from "../admin/Admin.vue";
 import AdminListOfPatients from "../admin/ListOfAdminPatients.vue";
+import Dashboard from "../admin/Dashboard.vue";
 
 export default [
   {
@@ -62,6 +63,7 @@ export default [
         children: [
           { path: "/admin", component: Admin },
           { path: "/admin-patients-list", component: AdminListOfPatients },
+          { path: "/admin-dashboard", component: Dashboard },
         ],
       },
     ],

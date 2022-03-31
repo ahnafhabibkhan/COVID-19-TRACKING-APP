@@ -11,6 +11,7 @@
           color="blue lighten-2"
           width="400px"
           height="75px"
+          @click="onDashboardClick()"
           >Dashboard</v-btn
         >
       </div>
@@ -32,6 +33,7 @@
           color="blue lighten-2"
           width="400px"
           height="75px"
+          @click="onPatientsClick()"
           >List Of Doctors</v-btn
         >
       </div>
@@ -42,6 +44,7 @@
           color="blue lighten-2"
           width="400px"
           height="75px"
+          @click="onPatientsClick()"
           >List Of Health Officials</v-btn
         >
       </div>
@@ -52,6 +55,7 @@
           color="blue lighten-2"
           width="400px"
           height="75px"
+          @click="onPatientsClick()"
           >List Of Immigration Officials</v-btn
         >
       </div>
@@ -84,6 +88,9 @@ export default {
     onPatientsClick() {
       this.$router.push("/admin-patients-list");
     },
+    onDashboardClick() {
+      this.$router.push("/admin-dashboard");
+    }
   },
 };
 </script>

@@ -159,6 +159,26 @@ export default {
     allowedDates() {
       return true;
     },
+    //Add notifications
+    async addNotif(Message, id) {
+      let d = new Date();
+      let Time = d.toTimeString().split(" ")[0];
+      const params = {
+        Message,
+        Recipient: id,
+        Read: 0,
+        Time,
+      };
+      try {
+        await axios.post("http://localhost:5000/notification", params);
+        // alert("statuse added successfully");
+        this.getStatuses();
+        this.status_dialoge = false;
+      } catch (err) {
+        console.log("err", err);
+        // alert("Failed ; add new status");
+      }
+    },
 
     //Accept appointment
     acceptAppointment(item) {
@@ -170,6 +190,8 @@ export default {
         item.LevelOfEmergency,
         item.Priority
       );
+      this.addNotif("Appointment approved!", item.DID);
+      this.addNotif("Appointment approved!", item.PID);
       window.location.reload();
     },
 
@@ -181,6 +203,8 @@ export default {
         item.Date.substr(0, 10),
         item.Time
       );
+      this.addNotif("Appointment request deleted!", item.DID);
+      this.addNotif("Appointment resquest deleted!", item.PID);
       window.location.reload();
     },
 
@@ -192,6 +216,8 @@ export default {
         item.Date.substr(0, 10),
         item.Time
       );
+      this.addNotif("Appointment deleted!", item.DID);
+      this.addNotif("Appointment deleted!", item.PID);
       window.location.reload();
     },
 
@@ -235,7 +261,10 @@ export default {
           LevelOfEmergency: LevelOfEmergency,
           Priority: Priority,
         });
+
         this.addNotif(`Your requested appointment on [${Date+'-'+Time}] was approved`, PID);
+
+    
       } catch (err) {
         console.log(err);
       }
@@ -250,7 +279,9 @@ export default {
           Date: Date,
           Time: Time,
         });
+
         this.addNotif("an appointment is booked for you by doctor", PID);
+
       } catch (err) {
         console.log(err);
       }
@@ -265,8 +296,10 @@ export default {
           Date: Date,
           Time: Time,
         });
+
         // added by me
         this.addNotif(`Your requested appointment on [${Date + '-' + Time}] was declined`, PID);
+
       } catch (err) {
         console.log(err);
       }
@@ -297,10 +330,12 @@ export default {
           ),
           Priority: covidStatusInt.data.Covid,
         });
+
         this.addNotif(
           `an appointment on[${Date + '-'+Time}]is booked for you by doctor`,
           parseInt(this.appointmentRequestForm.PID)
         );
+
       } catch (err) {
         console.log(err);
       }

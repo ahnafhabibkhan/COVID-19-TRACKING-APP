@@ -89,7 +89,7 @@
             <div>
               <v-btn
                 class="white--text"
-                style="font-size: 18px;"
+                style="font-size: 18px"
                 color="blue lighten-2"
                 width="400px"
                 height="75px"
@@ -100,7 +100,7 @@
             <div class="my-6">
               <v-btn
                 class="white--text"
-                style="font-size: 18px;"
+                style="font-size: 18px"
                 color="blue lighten-2"
                 width="400px"
                 height="75px"
@@ -111,7 +111,7 @@
             <div class="my-6">
               <v-btn
                 class="white--text"
-                style="font-size: 18px;"
+                style="font-size: 18px"
                 color="blue lighten-2"
                 width="400px"
                 height="75px"
@@ -187,9 +187,7 @@ export default {
     this.getChartData();
   },
 
-
   methods: {
-
     chatBox() {},
 
     // Get infected and non infected data
@@ -206,33 +204,40 @@ export default {
         let totalCount = 0;
         let patientIDs = [];
         // Make a list of their IDs
-        patientList.forEach(patient => {
+        patientList.forEach((patient) => {
           ++totalCount;
           patientIDs.push(patient.UserID);
         });
         // For each ID get their latest health status and check if they have covid and calculate count
-        for(let i=0;i<patientIDs.length;++i){
-          const latestHSResponse = await axios.get(`http://localhost:5000/healthstatus/${patientIDs[i]}`);
+        for (let i = 0; i < patientIDs.length; ++i) {
+          const latestHSResponse = await axios.get(
+            `http://localhost:5000/healthstatus/${patientIDs[i]}`
+          );
           console.log(JSON.stringify(latestHSResponse.data));
-          const infected = (latestHSResponse.data.Covid == 1);
-          if(infected){
+          const infected = latestHSResponse.data.Covid == 1;
+          if (infected) {
             ++infectedCount;
-          }else{
-            ++nonInfectedCount
+          } else {
+            ++nonInfectedCount;
           }
         }
         // Write the data to series
-        this.series = [infectedCount/totalCount * 100, nonInfectedCount/totalCount * 100];
+        this.series = [
+          (infectedCount / totalCount) * 100,
+          (nonInfectedCount / totalCount) * 100,
+        ];
       } catch (err) {
         console.log(err);
       }
     },
-    
+
     // Get all messages to and from this doctor's botchat
     async getMessages() {
       try {
         const DID = this.$store.state.user.UserID;
-        this.messages = await axios.get(`http://localhost:5000/messages/${DID}`);
+        this.messages = await axios.get(
+          `http://localhost:5000/messages/${DID}`
+        );
       } catch (err) {
         console.log(err);
       }
@@ -280,6 +285,26 @@ export default {
         item.SpecificDay.substr(0, 10)
       );
       window.location.reload();
+    },
+
+    async addNotif(Message) {
+      let d = new Date();
+      let Time = d.toTimeString().split(" ")[0];
+      const params = {
+        Message,
+        Recipient: this.userId,
+        Read: 0,
+        Time,
+      };
+      try {
+        await axios.post(this.url + "notification", params);
+        // alert("statuse added successfully");
+        this.getStatuses();
+        this.status_dialoge = false;
+      } catch (err) {
+        console.log("err", err);
+        // alert("Failed ; add new status");
+      }
     },
 
     // Click on a date to get availabilities

@@ -69,6 +69,35 @@
         </p>
       </v-card>
     </v-card>
+    <v-card
+      v-if="userRole == 'admin'"
+      class="patients-list-container"
+      outlined
+      color="transparent"
+    >
+      <v-card
+        v-for="(item, UserID) in filteredPatients"
+        :key="UserID"
+        :title="item.title"
+        class="pa-2 mx-8 my-8"
+        style="display: inline-table"
+        width="350px"
+        height="100px"
+        @click="onPatientClick()"
+        :color="item.covidStatus === 'Positive' ? '#FF4933' : 'white'"
+        ><h2 class="my-2">
+          {{ item.patientsList.FirstName }} {{ item.patientsList.LastName }}
+        </h2>
+        <p>
+          Contact:<br />
+          Phone: {{ item.patientsList.Telephone }} <br />
+          Email: {{ item.patientsList.Email }} <br />
+          Covid Status: {{ item.covidStatus }}
+        </p>
+        <v-btn>Delete</v-btn>
+        <v-btn class="mx-3">Assign Doctor</v-btn>
+      </v-card>
+    </v-card>
   </div>
 </template>
 <script>
@@ -108,7 +137,11 @@ export default {
           });
           this.patientList = response.data;
           this.listOfCovidPatients(this.patientList);
-        } else if (this.userRole == "health-official") {
+        } else if (
+          this.userRole == "health-official" ||
+          this.userRole == "admin"
+        ) {
+          console.log("HELLOO ADMIN");
           // Get all patients
           const response = await axios.get(`http://localhost:5000/users`);
           this.patientList = response.data;
@@ -126,12 +159,12 @@ export default {
           var travelledList = travelResponse.data;
 
           var listOfP = [];
-          pList.forEach(patient => {
-            travelledList.forEach(travelledPatient => {
-              if (patient.UserID == travelledPatient.UserID){
+          pList.forEach((patient) => {
+            travelledList.forEach((travelledPatient) => {
+              if (patient.UserID == travelledPatient.UserID) {
                 listOfP.push(patient);
               }
-            })
+            });
           });
           this.listOfCovidPatients(listOfP);
         }
@@ -145,7 +178,11 @@ export default {
       this.$router.push("/");
     },
     async listOfCovidPatients(patientsList) {
-      if (this.userRole == "doctor" || this.userRole == "health-official") {
+      if (
+        this.userRole == "doctor" ||
+        this.userRole == "health-official" ||
+        this.userRole == "admin"
+      ) {
         for (var i = 0; i < patientsList.length; i++) {
           const covidStatusInt = await axios.get(
             `http://localhost:5000/healthstatus/${patientsList[i].UserID}`
@@ -187,7 +224,8 @@ export default {
         });
       } else if (
         this.userRole == "health-official" ||
-        this.userRole == "doctor"
+        this.userRole == "doctor" ||
+        this.userRole == "admin"
       ) {
         return this.covidPatientsList.filter((patient) => {
           return (
