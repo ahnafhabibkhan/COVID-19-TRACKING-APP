@@ -159,26 +159,8 @@ export default {
     allowedDates() {
       return true;
     },
-    //Add notifications
-    async addNotif(Message, id) {
-      let d = new Date();
-      let Time = d.toTimeString().split(" ")[0];
-      const params = {
-        Message,
-        Recipient: id,
-        Read: 0,
-        Time,
-      };
-      try {
-        await axios.post("http://localhost:5000/notification", params);
-        // alert("statuse added successfully");
-        this.getStatuses();
-        this.status_dialoge = false;
-      } catch (err) {
-        console.log("err", err);
-        // alert("Failed ; add new status");
-      }
-    },
+
+
 
     //Accept appointment
     acceptAppointment(item) {
