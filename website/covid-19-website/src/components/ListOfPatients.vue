@@ -219,6 +219,27 @@ export default {
       await axios.delete(`http://localhost:5000/users/${ID}`);
       this.getPatients() // Reloads the list
     },
+
+    // Assign patient to a doctor
+    async assignDoctor(PID, DID){
+      // Verify input
+      if(!PID || !DID){
+        return;
+      }
+      // Verify existence of both and correct roles
+      const patientResponse = await axios.post(`http://localhost:5000/users/`, { UserID: PID });
+      if(patientResponse.data.UserID != PID || doctorResponse.data.Role != "Patient"){
+        console.log("AssignDoctor: PID does not exist or is not patient");
+        return;
+      }
+      const doctorResponse = await axios.post(`http://localhost:5000/users/`, { UserID: DID });
+      if(doctorResponse.data.UserID != DID || doctorResponse.data.Role != "Doctor"){
+        console.log("AssignDoctor: DID does not exist or is not doctor");
+        return;
+      }
+      // Assign doctor
+      await axios.put(`http://localhost:5000/users/${PID}`, { Doctor: DID });
+    },
   },
   computed: {
     // Filter patients list
