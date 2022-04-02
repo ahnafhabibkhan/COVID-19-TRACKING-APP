@@ -94,7 +94,7 @@
           Email: {{ item.patientsList.Email }} <br />
           Covid Status: {{ item.covidStatus }}
         </p>
-        <v-btn>Delete</v-btn>
+        <v-btn @click.stop="deleteUser(item.patientsList.UserID)" >Delete</v-btn>
         <v-btn v-if="item.patientsList.Role == 'Patient'" class="mx-3">Assign Doctor</v-btn>
       </v-card>
     </v-card>
@@ -127,6 +127,9 @@ export default {
     async getPatients() {
       console.log("getPatients called");
       try {
+        // Clear the list in the case that there are already elements in it
+        this.patientList = [];
+        this.covidPatientsList = [];
         // Display a different list depending on user's role
         if (this.userRole == "doctor") {
           const DID = this.$store.state.user.UserID;
@@ -209,6 +212,12 @@ export default {
           }
         }
       }
+    },
+
+    // Deletes the specified user
+    async deleteUser(ID){
+      await axios.delete(`http://localhost:5000/users/${ID}`);
+      this.getPatients() // Reloads the list
     },
   },
   computed: {
