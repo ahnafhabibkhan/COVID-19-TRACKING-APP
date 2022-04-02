@@ -33,6 +33,17 @@
           color="blue lighten-2"
           width="400px"
           height="75px"
+          @click="onAccountRequestsClick()"
+          >Account Requests</v-btn
+        >
+      </div>
+      <div class="my-6 mx-3">
+        <v-btn
+          class="white--text"
+          style="font-size: 18px"
+          color="blue lighten-2"
+          width="400px"
+          height="75px"
           @click="signUp_modal = !signUp_modal"
           >Create an Account</v-btn
         >
@@ -58,6 +69,9 @@ export default {
     onDashboardClick() {
       this.$router.push("/admin-dashboard");
     },
+    onAccountRequestsClick() {
+      this.$router.push("/admin-account-requests-list")
+    }
   },
 };
 </script>
