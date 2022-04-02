@@ -159,7 +159,7 @@ export default {
   components: { ValidationProvider, ValidationObserver },
   data() {
     return {
-      url: "http://localhost:5000/",
+      url: "http://localhost:5001/",
       roles: [
         "Admin",
         "Patient",
@@ -238,7 +238,6 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
-  
 }
 .btn-container {
   /* border: 5px solid red; */

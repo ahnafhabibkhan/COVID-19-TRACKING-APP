@@ -8,11 +8,7 @@
         <div class="my-4 mx-3">
           <v-btn
             class="white--text"
-            style="
-              font-size: 18px;
-              margin-left: 30%;
-              border-radius: 2px;
-            "
+            style="font-size: 18px; margin-left: 30%; border-radius: 2px"
             color="blue lighten-2"
             width="400px"
             height="75px"
@@ -70,15 +66,15 @@ export default {
     this.getChartData();
   },
   methods: {
-    onPatientsClick(){
-      this.$router.push('/health-official-patients-list');
+    onPatientsClick() {
+      this.$router.push("/health-official-patients-list");
     },
 
     // Get infected and non infected data
     async getChartData() {
       try {
         // Get all patients
-        const response = await axios.post(`http://localhost:5000/users`, {
+        const response = await axios.post(`http://localhost:5001/users`, {
           Role: "Patient",
         });
         const patientList = response.data;
@@ -94,7 +90,7 @@ export default {
         // For each ID get their latest health status and check if they have covid and calculate count;
         for (let i = 0; i < patientIDs.length; ++i) {
           const latestHSResponse = await axios.get(
-            `http://localhost:5000/healthstatus/${patientIDs[i]}`
+            `http://localhost:5001/healthstatus/${patientIDs[i]}`
           );
           const infected = latestHSResponse.data.Covid == 1;
           if (infected) {
@@ -112,7 +108,7 @@ export default {
         console.log(err);
       }
     },
-  }
+  },
 };
 </script>
 
