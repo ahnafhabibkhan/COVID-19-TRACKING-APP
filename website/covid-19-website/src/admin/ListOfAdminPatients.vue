@@ -1,6 +1,6 @@
 <template>
   <div class="admin-patients-list">
-    <ListOfPatients user="admin" title="List of Patients" />
+    <ListOfPatients user="admin" title="List of Users" />
   </div>
 </template>
 
