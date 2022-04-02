@@ -95,7 +95,7 @@
           Covid Status: {{ item.covidStatus }}
         </p>
         <v-btn>Delete</v-btn>
-        <v-btn class="mx-3">Assign Doctor</v-btn>
+        <v-btn v-if="item.patientsList.Role == 'Patient'" class="mx-3">Assign Doctor</v-btn>
       </v-card>
     </v-card>
   </div>
@@ -123,7 +123,7 @@ export default {
     this.getPatients();
   },
   methods: {
-    // Get all patients assigned to this doctor
+    // Get all users depending on role of current user
     async getPatients() {
       console.log("getPatients called");
       try {
@@ -137,13 +137,14 @@ export default {
           });
           this.patientList = response.data;
           this.listOfCovidPatients(this.patientList);
-        } else if (
-          this.userRole == "health-official" ||
-          this.userRole == "admin"
-        ) {
-          console.log("HELLOO ADMIN");
-          // Get all patients
+        } else if (this.userRole == "admin") {
+          // Get all users
           const response = await axios.get(`http://localhost:5000/users`);
+          this.patientList = response.data;
+          this.listOfCovidPatients(this.patientList);
+        }else if (this.userRole == "health-official") {
+          // Get all patients
+          const response = await axios.post(`http://localhost:5000/users`, { Role: "Patient" });
           this.patientList = response.data;
           this.listOfCovidPatients(this.patientList);
         } else if (this.userRole == "immigration-officer") {
