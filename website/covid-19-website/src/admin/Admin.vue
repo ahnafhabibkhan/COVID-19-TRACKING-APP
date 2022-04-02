@@ -7,7 +7,7 @@
       <div class="my-6 mx-3">
         <v-btn
           class="white--text"
-          style="font-size: 18px;"
+          style="font-size: 18px"
           color="blue lighten-2"
           width="400px"
           height="75px"
@@ -18,51 +18,18 @@
       <div class="my-6 mx-3">
         <v-btn
           class="white--text"
-          style="font-size: 18px;"
+          style="font-size: 18px"
           color="blue lighten-2"
           width="400px"
           height="75px"
           @click="onPatientsClick()"
-          >List Of Patients</v-btn
+          >List Of Users</v-btn
         >
       </div>
       <div class="my-6 mx-3">
         <v-btn
           class="white--text"
-          style="font-size: 18px;"
-          color="blue lighten-2"
-          width="400px"
-          height="75px"
-          @click="onPatientsClick()"
-          >List Of Doctors</v-btn
-        >
-      </div>
-      <div class="my-6 mx-3">
-        <v-btn
-          class="white--text"
-          style="font-size: 18px;"
-          color="blue lighten-2"
-          width="400px"
-          height="75px"
-          @click="onPatientsClick()"
-          >List Of Health Officials</v-btn
-        >
-      </div>
-      <div class="my-6 mx-3">
-        <v-btn
-          class="white--text"
-          style="font-size: 18px;"
-          color="blue lighten-2"
-          width="400px"
-          height="75px"
-          @click="onPatientsClick()"
-          >List Of Immigration Officials</v-btn
-        >
-      </div>
-      <div class="my-6 mx-3">
-        <v-btn
-          class="white--text"
-          style="font-size: 18px;"
+          style="font-size: 18px"
           color="blue lighten-2"
           width="400px"
           height="75px"
@@ -90,7 +57,7 @@ export default {
     },
     onDashboardClick() {
       this.$router.push("/admin-dashboard");
-    }
+    },
   },
 };
 </script>

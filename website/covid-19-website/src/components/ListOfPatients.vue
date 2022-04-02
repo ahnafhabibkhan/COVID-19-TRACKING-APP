@@ -92,7 +92,8 @@
           Contact:<br />
           Phone: {{ item.patientsList.Telephone }} <br />
           Email: {{ item.patientsList.Email }} <br />
-          Covid Status: {{ item.covidStatus }}
+          Covid Status: {{ item.covidStatus }} <br />
+          Role: {{item.patientsList.Role}}
         </p>
         <v-btn @click.stop="deleteUser(item.patientsList.UserID)" >Delete</v-btn>
         <v-btn v-if="item.patientsList.Role == 'Patient'" class="mx-3">Assign Doctor</v-btn>
@@ -144,10 +145,13 @@ export default {
           // Get all users
           const response = await axios.get(`http://localhost:5000/users`);
           this.patientList = response.data;
+          console.log(this.patientList);
           this.listOfCovidPatients(this.patientList);
-        }else if (this.userRole == "health-official") {
+        } else if (this.userRole == "health-official") {
           // Get all patients
-          const response = await axios.post(`http://localhost:5000/users`, { Role: "Patient" });
+          const response = await axios.post(`http://localhost:5000/users`, {
+            Role: "Patient",
+          });
           this.patientList = response.data;
           this.listOfCovidPatients(this.patientList);
         } else if (this.userRole == "immigration-officer") {
@@ -255,8 +259,7 @@ export default {
         });
       } else if (
         this.userRole == "health-official" ||
-        this.userRole == "doctor" ||
-        this.userRole == "admin"
+        this.userRole == "doctor"
       ) {
         return this.covidPatientsList.filter((patient) => {
           return (
@@ -273,6 +276,29 @@ export default {
               this.search.toLowerCase()
             ) ||
             patient.covidStatus.toLowerCase().match(this.search.toLowerCase())
+          );
+        });
+      } else if (this.userRole == "admin") {
+        return this.covidPatientsList.filter((patient) => {
+          return (
+            patient.patientsList.FirstName.toLowerCase().match(
+              this.search.toLowerCase()
+            ) ||
+            patient.patientsList.LastName.toLowerCase().match(
+              this.search.toLowerCase()
+            ) ||
+            patient.patientsList.Email.toLowerCase().match(
+              this.search.toLowerCase()
+            ) ||
+            patient.patientsList.Telephone.toLowerCase().match(
+              this.search.toLowerCase()
+            ) ||
+            patient.covidStatus
+              .toLowerCase()
+              .match(this.search.toLowerCase()) ||
+            patient.patientsList.Role.toLowerCase().match(
+              this.search.toLowerCase()
+            )
           );
         });
       } else return null;
