@@ -61,7 +61,7 @@ export default {
     async getChartData() {
       try {
         // Get all patients
-        const response = await axios.post(`http://localhost:5001/users`, {
+        const response = await axios.post(`http://localhost:5000/users`, {
           Role: "Patient",
         });
         const patientList = response.data;
@@ -77,7 +77,7 @@ export default {
         // For each ID get their latest health status and check if they have covid and calculate count;
         for (let i = 0; i < patientIDs.length; ++i) {
           const latestHSResponse = await axios.get(
-            `http://localhost:5001/healthstatus/${patientIDs[i]}`
+            `http://localhost:5000/healthstatus/${patientIDs[i]}`
           );
           const infected = latestHSResponse.data.Covid == 1;
           if (infected) {
