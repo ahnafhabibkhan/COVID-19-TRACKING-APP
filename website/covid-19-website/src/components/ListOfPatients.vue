@@ -94,7 +94,7 @@
           Email: {{ item.patientsList.Email }} <br />
           Covid Status: {{ item.covidStatus }}
         </p>
-        <v-btn>Delete</v-btn>
+        <v-btn @click="deleteUser()">Delete</v-btn>
         <v-btn class="mx-3">Assign Doctor</v-btn>
       </v-card>
     </v-card>
@@ -102,6 +102,7 @@
 </template>
 <script>
 import axios from "axios";
+import Swal from "sweetalert2";
 export default {
   name: "ListOfPatients",
 
@@ -175,6 +176,9 @@ export default {
 
     // Go to patient's profile
     onPatientClick() {
+      if (this.userRole == "admin") {
+        return;
+      }
       this.$router.push("/");
     },
     async listOfCovidPatients(patientsList) {
@@ -208,6 +212,26 @@ export default {
           }
         }
       }
+    },
+    deleteUser() {
+      Swal.fire({
+        icon: "warning",
+        title: "Are you sure you want to remove permanently ",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Delete",
+      })
+        .then((result) => {
+          if (result.isConfirmed) {
+            // del status
+            //TODO add the delete API
+            Swal.fire("Deleted!", "The account has been deleted", "success");
+          }
+        })
+        .then(() => {
+          this.getPatients();
+        });
     },
   },
   computed: {
