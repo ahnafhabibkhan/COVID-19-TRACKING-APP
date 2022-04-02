@@ -245,7 +245,7 @@ export default {
     async deleteUser(ID) {
       Swal.fire({
         icon: "warning",
-        title: "Are you sure you want to remove permanently ",
+        title: "Are you sure you want to permanently delete this account ",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
