@@ -95,14 +95,17 @@
           Covid Status: {{ item.covidStatus }} <br />
           Role: {{item.patientsList.Role}}
         </p>
-        <v-btn @click.stop="deleteUser(item.patientsList.UserID)" >Delete</v-btn>
-        <v-btn v-if="item.patientsList.Role == 'Patient'" class="mx-3">Assign Doctor</v-btn>
+        <v-btn @click.stop="deleteUser(item.patientsList.UserID)">Delete</v-btn>
+        <v-btn v-if="item.patientsList.Role == 'Patient'" class="mx-3"
+          >Assign Doctor</v-btn
+        >
       </v-card>
     </v-card>
   </div>
 </template>
 <script>
 import axios from "axios";
+import Swal from "sweetalert2";
 export default {
   name: "ListOfPatients",
 
@@ -183,6 +186,9 @@ export default {
 
     // Go to patient's profile
     onPatientClick() {
+      if (this.userRole == "admin") {
+        return;
+      }
       this.$router.push("/");
     },
     async listOfCovidPatients(patientsList) {
@@ -217,27 +223,72 @@ export default {
         }
       }
     },
-
+    // deleteUser() {
+    //   Swal.fire({
+    //     icon: "warning",
+    //     title: "Are you sure you want to remove permanently ",
+    //     showCancelButton: true,
+    //     confirmButtonColor: "#3085d6",
+    //     cancelButtonColor: "#d33",
+    //     confirmButtonText: "Delete",
+    //   })
+    //     .then((result) => {
+    //       if (result.isConfirmed) {
+    //         // del status
+    //         //TODO add the delete API
+    //         Swal.fire("Deleted!", "The account has been deleted", "success");
+    //       }
+    //     })
+    //     .then(() => {
+    //       this.getPatients();
+    //     });
+    // },
     // Deletes the specified user
-    async deleteUser(ID){
-      await axios.delete(`http://localhost:5000/users/${ID}`);
-      this.getPatients() // Reloads the list
+    async deleteUser(ID) {
+      Swal.fire({
+        icon: "warning",
+        title: "Are you sure you want to permanently delete this account ",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Delete",
+      })
+        .then((result) => {
+          if (result.isConfirmed) {
+            axios.delete(`http://localhost:5000/users/${ID}`);
+
+            Swal.fire("Deleted!", "The account has been deleted", "success");
+          }
+        })
+        .then(() => {
+          this.getPatients();
+        });
     },
 
     // Assign patient to a doctor
-    async assignDoctor(PID, DID){
+    async assignDoctor(PID, DID) {
       // Verify input
-      if(!PID || !DID){
+      if (!PID || !DID) {
         return;
       }
       // Verify existence of both and correct roles
-      const patientResponse = await axios.post(`http://localhost:5000/users/`, { UserID: PID });
-      if(patientResponse.data.UserID != PID || doctorResponse.data.Role != "Patient"){
+      const patientResponse = await axios.post(`http://localhost:5000/users/`, {
+        UserID: PID,
+      });
+      if (
+        patientResponse.data.UserID != PID ||
+        doctorResponse.data.Role != "Patient"
+      ) {
         console.log("AssignDoctor: PID does not exist or is not patient");
         return;
       }
-      const doctorResponse = await axios.post(`http://localhost:5000/users/`, { UserID: DID });
-      if(doctorResponse.data.UserID != DID || doctorResponse.data.Role != "Doctor"){
+      const doctorResponse = await axios.post(`http://localhost:5000/users/`, {
+        UserID: DID,
+      });
+      if (
+        doctorResponse.data.UserID != DID ||
+        doctorResponse.data.Role != "Doctor"
+      ) {
         console.log("AssignDoctor: DID does not exist or is not doctor");
         return;
       }

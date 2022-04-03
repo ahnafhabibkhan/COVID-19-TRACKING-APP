@@ -81,7 +81,7 @@ export default {
 
   data: () => ({
     notifs: [],
-    pending:false
+    pending: false,
   }),
   methods: {
     logout() {
@@ -129,11 +129,11 @@ export default {
           ID: item.ID,
           Read: 1,
         });
-        
+
         const i = this.notifs.findIndex((item) => {
           return item.ID == item.ID;
         });
-        this.notifs[i].Read=1
+        this.notifs[i].Read = 1;
       } catch (err) {
         console.log(err);
       }
@@ -159,4 +159,3 @@ export default {
   },
 };
 </script>
-

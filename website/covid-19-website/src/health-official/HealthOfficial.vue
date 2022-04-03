@@ -8,11 +8,7 @@
         <div class="my-4 mx-3">
           <v-btn
             class="white--text"
-            style="
-              font-size: 18px;
-              margin-left: 30%;
-              border-radius: 2px;
-            "
+            style="font-size: 18px; margin-left: 30%; border-radius: 2px"
             color="blue lighten-2"
             width="400px"
             height="75px"
@@ -70,8 +66,8 @@ export default {
     this.getChartData();
   },
   methods: {
-    onPatientsClick(){
-      this.$router.push('/health-official-patients-list');
+    onPatientsClick() {
+      this.$router.push("/health-official-patients-list");
     },
 
     // Get infected and non infected data
@@ -112,7 +108,7 @@ export default {
         console.log(err);
       }
     },
-  }
+  },
 };
 </script>
 

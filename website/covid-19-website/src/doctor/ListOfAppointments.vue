@@ -160,8 +160,6 @@ export default {
       return true;
     },
 
-
-
     //Accept appointment
     acceptAppointment(item) {
       this.approveAppointment(
@@ -244,9 +242,10 @@ export default {
           Priority: Priority,
         });
 
-        this.addNotif(`Your requested appointment on [${Date+'-'+Time}] was approved`, PID);
-
-    
+        this.addNotif(
+          `Your requested appointment on [${Date + "-" + Time}] was approved`,
+          PID
+        );
       } catch (err) {
         console.log(err);
       }
@@ -263,7 +262,6 @@ export default {
         });
 
         this.addNotif("an appointment is booked for you by doctor", PID);
-
       } catch (err) {
         console.log(err);
       }
@@ -280,8 +278,10 @@ export default {
         });
 
         // added by me
-        this.addNotif(`Your requested appointment on [${Date + '-' + Time}] was declined`, PID);
-
+        this.addNotif(
+          `Your requested appointment on [${Date + "-" + Time}] was declined`,
+          PID
+        );
       } catch (err) {
         console.log(err);
       }
@@ -314,10 +314,9 @@ export default {
         });
 
         this.addNotif(
-          `an appointment on[${Date + '-'+Time}]is booked for you by doctor`,
+          `an appointment on[${Date + "-" + Time}]is booked for you by doctor`,
           parseInt(this.appointmentRequestForm.PID)
         );
-
       } catch (err) {
         console.log(err);
       }

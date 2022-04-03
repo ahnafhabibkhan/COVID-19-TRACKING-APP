@@ -238,7 +238,6 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
-  
 }
 .btn-container {
   /* border: 5px solid red; */

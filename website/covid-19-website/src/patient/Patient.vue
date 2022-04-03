@@ -965,4 +965,3 @@ export default {
   },
 };
 </script>
-

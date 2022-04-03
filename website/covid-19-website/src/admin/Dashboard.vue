@@ -53,8 +53,8 @@ export default {
     this.getChartData();
   },
   methods: {
-    onPatientsClick(){
-      this.$router.push('/health-official-patients-list');
+    onPatientsClick() {
+      this.$router.push("/health-official-patients-list");
     },
 
     // Get infected and non infected data
@@ -77,7 +77,7 @@ export default {
         // For each ID get their latest health status and check if they have covid and calculate count;
         for (let i = 0; i < patientIDs.length; ++i) {
           const latestHSResponse = await axios.get(
-                  `http://localhost:5000/healthstatus/${patientIDs[i]}`
+            `http://localhost:5000/healthstatus/${patientIDs[i]}`
           );
           const infected = latestHSResponse.data.Covid == 1;
           if (infected) {
@@ -95,7 +95,7 @@ export default {
         console.log(err);
       }
     },
-  }
+  },
 };
 </script>
 
@@ -117,7 +117,7 @@ export default {
   width: 210px;
 }
 .pie-chart-stats {
-    margin-top: 30px;
+  margin-top: 30px;
   border: 4px solid rgb(56, 54, 54);
 }
 </style>
