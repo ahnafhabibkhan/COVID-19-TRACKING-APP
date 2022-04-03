@@ -10,7 +10,7 @@ W## Team Members :technologist:
 | 1   | Mansoureh Edalati    | 40037283  |  MansiEdi2020       | UI Lead / Frontend           |
 | 2   | Tommy Soucy          | 40085762  |  TommySoucy         | Backend / Database Management|
 | 3   | Ahnaf Habib Khan     | 40079665  |  ahnafhabibkhan     | Tesitng & Micro-Management   |
-| 4   |                      |           |                     | Frontend Lead                |
+| 4   | Weichen Wan          | 40072743  |  HWJFish            | Testing Lead                 |
 | 5   | Abdul Qadir Ali      | 40075793  |   AQA98             | Backend                      |
 | 6   | Yousha Hyatoolla     | 40099559  |  Yousha-hyat1999    | Fullstack                    |
 | 7   |                      |           |                     | Scrum Master                 |
@@ -33,14 +33,17 @@ Technology Stack
 Frontend:
 Vue.JS + Vuetify
 Backend:
-Java
+Node JS
 Database:
 Mysql
 Continuous Integration
-GitHub Actions
+Jenkins
 
 Unit Testing:
-junit
+Mocha
+chai
+chai-HTTP
+c8
 
 -------------------------------------------------------------
 Organizational Block Diagram
