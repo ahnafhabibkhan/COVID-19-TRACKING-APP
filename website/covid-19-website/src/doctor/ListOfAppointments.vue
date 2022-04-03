@@ -131,7 +131,7 @@ export default {
   name: "ListOfAppointments",
   data() {
     return {
-      url: "http://localhost:5000/",
+      url: "http://localhost:5001/",
       appointments: [],
       appointment_dialog: false,
       requestedAppointments: [],
@@ -204,7 +204,7 @@ export default {
     // Get appointments
     async getAppointments() {
       try {
-        const res = await axios.post(`http://localhost:5000/appointments`, {
+        const res = await axios.post(`http://localhost:5001/appointments`, {
           DID: this.$store.state.user.UserID,
         });
         this.appointments = res.data;
@@ -217,7 +217,7 @@ export default {
     async getAppointmentRequests() {
       try {
         const res = await axios.post(
-          `http://localhost:5000/appointmentrequests`,
+          `http://localhost:5001/appointmentrequests`,
           {
             DID: this.$store.state.user.UserID,
             RequestedBy: "P",
@@ -233,7 +233,7 @@ export default {
     async approveAppointment(PID, DID, Date, Time, LevelOfEmergency, Priority) {
       try {
         this.cancelAppointmentRequest(PID, DID, Date, Time);
-        await axios.post(`http://localhost:5000/appointment`, {
+        await axios.post(`http://localhost:5001/appointment`, {
           PID: PID,
           DID: DID,
           Date: Date,
@@ -254,7 +254,7 @@ export default {
     // Cancel an appointment
     async cancelAppointment(PID, DID, Date, Time) {
       try {
-        await axios.post(`http://localhost:5000/deleteappointment`, {
+        await axios.post(`http://localhost:5001/deleteappointment`, {
           PID: PID,
           DID: DID,
           Date: Date,
@@ -270,7 +270,7 @@ export default {
     // Cancel an appointment request
     async cancelAppointmentRequest(PID, DID, Date, Time) {
       try {
-        await axios.post(`http://localhost:5000/deleteappointmentrequest`, {
+        await axios.post(`http://localhost:5001/deleteappointmentrequest`, {
           PID: PID,
           DID: DID,
           Date: Date,
@@ -299,9 +299,9 @@ export default {
         const DID = this.$store.state.user.UserID;
         const PID = parseInt(this.appointmentRequestForm.PID);
         const covidStatusInt = await axios.get(
-          `http://localhost:5000/healthstatus/${PID}`
+          `http://localhost:5001/healthstatus/${PID}`
         );
-        await axios.post(`http://localhost:5000/appointmentrequest`, {
+        await axios.post(`http://localhost:5001/appointmentrequest`, {
           PID: PID,
           DID: DID,
           Date: Date,
@@ -328,7 +328,7 @@ export default {
     async getOwnAppointmentRequests() {
       try {
         const res = await axios.post(
-          `http://localhost:5000/appointmentrequests`,
+          `http://localhost:5001/appointmentrequests`,
           {
             DID: this.$store.state.user.UserID,
             RequestedBy: "D",
