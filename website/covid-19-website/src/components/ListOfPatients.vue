@@ -223,27 +223,7 @@ export default {
         }
       }
     },
-    // deleteUser() {
-    //   Swal.fire({
-    //     icon: "warning",
-    //     title: "Are you sure you want to remove permanently ",
-    //     showCancelButton: true,
-    //     confirmButtonColor: "#3085d6",
-    //     cancelButtonColor: "#d33",
-    //     confirmButtonText: "Delete",
-    //   })
-    //     .then((result) => {
-    //       if (result.isConfirmed) {
-    //         // del status
-    //         //TODO add the delete API
-    //         Swal.fire("Deleted!", "The account has been deleted", "success");
-    //       }
-    //     })
-    //     .then(() => {
-    //       this.getPatients();
-    //     });
-    // },
-    // Deletes the specified user
+
     async deleteUser(ID) {
       Swal.fire({
         icon: "warning",
