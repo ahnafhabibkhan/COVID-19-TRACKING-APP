@@ -36,7 +36,7 @@ Backend:
 Node JS
 Database:
 Mysql
-Continuous Integration
+Continuous Integration:
 Jenkins
 
 Unit Testing:
