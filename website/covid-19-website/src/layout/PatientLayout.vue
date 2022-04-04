@@ -1,5 +1,5 @@
 <template>
-  <div class="patient-layout">
+  <div >
     <v-main>
       <v-container>
         <router-view></router-view>

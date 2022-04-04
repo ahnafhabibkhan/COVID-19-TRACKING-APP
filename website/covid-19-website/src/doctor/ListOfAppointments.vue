@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 70%; margin: auto">
+  <v-row align="center" justify="center" >
     <!-- Dialog for appointment requests with patients -->
     <v-dialog v-model="appointment_dialog" width="600px">
       <v-card>
@@ -65,65 +65,70 @@
       </v-card>
     </v-dialog>
     <!-- requested apppointments -->
-    <div
-      style="background-color: rgba(256, 256, 256, 0.9)"
-      class="pa-4 rounded-lg mb-5"
-    >
-      <h2>Requested Appointments:</h2>
-      <div v-for="(item, i) in requestedAppointments" :key="i">
-        {{ item.Date.substr(0, 10) + " -- " + item.Time }}
+    <v-col cols="12" md="7">
+      <div
+        style="background-color: rgba(256, 256, 256, 0.9)"
+        class="pa-4 rounded-lg "
+      >
+        <h2>Requested Appointments:</h2>
+        <div v-for="(item, i) in requestedAppointments" :key="i">
+          {{ item.Date.substr(0, 10) + " -- " + item.Time }}
 
-        <v-btn x-small @click="acceptAppointment(item)"> approve </v-btn>
-      </div>
-    </div>
-    <!-- Own Requested apppointments -->
-    <div
-      style="background-color: rgba(256, 256, 256, 0.9)"
-      class="pa-4 rounded-lg mb-5"
-    >
-      <h2>Own Requested Appointments:</h2>
-      <div v-for="(item, i) in ownRequestedAppointments" :key="i">
-        {{ item.Date.substr(0, 10) + " -- " + item.Time }}
-
-        <v-btn x-small @click="deleteRequested(item)"> cancel </v-btn>
-      </div>
-    </div>
-    <!-- approved apppointments -->
-    <div
-      style="background-color: rgba(256, 256, 256, 0.9)"
-      class="pa-4 rounded-lg mt-5"
-    >
-      <h2>Appointments:</h2>
-      <div v-for="(item, i) in appointments" :key="i">
-        {{
-          item.Date.substr(0, 10) +
-          " -- " +
-          item.Time +
-          " Priority: " +
-          item.Priority +
-          " Emergency level: " +
-          item.LevelOfEmergency
-        }}
-
-        <v-btn x-small @click="deleteApproved(item)"> cancel </v-btn>
-      </div>
-    </div>
-    <v-row align="center">
-      <v-col>
-        <div class="my-6" style="text-align: center">
-          <v-btn
-            class="white--text"
-            style="font-size: 18px"
-            color="blue lighten-2"
-            width="400px"
-            height="75px"
-            @click="appointment_dialog = !appointment_dialog"
-            >Request Appointment with Patient</v-btn
-          >
+          <v-btn x-small @click="acceptAppointment(item)"> approve </v-btn>
         </div>
-      </v-col>
-    </v-row>
-  </div>
+      </div>
+    </v-col>
+    <!-- Own Requested apppointments -->
+    <v-col cols="12" md="7" >
+      <div
+        style="background-color: rgba(256, 256, 256, 0.9)"
+        class="pa-4 rounded-lg "
+      >
+        <h2>Own Requested Appointments:</h2>
+        <div v-for="(item, i) in ownRequestedAppointments" :key="i">
+          {{ item.Date.substr(0, 10) + " -- " + item.Time }}
+
+          <v-btn x-small @click="deleteRequested(item)"> cancel </v-btn>
+        </div>
+      </div>
+    </v-col>
+    <!-- approved apppointments -->
+    <v-col cols="12" md="7">
+      <div
+        style="background-color: rgba(256, 256, 256, 0.9)"
+        class="pa-4 rounded-lg mt-5"
+      >
+        <h2>Appointments:</h2>
+        <div v-for="(item, i) in appointments" :key="i">
+          {{
+            item.Date.substr(0, 10) +
+            " -- " +
+            item.Time +
+            " Priority: " +
+            item.Priority +
+            " Emergency level: " +
+            item.LevelOfEmergency
+          }}
+
+          <v-btn x-small @click="deleteApproved(item)"> cancel </v-btn>
+        </div>
+      </div>
+    </v-col>
+
+    <v-col cols="12" justify="center">
+      <div class="my-6" style="text-align: center">
+        <v-btn
+          class="white--text"
+          style="font-size: 18px"
+          color="blue lighten-2"
+          width="400px"
+          height="75px"
+          @click="appointment_dialog = !appointment_dialog"
+          >Request Appointment with Patient</v-btn
+        >
+      </div>
+    </v-col>
+  </v-row>
 </template>
 <script>
 import axios from "axios";
@@ -366,7 +371,10 @@ export default {
   },
   mounted() {
     this.init();
+
+    this.$emit("img", "doctor");
   },
 };
 </script>
-<style></style>
+
+

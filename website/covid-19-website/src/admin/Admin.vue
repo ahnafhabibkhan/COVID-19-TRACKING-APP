@@ -1,15 +1,14 @@
 <template>
-  <div class="admin">
+  <v-row justify="center">
     <v-dialog v-model="signUp_modal" width="500px">
       <SignUpDialog />
     </v-dialog>
-    <div class="btn-container-admin" style="text-align: center">
+    <v-col cols="7">
       <div class="my-6 mx-3">
         <v-btn
-          class="white--text"
-          style="font-size: 18px"
+          dark
           color="blue lighten-2"
-          width="400px"
+          block
           height="75px"
           @click="onDashboardClick()"
           >Dashboard</v-btn
@@ -17,10 +16,9 @@
       </div>
       <div class="my-6 mx-3">
         <v-btn
-          class="white--text"
-          style="font-size: 18px"
+          dark
           color="blue lighten-2"
-          width="400px"
+          block
           height="75px"
           @click="onPatientsClick()"
           >List Of Users</v-btn
@@ -28,10 +26,9 @@
       </div>
       <div class="my-6 mx-3">
         <v-btn
-          class="white--text"
-          style="font-size: 18px"
+          dark
           color="blue lighten-2"
-          width="400px"
+          block
           height="75px"
           @click="onAccountRequestsClick()"
           >Account Requests</v-btn
@@ -39,17 +36,16 @@
       </div>
       <div class="my-6 mx-3">
         <v-btn
-          class="white--text"
-          style="font-size: 18px"
+          dark
           color="blue lighten-2"
-          width="400px"
+          block
           height="75px"
           @click="signUp_modal = !signUp_modal"
           >Create an Account</v-btn
         >
       </div>
-    </div>
-  </div>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -70,8 +66,11 @@ export default {
       this.$router.push("/admin-dashboard");
     },
     onAccountRequestsClick() {
-      this.$router.push("/admin-account-requests-list")
-    }
+      this.$router.push("/admin-account-requests-list");
+    },
+  },
+  mounted() {
+    this.$emit("img", "admin");
   },
 };
 </script>
