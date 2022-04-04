@@ -51,86 +51,78 @@
       </v-card>
     </v-dialog>
     <!-- date modal end -->
-    <div class="right-side-doctor">
-      <!-- availabilities -->
-      <div
-        style="
-          background-color: rgba(256, 256, 256, 0.9);
-          width: 70%;
-          margin: auto;
-        "
-        class="pa-4 rounded-lg mb-5"
-      >
-        <h2>Availabilites:</h2>
-        <div v-for="(item, i) in fetchAvailabilities" :key="i">
-          {{
-            item.SpecificDay.substr(0, 10) +
-            " -- " +
-            item.StartTime +
-            "-" +
-            item.EndTime
-          }}
-
-          <v-btn x-small @click="deleteAvailability(item)"> Delete </v-btn>
+    <v-row>
+      <v-col cols="12" md="6">
+        <div class="px-5">
+          <div>
+            <v-btn
+              class="white--text"
+              style="font-size: 18px"
+              color="blue lighten-2"
+              block
+              height="75px"
+              @click="onPatientsClick()"
+              >List Of Patients</v-btn
+            >
+          </div>
+          <div class="my-6">
+            <v-btn
+              class="white--text"
+              style="font-size: 18px"
+              color="blue lighten-2"
+              block
+              height="75px"
+              @click="listOfAppointments()"
+              >List of Appointments</v-btn
+            >
+          </div>
+          <div class="my-6">
+            <v-btn
+              class="white--text"
+              style="font-size: 18px"
+              color="blue lighten-2"
+              block
+              height="75px"
+              @click="date_dialog = !date_dialog"
+              >Update Availabilities</v-btn
+            >
+          </div>
         </div>
-      </div>
-      <div style="margin-top: 50%; margin-left: 85%">
-        <v-btn @click="ChatboxClick" icon height="80px" width="80px">
-          <v-icon color="blue darken-3" style="font-size: 80px">
-            mdi-message-text
-          </v-icon>
-        </v-btn>
-      </div>
-    </div>
-    <div class="left-side-doctor">
-      <div class="btn-container-doctor" style="margin: auto">
-        <v-row align="center">
-          <v-col cols="12" sm="6">
-            <div>
-              <v-btn
-                class="white--text"
-                style="font-size: 18px;"
-                color="blue lighten-2"
-                width="400px"
-                height="75px"
-                @click="onPatientsClick()"
-                >List Of Patients</v-btn
-              >
-            </div>
-            <div class="my-6">
-              <v-btn
-                class="white--text"
-                style="font-size: 18px;"
-                color="blue lighten-2"
-                width="400px"
-                height="75px"
-                @click="listOfAppointments()"
-                >List of Appointments</v-btn
-              >
-            </div>
-            <div class="my-6">
-              <v-btn
-                class="white--text"
-                style="font-size: 18px;"
-                color="blue lighten-2"
-                width="400px"
-                height="75px"
-                @click="date_dialog = !date_dialog"
-                >Update Availabilities</v-btn
-              >
-            </div>
-          </v-col>
-        </v-row>
-      </div>
-      <div class="chart">
-        <apexchart
-          type="pie"
-          width="480"
-          :options="chartOptions"
-          :series="series"
-        ></apexchart>
-      </div>
-    </div>
+        <div class="chart">
+          <apexchart
+            type="pie"
+            :options="chartOptions"
+            :series="series"
+          ></apexchart>
+        </div>
+      </v-col>
+      <v-col cols="12" md="6">
+        <div
+          style="background-color: rgba(256, 256, 256, 0.9)"
+          class="pa-4 rounded-lg "
+        >
+          <h2>Availabilites:</h2>
+          <div v-for="(item, i) in fetchAvailabilities" :key="i">
+            {{
+              item.SpecificDay.substr(0, 10) +
+              " -- " +
+              item.StartTime +
+              "-" +
+              item.EndTime
+            }}
+
+            <v-btn x-small @click="deleteAvailability(item)"> Delete </v-btn>
+          </div>
+        </div>
+        <div style="margin-top: 50%; margin-left: 75%">
+          <v-btn @click="ChatboxClick" icon height="80px" width="80px">
+            <v-icon color="blue darken-3" style="font-size: 80px">
+              mdi-message-text
+            </v-icon>
+          </v-btn>
+        </div>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
@@ -186,10 +178,10 @@ export default {
     this.listOfAvailabilities();
     this.getChartData();
   },
-
-
+  mounted() {
+    this.$emit("img", "doctor");
+  },
   methods: {
-
     chatBox() {},
 
     // Get infected and non infected data
@@ -206,33 +198,40 @@ export default {
         let totalCount = 0;
         let patientIDs = [];
         // Make a list of their IDs
-        patientList.forEach(patient => {
+        patientList.forEach((patient) => {
           ++totalCount;
           patientIDs.push(patient.UserID);
         });
         // For each ID get their latest health status and check if they have covid and calculate count
-        for(let i=0;i<patientIDs.length;++i){
-          const latestHSResponse = await axios.get(`http://localhost:5000/healthstatus/${patientIDs[i]}`);
+        for (let i = 0; i < patientIDs.length; ++i) {
+          const latestHSResponse = await axios.get(
+            `http://localhost:5000/healthstatus/${patientIDs[i]}`
+          );
           console.log(JSON.stringify(latestHSResponse.data));
-          const infected = (latestHSResponse.data.Covid == 1);
-          if(infected){
+          const infected = latestHSResponse.data.Covid == 1;
+          if (infected) {
             ++infectedCount;
-          }else{
-            ++nonInfectedCount
+          } else {
+            ++nonInfectedCount;
           }
         }
         // Write the data to series
-        this.series = [infectedCount/totalCount * 100, nonInfectedCount/totalCount * 100];
+        this.series = [
+          (infectedCount / totalCount) * 100,
+          (nonInfectedCount / totalCount) * 100,
+        ];
       } catch (err) {
         console.log(err);
       }
     },
-    
+
     // Get all messages to and from this doctor's botchat
     async getMessages() {
       try {
         const DID = this.$store.state.user.UserID;
-        this.messages = await axios.get(`http://localhost:5000/messages/${DID}`);
+        this.messages = await axios.get(
+          `http://localhost:5000/messages/${DID}`
+        );
       } catch (err) {
         console.log(err);
       }
@@ -282,6 +281,26 @@ export default {
       window.location.reload();
     },
 
+    async addNotif(Message) {
+      let d = new Date();
+      let Time = d.toTimeString().split(" ")[0];
+      const params = {
+        Message,
+        Recipient: this.userId,
+        Read: 0,
+        Time,
+      };
+      try {
+        await axios.post(this.url + "notification", params);
+        // alert("statuse added successfully");
+        this.getStatuses();
+        this.status_dialoge = false;
+      } catch (err) {
+        console.log("err", err);
+        // alert("Failed ; add new status");
+      }
+    },
+
     // Click on a date to get availabilities
     onDateClick() {
       this.available = [];
@@ -299,7 +318,7 @@ export default {
           this.date
         );
       }
-      window.location.reload();
+      // window.location.reload();
     },
     disAvail(item) {
       const found = this.appointments.findIndex((a) => {
@@ -365,51 +384,3 @@ export default {
 };
 </script>
 
-<style>
-.doctor {
-}
-/* .btn {
-  display: block;
-  margin-top: 35px;
-} */
-.btn-container-doctor {
-  /* border: 5px solid red; */
-  /* padding-top: 25px;
-  margin-top: auto;
-  margin-bottom: auto; */
-  /* margin-left: 300px; */
-  /* margin-right: auto; */
-  width: 58%;
-  height: 40%;
-}
-.chart {
-  /* border: 2px solid white;
-  background-color: #64B5F6; */
-  /* border: 5px solid red; */
-  width: 65%;
-  height: 40%;
-  margin-top: 5%;
-  margin-left: auto;
-  margin-right: auto;
-}
-.left-side-doctor {
-  /* border: 5px solid red; */
-  width: 40%;
-  height: 100%;
-  float: left;
-}
-.icons-container {
-  /* border: 5px solid red; */
-  width: 10%;
-  margin-top: 20px;
-  margin-right: 45px;
-  float: right;
-}
-
-.right-side-doctor {
-  /* border: 5px solid red; */
-  float: right;
-  width: 50%;
-  height: 100%;
-}
-</style>

@@ -1,9 +1,10 @@
 import { assert } from 'chai';
 import {sleep} from "./commonFunctions.js";
 import { getLatestHealthStatusByID, getHealthStatusesByID, insertHealthStatus, deleteHealthStatusByPK,deleteHealthStatusByID,updateHealthStatusByPK } from"../src/backend/models/healthStatusModel.js";
+// import the class for testing
 
 describe('GET health status TEST',function(){
-
+    // test get healthStatus related functions
     it('test getHealthStatus',function(){
         getLatestHealthStatusByID(1,(err, results) => {
             assert.equal(results['fillOutDate'].toISOString(), "2022-02-06T05:00:00.000Z");
@@ -21,7 +22,7 @@ describe('GET health status TEST',function(){
 
 
 describe('insert modify and delete health test',function(){
-
+    //add first, check after adding, then modify and check, then delete and check again
     it('test insert modify and delete health',function(){
         getLatestHealthStatusByID(10,(err, results) => {
             assert.equal(results, undefined);
@@ -76,6 +77,9 @@ describe('insert modify and delete health test',function(){
         
         
     });
+
+    //test delete all health status of a user
+    // check first, insert 2 status of the same user and delete by a single call 
     it('test delete by id', async function(){
         getLatestHealthStatusByID(11,(err, results) => {
             assert.equal(results, undefined);

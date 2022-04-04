@@ -1,78 +1,86 @@
 <template>
-  <v-container class="bg-image">
+  <v-container>
     <v-row>
       <!-- book modal start -->
       <v-dialog v-model="date_dialoge" width="500px">
         <v-card>
           <v-container>
-            <v-row>
-              <v-col cols="12" class="pa-1">
-                <h2>Book an Appointment</h2>
-                <v-date-picker v-model="date" full-width></v-date-picker>
-              </v-col>
-              <!-- list -->
-              <!-- if filteredAvailability exists this will displayed -->
-              <v-col
-                cols="12"
-                class="py-0"
-                v-if="filteredAvailability.length > 0"
-              >
-                select a date
-                <v-radio-group v-model="available" dense hide-details>
-                  <v-radio
-                    v-for="(item, i) in filteredAvailability"
-                    :key="i"
-                    :color="disAvail(item) ? 'error' : ''"
-                    :disabled="disAvail(item)"
-                    :class="{
-                      'text-decoration-line-through red--text': disAvail(item),
-                    }"
-                    :label="
-                      item.SpecificDay.substr(0, 10) +
-                      ' -- ' +
-                      item.StartTime +
-                      ' - ' +
-                      item.EndTime
-                    "
-                    :value="item"
-                  ></v-radio>
-                </v-radio-group>
-              </v-col>
-              <v-col cols="12" class="py-0">
-                <h4 class="pt-1 my-0 pb-0">Level of Emergency:</h4>
-                <v-radio-group
-                  v-model="emergencyLevel"
-                  row
-                  dense
-                  :hide-details="true"
+            <ValidationObserver v-slot="{ handleSubmit }" ref="observer">
+              <v-row>
+                <v-col cols="12" class="pa-1">
+                  <h2>Book an Appointment</h2>
+                  <v-date-picker v-model="date" full-width></v-date-picker>
+                </v-col>
+                <!-- list -->
+                <!-- if filteredAvailability exists this will displayed -->
+                <v-col
+                  cols="12"
+                  class="py-0"
+                  v-if="filteredAvailability.length > 0"
                 >
-                  <v-radio label="High" value="High"> </v-radio>
-                  <v-radio label="Medium" value="Medium"> </v-radio>
-                  <v-radio label="Low" value="Low"> </v-radio>
-                </v-radio-group>
-              </v-col>
+                  select a date
+                  <ValidationProvider rules="required" v-slot="{ errors }">
+                    <v-radio-group v-model="available" dense hide-details>
+                      <v-radio
+                        v-for="(item, i) in filteredAvailability"
+                        :key="i"
+                        :color="disAvail(item) ? 'error' : ''"
+                        :disabled="disAvail(item)"
+                        :hide-details="errors.lenght == 0"
+                        :error-messages="errors[0]"
+                        :class="{
+                          'text-decoration-line-through red--text':
+                            disAvail(item),
+                        }"
+                        :label="
+                          item.SpecificDay.substr(0, 10) +
+                          ' -- ' +
+                          item.StartTime +
+                          ' - ' +
+                          item.EndTime
+                        "
+                        :value="item"
+                      ></v-radio>
+                    </v-radio-group>
+                  </ValidationProvider>
+                </v-col>
+                <v-col cols="12" class="py-0">
+                  <h4 class="pt-1 my-0 pb-0">Level of Emergency:</h4>
+                  <v-radio-group
+                    v-model="emergencyLevel"
+                    row
+                    dense
+                    :hide-details="true"
+                  >
+                    <v-radio label="High" value="High"> </v-radio>
+                    <v-radio label="Medium" value="Medium"> </v-radio>
+                    <v-radio label="Low" value="Low"> </v-radio>
+                  </v-radio-group>
+                </v-col>
 
-              <v-col cols="6">
-                <v-btn
-                  color="error"
-                  block
-                  @click="date_dialoge = false"
-                  elevation="0"
-                >
-                  cancel
-                </v-btn>
-              </v-col>
-              <v-col cols="6">
-                <v-btn
-                  block
-                  color="success"
-                  elevation="0"
-                  @click="bookAppoitment"
-                >
-                  book
-                </v-btn>
-              </v-col>
-            </v-row>
+                <v-col cols="6">
+                  <v-btn
+                    color="error"
+                    block
+                    @click="date_dialoge = false"
+                    elevation="0"
+                  >
+                    cancel
+                  </v-btn>
+                </v-col>
+                <v-col cols="6">
+                  <v-btn
+                    block
+                    color="success"
+                    elevation="0"
+                    :disabled="!available"
+                    @click="handleSubmit(bookAppoitment)"
+                  >
+                    book
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </ValidationObserver>
           </v-container>
         </v-card>
       </v-dialog>
@@ -96,7 +104,7 @@
                       <v-col cols="6">
                         <!-- wrap input with validaion comp -->
                         <ValidationProvider
-                          rules="required|numeric"
+                          rules="required|double"
                           v-slot="{ errors }"
                         >
                           <v-text-field
@@ -115,7 +123,7 @@
                       </v-col>
                       <v-col cols="6">
                         <ValidationProvider
-                          rules="required|numeric"
+                          rules="required|double"
                           v-slot="{ errors }"
                         >
                           <v-text-field
@@ -280,47 +288,56 @@
       <!-- status modal end -->
       <v-col cols="12" md="6">
         <!-- buttons -->
-        <div class="d-flex flex-column align-center mt-5">
-          <div class="my-6 mx-3">
+      
+          <div class="my-2 mx-3">
             <v-btn
-              class="white--text"
-              style="font-size: 18px; opacity: 90%"
+              dark
+              
               color="blue lighten-2"
-              width="400px"
-              height="75px"
+              block
+              large
               @click="myInfo"
               >My Info</v-btn
             >
           </div>
           <div class="mx-3">
             <v-btn
-              class="white--text"
-              style="font-size: 18px; opacity: 90%"
+              dark
+              
               color="blue lighten-2"
-              width="400px"
-              height="75px"
+             block
+              large
               @click="onAppointment"
               >Book an Appointment</v-btn
             >
           </div>
-          <div class="my-6 mx-3">
+          <div class="my-2 mx-3">
             <v-btn
-              class="white--text"
-              style="font-size: 18px; opacity: 90%"
+              dark
+              
               color="blue lighten-2"
-              width="400px"
-              height="75px"
+              block
+              large
               @click="onUpdateStatus"
               >Update Status</v-btn
             >
           </div>
-        </div>
+     
 
         <!-- status rows -->
         <v-row>
-          <v-col cols="12">
+          <v-col v-if="isOverDue">
+            <v-alert type="error" dense>
+              Your updated status is overdue!
+            </v-alert>
+          </v-col>
+          <v-col cols="12" class="my-0">
             <v-expansion-panels>
-              <v-expansion-panel v-for="(item, i) in statusesFiltered" :key="i">
+              <v-expansion-panel
+                d
+                v-for="(item, i) in statusesFiltered"
+                :key="i"
+              >
                 <v-expansion-panel-header>
                   <span> Date: {{ item.fillOutDate.substr(0, 10) }} </span>
                   <span>
@@ -334,6 +351,13 @@
                     v-model="item.Covid"
                   >
                   </v-checkbox>
+
+                  <v-btn @click="onEdit(item)" icon color="primary" small>
+                    <v-icon> mdi-pencil </v-icon>
+                  </v-btn>
+                  <v-btn @click="deleteStatus(item)" icon color="error" small>
+                    <v-icon> mdi-close </v-icon>
+                  </v-btn>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
                   <div
@@ -414,13 +438,6 @@
                       v-model="item.Nausea"
                     >
                     </v-checkbox>
-
-                    <v-btn @click="onEdit(item)" icon color="primary" small>
-                      <v-icon> mdi-pencil </v-icon>
-                    </v-btn>
-                    <v-btn @click="deleteStatus(item)" icon color="error" small>
-                      <v-icon> mdi-close </v-icon>
-                    </v-btn>
                   </div>
                   <div>SympDescription: {{ item.SympDescription }}</div>
                 </v-expansion-panel-content>
@@ -441,10 +458,10 @@
         </v-row>
       </v-col>
 
-      <v-col cols="12" md="6" class="pt-6 mt-6">
+      <v-col cols="12" md="6" class="p2-6 mt-2">
         <!-- requested apppointments -->
         <div
-          style="width: 70%; background-color: rgba(256, 256, 256, 1)"
+          style="; background-color: rgba(256, 256, 256, 0.5)"
           class="pa-4 rounded-lg mb-5"
         >
           <h2>Requested Appointments :</h2>
@@ -456,7 +473,7 @@
         </div>
         <!-- approved apppointments -->
         <div
-          style="width: 70%; background-color: rgba(256, 256, 256, 1)"
+          style="; background-color: rgba(256, 256, 256, 0.5)"
           class="pa-4 rounded-lg mt-5"
         >
           <h2>Approved Appointments :</h2>
@@ -468,7 +485,7 @@
         </div>
         <!-- Doctor's Requested apppointments -->
         <div
-          style="width: 70%; background-color: rgba(256, 256, 256, 1)"
+          style="; background-color: rgba(256, 256, 256, 0.5)"
           class="pa-4 rounded-lg mt-5"
         >
           <h2>Doctor's Requested Appointments:</h2>
@@ -491,15 +508,19 @@ import Swal from "sweetalert2";
 //import validation
 import { ValidationProvider, extend, ValidationObserver } from "vee-validate";
 // import needed rules for validate
-import { required, numeric } from "vee-validate/dist/rules";
+import { required, numeric, double } from "vee-validate/dist/rules";
 // extend  rules
 extend("required", {
   ...required,
-  message: "This field is required",
+  message: "This field is required!",
 });
 extend("numeric", {
   ...numeric,
-  message: "This field shuold be a number",
+  message: "Please enter a number",
+});
+extend("double", {
+  ...double,
+  message: "Please enter a number",
 });
 // end
 export default {
@@ -518,8 +539,8 @@ export default {
         .substr(0, 10),
       statuses: [],
       form_default: {
-        fillOutDate: "2022-02-14",
-        lastUpdateTime: "13:30:30",
+        fillOutDate: "2022-03-17",
+        lastUpdateTime: "15:30:30",
         Weight: null,
         SympDescription: null,
         Temperature: null,
@@ -538,7 +559,7 @@ export default {
       form: null,
       availabilities: [],
       available: null,
-      emergencyLevel: 'Low',
+      emergencyLevel: "Low",
       approved: [],
       doctorRequestedAppointments: [],
     };
@@ -599,6 +620,25 @@ export default {
       try {
         this.form.PID = this.userId;
         await axios.post(this.url + "healthstatus", this.form);
+        // alert("statuse added successfully");
+        this.getStatuses();
+        this.status_dialoge = false;
+      } catch (err) {
+        console.log("err", err);
+        // alert("Failed ; add new status");
+      }
+    },
+    async addNotif(Message, Recipient) {
+      let d = new Date();
+      let Time = d.toTimeString().split(" ")[0];
+      const params = {
+        Message,
+        Recipient,
+        Read: 0,
+        Time,
+      };
+      try {
+        await axios.post(this.url + "notification", params);
         // alert("statuse added successfully");
         this.getStatuses();
         this.status_dialoge = false;
@@ -675,11 +715,16 @@ export default {
       };
       try {
         await axios.post(this.url + "appointmentrequest", params);
+        this.addNotif(
+          `an appointment [${Date + "-" + params.Time}]`,
+          this.userId
+        );
         Swal.fire({
           icon: "success",
           title: "success",
-          text: "The Appointment Request Booked Successfully",
+          text: "The Appointment Request Booked Successfully*",
         });
+        this.available = null;
         this.date_dialoge = false;
         this.getAppointments();
       } catch (err) {
@@ -690,7 +735,7 @@ export default {
     async deleteAppointment(item) {
       Swal.fire({
         title: "Are you sure?",
-        text: "You won't be able to revert this!",
+        text: "delete appointment ?",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -704,7 +749,11 @@ export default {
             try {
               axios.post(this.url + "deleteappointmentrequest", item);
 
-              window.location.reload();
+              // window.location.reload();
+              this.addNotif(
+                `an appointment[${item.Date}] deleted`,
+                this.userId
+              );
             } catch (err) {
               console.log("err", err);
               alert("Failed ; delete appointment");
@@ -732,6 +781,10 @@ export default {
           delete item.RequestedBy;
           try {
             axios.post(this.url + "deleteappointment", item);
+            this.addNotif(
+              `an approver appointment[${item.Date}] was deleted`,
+              item.DID
+            );
             this.getApproved();
           } catch (err) {
             console.log("err", err);
@@ -779,6 +832,7 @@ export default {
       await this.getAvailabilities();
       this.date_dialoge = true;
     },
+
     // Get appointment requests made by this doctor
     async getDoctorAppointmentRequests() {
       try {
@@ -791,22 +845,37 @@ export default {
           }
         );
         this.doctorRequestedAppointments = res.data;
+        // we send recived data to store to be saved there
+        // this.$store.commit('setNotifs',res.data)
+        // this.$store.commit('setNotifs',['notif1','notif2'])
       } catch (err) {
         console.log(err);
       }
     },
     //Accept requested appointment
     approveRequested(item) {
-      console.log(item);
-      this.approveAppointment(
-        item.PID,
-        item.DID,
-        item.Date.substr(0, 10),
-        item.Time,
-        item.LevelOfEmergency,
-        item.Priority
-      );
-      window.location.reload();
+      Swal.fire({
+        title: "Are you sure?",
+        text: "Approve this appointment?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Approve it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.approveAppointment(
+            item.PID,
+            item.DID,
+            item.Date.substr(0, 10),
+            item.Time,
+            item.LevelOfEmergency,
+            item.Priority
+          );
+          // window.location.reload();
+          this.init();
+        }
+      });
     },
     // Approve an appointment
     async approveAppointment(PID, DID, Date, Time, LevelOfEmergency, Priority) {
@@ -820,6 +889,10 @@ export default {
           LevelOfEmergency: LevelOfEmergency,
           Priority: Priority,
         });
+        this.addNotif(
+          `an appoitment on [${Date + "-" + Time}]approved by patient`,
+          DID
+        );
       } catch (err) {
         console.log(err);
       }
@@ -833,9 +906,20 @@ export default {
           Date: Date,
           Time: Time,
         });
+        this.addNotif(
+          `the appointment[${Date + "-" + Time}] reuest was deleted`,
+          DID
+        );
       } catch (err) {
         console.log(err);
       }
+    },
+    init() {
+      this.getApproved();
+      this.getStatuses();
+      this.getAppointments();
+      this.getDoctorAppointmentRequests();
+      this.form = Object.assign({}, this.form_default);
     },
   },
   computed: {
@@ -858,34 +942,27 @@ export default {
         return item.SpecificDay.substr(0, 10) == this.date;
       });
     },
+    // check if user is overdue and if yes show alert to him
+    isOverDue() {
+      if (this.statuses.length == 0) return false;
+      // get last status
+      const last_status = this.statuses[0];
+      const last_status_date = +new Date(last_status.fillOutDate);
+      // get today time stamp
+      const today = +new Date();
+      console.log(today, last_status_date);
+      //compare
+      const diff = today - last_status_date;
+      console.log(diff > 24 * 60 * 60 * 1000);
+      if (diff > 24 * 60 * 60 * 1000 && last_status.Covid) {
+        return true;
+      }
+      return false;
+    },
   },
   mounted() {
-    this.getApproved();
-    this.getStatuses();
-    this.getAppointments();
-    this.getDoctorAppointmentRequests();
-    this.form = Object.assign({}, this.form_default);
+    this.init();
+    this.$emit('img','patient')
   },
 };
 </script>
-<style>
-.red {
-  color: red !important;
-  background-color: white;
-}
-.bg-image {
-  min-height: 100%;
-  min-width: 100%;
-  /* position: fixed; */
-  top: 0;
-  left: 0;
-  /* filter: opacity(0.5); */
-}
-.btn-container {
-  /* border: 5px solid red; */
-  /* margin-top: 100px;
-  width: 30%;
-  height: 40%;
-  margin-left: 100%; */
-}
-</style>

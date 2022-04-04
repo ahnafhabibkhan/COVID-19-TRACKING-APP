@@ -1,13 +1,15 @@
 import { assert } from 'chai';
 import { getAvailabilities, insertAvailability, deleteAvailability} from"../src/backend/models/doctorAvailabilityModel.js";
 import {sleep} from "./commonFunctions.js";
-
+// import the class for testing
 
 
 
 
 describe('doctor related test',function(){
-    var id=4;
+    
+    //some functions and veriable to test insert and delete
+    var id=100;
     
     
     async function insertAAvailability(){
@@ -47,7 +49,7 @@ describe('doctor related test',function(){
     
     it('test insert modify and delete doctor availibilities',async function(){
         
-        
+        //add first, check after adding, then delete and check again
         await insertAAvailability();
         await sleep();
         await checkAvailabilitiesInsertion();

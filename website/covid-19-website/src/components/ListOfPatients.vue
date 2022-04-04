@@ -25,22 +25,23 @@
       outlined
       color="transparent"
     >
-      <v-card
-        v-for="(item, UserID) in filteredPatients"
-        :key="UserID"
-        :title="item.title"
-        class="pa-2 mx-8 my-8"
-        style="display: inline-table"
-        width="30%"
-        height="10%"
-        @click="onPatientClick()"
-        ><h2 class="my-2">{{ item.FirstName }} {{ item.LastName }}</h2>
-        <p>
-          Contact:<br />
-          Phone: {{ item.Telephone }} <br />
-          Email: {{ item.Email }}
-        </p>
-      </v-card>
+      <v-row>
+        <v-col
+          cols="12"
+          md="6"
+          v-for="(item, UserID) in filteredPatients"
+          :key="UserID"
+        >
+          <v-card :title="item.title" class="pa-2" @click="onPatientClick()"
+            ><h2 class="my-2">{{ item.FirstName }} {{ item.LastName }}</h2>
+            <p>
+              Contact:<br />
+              Phone: {{ item.Telephone }} <br />
+              Email: {{ item.Email }}
+            </p>
+          </v-card>
+        </v-col>
+      </v-row>
     </v-card>
     <v-card
       v-if="userRole == 'health-official' || userRole == 'doctor'"
@@ -48,31 +49,74 @@
       outlined
       color="transparent"
     >
-      <v-card
-        v-for="(item, UserID) in filteredPatients"
-        :key="UserID"
-        :title="item.title"
-        class="pa-2 mx-8 my-8"
-        style="display: inline-table"
-        width="350px"
-        height="100px"
-        @click="onPatientClick()"
-        :color="item.covidStatus === 'Positive'? '#FF4933' : 'white'"
-        ><h2 class="my-2">
-          {{ item.patientsList.FirstName }} {{ item.patientsList.LastName }}
-        </h2>
-        <p>
-          Contact:<br />
-          Phone: {{ item.patientsList.Telephone }} <br />
-          Email: {{ item.patientsList.Email }} <br />
-          Covid Status: {{ item.covidStatus }}
-        </p>
-      </v-card>
+      <v-row>
+        <v-col
+          cols="12"
+          md="6"
+          v-for="(item, UserID) in filteredPatients"
+          :key="UserID"
+        >
+          <v-card
+            :title="item.title"
+            class="pa-2"
+            @click="onPatientClick()"
+            :color="item.covidStatus === 'Positive' ? '#FF4933' : 'white'"
+            ><h2 class="my-2">
+              {{ item.patientsList.FirstName }} {{ item.patientsList.LastName }}
+            </h2>
+            <p>
+              Contact:<br />
+              Phone: {{ item.patientsList.Telephone }} <br />
+              Email: {{ item.patientsList.Email }} <br />
+              Covid Status: {{ item.covidStatus }}
+            </p>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-card>
+    <v-card
+      v-if="userRole == 'admin'"
+      class="patients-list-container"
+      outlined
+      color="transparent"
+    >
+      <v-row>
+        <v-col
+          cols="12"
+          md="6"
+          v-for="(item, UserID) in filteredPatients"
+          :key="UserID"
+        >
+          <v-card
+            :title="item.title"
+            class="pa-2"
+            @click="onPatientClick()"
+            :color="item.covidStatus === 'Positive' ? '#FF4933' : 'white'"
+            ><h2 class="my-2">
+              {{ item.patientsList.FirstName }} {{ item.patientsList.LastName }}
+            </h2>
+            <p>
+              Contact:<br />
+              Phone: {{ item.patientsList.Telephone }} <br />
+              Email: {{ item.patientsList.Email }} <br />
+              Covid Status: {{ item.covidStatus }} <br />
+              Role: {{ item.patientsList.Role }}
+            </p>
+            <v-btn @click.stop="deleteUser(item.patientsList.UserID)"
+              >Delete</v-btn
+            >
+            <v-btn v-if="item.patientsList.Role == 'Patient'" class="mx-3"
+              >Assign Doctor</v-btn
+            >
+          </v-card>
+        </v-col>
+      </v-row>
     </v-card>
   </div>
 </template>
 <script>
 import axios from "axios";
+import Swal from "sweetalert2";
 export default {
   name: "ListOfPatients",
 
@@ -94,10 +138,13 @@ export default {
     this.getPatients();
   },
   methods: {
-    // Get all patients assigned to this doctor
+    // Get all users depending on role of current user
     async getPatients() {
       console.log("getPatients called");
       try {
+        // Clear the list in the case that there are already elements in it
+        this.patientList = [];
+        this.covidPatientsList = [];
         // Display a different list depending on user's role
         if (this.userRole == "doctor") {
           const DID = this.$store.state.user.UserID;
@@ -108,9 +155,17 @@ export default {
           });
           this.patientList = response.data;
           this.listOfCovidPatients(this.patientList);
+        } else if (this.userRole == "admin") {
+          // Get all users
+          const response = await axios.get(`http://localhost:5000/users`);
+          this.patientList = response.data;
+          console.log(this.patientList);
+          this.listOfCovidPatients(this.patientList);
         } else if (this.userRole == "health-official") {
           // Get all patients
-          const response = await axios.get(`http://localhost:5000/users`);
+          const response = await axios.post(`http://localhost:5000/users`, {
+            Role: "Patient",
+          });
           this.patientList = response.data;
           this.listOfCovidPatients(this.patientList);
         } else if (this.userRole == "immigration-officer") {
@@ -123,8 +178,17 @@ export default {
             `http://localhost:5000/users`,
             { Role: "Patient", Travelled: 1 }
           );
-          pList = pList.concat(travelResponse.data);
-          this.listOfCovidPatients(pList);
+          var travelledList = travelResponse.data;
+
+          var listOfP = [];
+          pList.forEach((patient) => {
+            travelledList.forEach((travelledPatient) => {
+              if (patient.UserID == travelledPatient.UserID) {
+                listOfP.push(patient);
+              }
+            });
+          });
+          this.listOfCovidPatients(listOfP);
         }
       } catch (err) {
         console.log(err);
@@ -133,10 +197,17 @@ export default {
 
     // Go to patient's profile
     onPatientClick() {
+      if (this.userRole == "admin") {
+        return;
+      }
       this.$router.push("/");
     },
     async listOfCovidPatients(patientsList) {
-      if (this.userRole == "doctor" || this.userRole == "health-official") {
+      if (
+        this.userRole == "doctor" ||
+        this.userRole == "health-official" ||
+        this.userRole == "admin"
+      ) {
         for (var i = 0; i < patientsList.length; i++) {
           const covidStatusInt = await axios.get(
             `http://localhost:5000/healthstatus/${patientsList[i].UserID}`
@@ -162,6 +233,78 @@ export default {
           }
         }
       }
+    },
+    // deleteUser() {
+    //   Swal.fire({
+    //     icon: "warning",
+    //     title: "Are you sure you want to remove permanently ",
+    //     showCancelButton: true,
+    //     confirmButtonColor: "#3085d6",
+    //     cancelButtonColor: "#d33",
+    //     confirmButtonText: "Delete",
+    //   })
+    //     .then((result) => {
+    //       if (result.isConfirmed) {
+    //         // del status
+    //         //TODO add the delete API
+    //         Swal.fire("Deleted!", "The account has been deleted", "success");
+    //       }
+    //     })
+    //     .then(() => {
+    //       this.getPatients();
+    //     });
+    // },
+    // Deletes the specified user
+    async deleteUser(ID) {
+      Swal.fire({
+        icon: "warning",
+        title: "Are you sure you want to permanently delete this account ",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Delete",
+      })
+        .then((result) => {
+          if (result.isConfirmed) {
+            axios.delete(`http://localhost:5000/users/${ID}`);
+
+            Swal.fire("Deleted!", "The account has been deleted", "success");
+          }
+        })
+        .then(() => {
+          this.getPatients();
+        });
+    },
+
+    // Assign patient to a doctor
+    async assignDoctor(PID, DID) {
+      // Verify input
+      if (!PID || !DID) {
+        return;
+      }
+      // Verify existence of both and correct roles
+      const patientResponse = await axios.post(`http://localhost:5000/users/`, {
+        UserID: PID,
+      });
+      if (
+        patientResponse.data.UserID != PID ||
+        doctorResponse.data.Role != "Patient"
+      ) {
+        console.log("AssignDoctor: PID does not exist or is not patient");
+        return;
+      }
+      const doctorResponse = await axios.post(`http://localhost:5000/users/`, {
+        UserID: DID,
+      });
+      if (
+        doctorResponse.data.UserID != DID ||
+        doctorResponse.data.Role != "Doctor"
+      ) {
+        console.log("AssignDoctor: DID does not exist or is not doctor");
+        return;
+      }
+      // Assign doctor
+      await axios.put(`http://localhost:5000/users/${PID}`, { Doctor: DID });
     },
   },
   computed: {
@@ -195,6 +338,29 @@ export default {
               this.search.toLowerCase()
             ) ||
             patient.covidStatus.toLowerCase().match(this.search.toLowerCase())
+          );
+        });
+      } else if (this.userRole == "admin") {
+        return this.covidPatientsList.filter((patient) => {
+          return (
+            patient.patientsList.FirstName.toLowerCase().match(
+              this.search.toLowerCase()
+            ) ||
+            patient.patientsList.LastName.toLowerCase().match(
+              this.search.toLowerCase()
+            ) ||
+            patient.patientsList.Email.toLowerCase().match(
+              this.search.toLowerCase()
+            ) ||
+            patient.patientsList.Telephone.toLowerCase().match(
+              this.search.toLowerCase()
+            ) ||
+            patient.covidStatus
+              .toLowerCase()
+              .match(this.search.toLowerCase()) ||
+            patient.patientsList.Role.toLowerCase().match(
+              this.search.toLowerCase()
+            )
           );
         });
       } else return null;

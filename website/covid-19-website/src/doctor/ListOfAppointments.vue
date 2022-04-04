@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 70%; margin: auto">
+  <v-row align="center" justify="center" >
     <!-- Dialog for appointment requests with patients -->
     <v-dialog v-model="appointment_dialog" width="600px">
       <v-card>
@@ -65,65 +65,70 @@
       </v-card>
     </v-dialog>
     <!-- requested apppointments -->
-    <div
-      style="background-color: rgba(256, 256, 256, 0.9)"
-      class="pa-4 rounded-lg mb-5"
-    >
-      <h2>Requested Appointments:</h2>
-      <div v-for="(item, i) in requestedAppointments" :key="i">
-        {{ item.Date.substr(0, 10) + " -- " + item.Time }}
+    <v-col cols="12" md="7">
+      <div
+        style="background-color: rgba(256, 256, 256, 0.9)"
+        class="pa-4 rounded-lg "
+      >
+        <h2>Requested Appointments:</h2>
+        <div v-for="(item, i) in requestedAppointments" :key="i">
+          {{ item.Date.substr(0, 10) + " -- " + item.Time }}
 
-        <v-btn x-small @click="acceptAppointment(item)"> approve </v-btn>
-      </div>
-    </div>
-    <!-- Own Requested apppointments -->
-    <div
-      style="background-color: rgba(256, 256, 256, 0.9)"
-      class="pa-4 rounded-lg mb-5"
-    >
-      <h2>Own Requested Appointments:</h2>
-      <div v-for="(item, i) in ownRequestedAppointments" :key="i">
-        {{ item.Date.substr(0, 10) + " -- " + item.Time }}
-
-        <v-btn x-small @click="deleteRequested(item)"> cancel </v-btn>
-      </div>
-    </div>
-    <!-- approved apppointments -->
-    <div
-      style="background-color: rgba(256, 256, 256, 0.9)"
-      class="pa-4 rounded-lg mt-5"
-    >
-      <h2>Appointments:</h2>
-      <div v-for="(item, i) in appointments" :key="i">
-        {{
-          item.Date.substr(0, 10) +
-          " -- " +
-          item.Time +
-          " Priority: " +
-          item.Priority +
-          " Emergency level: " +
-          item.LevelOfEmergency
-        }}
-
-        <v-btn x-small @click="deleteApproved(item)"> cancel </v-btn>
-      </div>
-    </div>
-    <v-row align="center">
-      <v-col>
-        <div class="my-6" style="text-align: center">
-          <v-btn
-            class="white--text"
-            style="font-size: 18px"
-            color="blue lighten-2"
-            width="400px"
-            height="75px"
-            @click="appointment_dialog = !appointment_dialog"
-            >Request Appointment with Patient</v-btn
-          >
+          <v-btn x-small @click="acceptAppointment(item)"> approve </v-btn>
         </div>
-      </v-col>
-    </v-row>
-  </div>
+      </div>
+    </v-col>
+    <!-- Own Requested apppointments -->
+    <v-col cols="12" md="7" >
+      <div
+        style="background-color: rgba(256, 256, 256, 0.9)"
+        class="pa-4 rounded-lg "
+      >
+        <h2>Own Requested Appointments:</h2>
+        <div v-for="(item, i) in ownRequestedAppointments" :key="i">
+          {{ item.Date.substr(0, 10) + " -- " + item.Time }}
+
+          <v-btn x-small @click="deleteRequested(item)"> cancel </v-btn>
+        </div>
+      </div>
+    </v-col>
+    <!-- approved apppointments -->
+    <v-col cols="12" md="7">
+      <div
+        style="background-color: rgba(256, 256, 256, 0.9)"
+        class="pa-4 rounded-lg mt-5"
+      >
+        <h2>Appointments:</h2>
+        <div v-for="(item, i) in appointments" :key="i">
+          {{
+            item.Date.substr(0, 10) +
+            " -- " +
+            item.Time +
+            " Priority: " +
+            item.Priority +
+            " Emergency level: " +
+            item.LevelOfEmergency
+          }}
+
+          <v-btn x-small @click="deleteApproved(item)"> cancel </v-btn>
+        </div>
+      </div>
+    </v-col>
+
+    <v-col cols="12" justify="center">
+      <div class="my-6" style="text-align: center">
+        <v-btn
+          class="white--text"
+          style="font-size: 18px"
+          color="blue lighten-2"
+          width="400px"
+          height="75px"
+          @click="appointment_dialog = !appointment_dialog"
+          >Request Appointment with Patient</v-btn
+        >
+      </div>
+    </v-col>
+  </v-row>
 </template>
 <script>
 import axios from "axios";
@@ -131,6 +136,7 @@ export default {
   name: "ListOfAppointments",
   data() {
     return {
+      url: "http://localhost:5000/",
       appointments: [],
       appointment_dialog: false,
       requestedAppointments: [],
@@ -169,6 +175,8 @@ export default {
         item.LevelOfEmergency,
         item.Priority
       );
+      this.addNotif("Appointment approved!", item.DID);
+      this.addNotif("Appointment approved!", item.PID);
       window.location.reload();
     },
 
@@ -180,6 +188,8 @@ export default {
         item.Date.substr(0, 10),
         item.Time
       );
+      this.addNotif("Appointment request deleted!", item.DID);
+      this.addNotif("Appointment resquest deleted!", item.PID);
       window.location.reload();
     },
 
@@ -191,6 +201,8 @@ export default {
         item.Date.substr(0, 10),
         item.Time
       );
+      this.addNotif("Appointment deleted!", item.DID);
+      this.addNotif("Appointment deleted!", item.PID);
       window.location.reload();
     },
 
@@ -234,6 +246,11 @@ export default {
           LevelOfEmergency: LevelOfEmergency,
           Priority: Priority,
         });
+
+        this.addNotif(
+          `Your requested appointment on [${Date + "-" + Time}] was approved`,
+          PID
+        );
       } catch (err) {
         console.log(err);
       }
@@ -248,6 +265,8 @@ export default {
           Date: Date,
           Time: Time,
         });
+
+        this.addNotif("an appointment is booked for you by doctor", PID);
       } catch (err) {
         console.log(err);
       }
@@ -262,6 +281,12 @@ export default {
           Date: Date,
           Time: Time,
         });
+
+        // added by me
+        this.addNotif(
+          `Your requested appointment on [${Date + "-" + Time}] was declined`,
+          PID
+        );
       } catch (err) {
         console.log(err);
       }
@@ -292,10 +317,16 @@ export default {
           ),
           Priority: covidStatusInt.data.Covid,
         });
+
+        this.addNotif(
+          `an appointment on[${Date + "-" + Time}]is booked for you by doctor`,
+          parseInt(this.appointmentRequestForm.PID)
+        );
       } catch (err) {
         console.log(err);
       }
-      window.location.reload();
+      // window.location.reload();
+      this.init();
     },
 
     // Get appointment requests made by this doctor
@@ -313,12 +344,37 @@ export default {
         console.log(err);
       }
     },
+    async addNotif(Message, Recipient) {
+      let d = new Date();
+      let Time = d.toTimeString().split(" ")[0];
+      const params = {
+        Message,
+        Recipient,
+        Read: 0,
+        Time,
+      };
+      try {
+        await axios.post(this.url + "notification", params);
+        // alert("statuse added successfully");
+        this.getStatuses();
+        this.status_dialoge = false;
+      } catch (err) {
+        console.log("err", err);
+        // alert("Failed ; add new status");
+      }
+    },
+    init() {
+      this.getAppointments();
+      this.getAppointmentRequests();
+      this.getOwnAppointmentRequests();
+    },
   },
   mounted() {
-    this.getAppointments();
-    this.getAppointmentRequests();
-    this.getOwnAppointmentRequests();
+    this.init();
+
+    this.$emit("img", "doctor");
   },
 };
 </script>
-<style></style>
+
+
