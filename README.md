@@ -11,7 +11,7 @@ W## Team Members :technologist:
 | 2   | Tommy Soucy          | 40085762  |  TommySoucy         | Backend / Database Management|
 | 3   | Ahnaf Habib Khan     | 40079665  |  ahnafhabibkhan     | Tesitng & Micro-Management   |
 | 4   | Weichen Wan          | 40072743  |  HWJFish            | Testing Lead                 |
-| 5   | Abdul Qadir Ali      | 40075793  |  AQA98              | Backend                      |
+| 5   | Abdul Qadir Ali      | 40075793  |  AQA98              | Backend                       |
 | 6   | Yousha Hyatoolla     | 40099559  |  Yousha-hyat1999    | Fullstack                    |
 | 7   | Mohamed Abdul        | 40098785  |  M-Dimbio           | Fullstack                    |
 | 8   | Nafis Md. Ali        | 40095387  |                     | Documentation                |
@@ -71,12 +71,17 @@ This will install dependencies, run the frontend, then the backend server.
 - There are three docker files for front end, backend and server.
 - Once its downloaded, Through the terminal go in the directories of each docker fie and and first build the docker image.
 - Once its build, run the image.
+
+     ## Create Network:
+     -just type the following command on terminal.
+     -docker network create soen390-network
+       
  
      ## For server side:
      - **\soen390Project\COVID-19-TRACKING-APP\MySQL-Schema>** --> here is the docker file. once you are there run this command to built the docker image
      - docker build -t soen-db .  
      - once the image has been built run this command:
-     - docker run -d --name soen-sql -p 3306:3306 soen-dbdocker run -p 3306:3306 -d  mysql
+     - docker run -d --name soen-sql -p 3306:3306 --network=soen390-network soen-db
      
      ## for frontend
      - **\COVID-19-TRACKING-APP\website\covid-19-website>** --> here is the docker file. once you are there run this command to built the docker image
@@ -88,7 +93,7 @@ This will install dependencies, run the frontend, then the backend server.
      - **\COVID-19-TRACKING-APP\website>** --> here is the docker file. once you are there run this command to built the docker image
      - docker build . -t backend/node-web-app
      - Once the image has been built run this command:
-     - docker run -p 5000:5000 -d backend/node-web-app
+     - docker run -d --name backend -p 5000:5000 --network=soen390-network backend/node-web-app 
      
     ## Note: make sure the ports specified in the run command are free.
      
