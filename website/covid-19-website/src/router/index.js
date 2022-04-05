@@ -15,6 +15,8 @@ const ListOfAppointments = () => import('../doctor/ListOfAppointments.vue')
 const Patient = () => import('../patient/Patient.vue')
 // import Profile from "../user-profile/profile-page.vue";
 const Profile = () => import('../user-profile/profile-page.vue')
+const About = () => import('../about/Index.vue')
+const Contact = () => import('../contact/Index.vue')
 import ImmigrationOfficer from "../immigration-officer/ImmigrationOfficer.vue";
 import HealthOfficial from "../health-official/HealthOfficial.vue";
 import HealthOfficialListOfPatients from "../health-official/ListOfHOPatients.vue";
@@ -29,7 +31,11 @@ export default [
   {
     path: "/",
     component: authLayout,
-    children: [{ path: "", component: Login }],
+    children: [
+      { path: "", component: Login },
+      { path: "/about", component: About },
+      { path: "/contact", component: Contact },
+    ],
   },
   {
     path: "",

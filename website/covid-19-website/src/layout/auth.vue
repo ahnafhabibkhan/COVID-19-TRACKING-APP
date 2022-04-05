@@ -1,25 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar
-      dark
-      app
-      color="transparent"
-      elevate-on-scroll
-      scroll-target="#scrolling-techniques-7"
-    >
-      <v-spacer></v-spacer>
-      <v-btn
-      
-        v-for="(item, i) in nav"
-        :key="i"
-        :title="item.title"
-        text
-        color="white"
-        x-large
-        @click="onNavClick(item.text)"
-        >{{ item.text }}</v-btn
-      >
-    </v-app-bar>
+ 
 
     <v-main class="bg-img">
       <v-container>

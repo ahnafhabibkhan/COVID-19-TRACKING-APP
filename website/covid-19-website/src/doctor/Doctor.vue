@@ -1,5 +1,5 @@
 <template>
-  <div class="doctor">
+  <v-row>
     <!-- date modal start -->
     <v-dialog v-model="date_dialog" width="600px">
       <v-card>
@@ -51,78 +51,75 @@
       </v-card>
     </v-dialog>
     <!-- date modal end -->
-    <v-row>
-      <v-col cols="12" md="6">
-        <div class="px-5">
-          <div>
-            <v-btn
-              class="white--text"
-              style="font-size: 18px"
-              color="blue lighten-2"
-              block
-              height="75px"
-              @click="onPatientsClick()"
-              >List Of Patients</v-btn
-            >
-          </div>
-          <div class="my-6">
-            <v-btn
-              class="white--text"
-              style="font-size: 18px"
-              color="blue lighten-2"
-              block
-              height="75px"
-              @click="listOfAppointments()"
-              >List of Appointments</v-btn
-            >
-          </div>
-          <div class="my-6">
-            <v-btn
-              class="white--text"
-              style="font-size: 18px"
-              color="blue lighten-2"
-              block
-              height="75px"
-              @click="date_dialog = !date_dialog"
-              >Update Availabilities</v-btn
-            >
-          </div>
-        </div>
 
-        <apexchart
-          type="pie"
-          :options="chartOptions"
-          :series="series"
-        ></apexchart>
-      </v-col>
-      <v-col cols="12" md="6">
-        <div
-          style="background-color: rgba(256, 256, 256, 0.9)"
-          class="pa-4 rounded-lg"
+    <v-col cols="12" md="6">
+      <div>
+        <v-btn
+          class="white--text"
+          style="font-size: 18px"
+          color="blue lighten-2"
+          block
+          height="75px"
+          @click="onPatientsClick()"
+          >List Of Patients</v-btn
         >
-          <h2>Availabilites:</h2>
-          <div v-for="(item, i) in fetchAvailabilities" :key="i">
-            {{
-              item.SpecificDay.substr(0, 10) +
-              " -- " +
-              item.StartTime +
-              "-" +
-              item.EndTime
-            }}
+      </div>
+      <div class="my-6">
+        <v-btn
+          class="white--text"
+          style="font-size: 18px"
+          color="blue lighten-2"
+          block
+          height="75px"
+          @click="listOfAppointments()"
+          >List of Appointments</v-btn
+        >
+      </div>
+      <div class="my-6">
+        <v-btn
+          class="white--text"
+          style="font-size: 18px"
+          color="blue lighten-2"
+          block
+          height="75px"
+          @click="date_dialog = !date_dialog"
+          >Update Availabilities</v-btn
+        >
+      </div>
 
-            <v-btn x-small @click="deleteAvailability(item)"> Delete </v-btn>
-          </div>
+      <apexchart
+     
+        :options="chartOptions"
+        :series="series"
+      ></apexchart>
+    </v-col>
+    <v-col cols="12" md="6">
+      <div
+        style="background-color: rgba(256, 256, 256, 0.9)"
+        class="pa-4 rounded-lg"
+      >
+        <h2>Availabilites:</h2>
+        <div v-for="(item, i) in fetchAvailabilities" :key="i">
+          {{
+            item.SpecificDay.substr(0, 10) +
+            " -- " +
+            item.StartTime +
+            "-" +
+            item.EndTime
+          }}
+
+          <v-btn x-small @click="deleteAvailability(item)"> Delete </v-btn>
         </div>
-        <div style="margin-top: 50%; margin-left: 75%">
-          <v-btn @click="ChatboxClick" icon height="80px" width="80px">
-            <v-icon color="blue darken-3" style="font-size: 80px">
-              mdi-message-text
-            </v-icon>
-          </v-btn>
-        </div>
-      </v-col>
-    </v-row>
-  </div>
+      </div>
+      <div style="margin-top: 50%; margin-left: 75%">
+        <v-btn @click="ChatboxClick" icon height="80px" width="80px">
+          <v-icon color="blue darken-3" style="font-size: 80px">
+            mdi-message-text
+          </v-icon>
+        </v-btn>
+      </div>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -142,7 +139,7 @@ export default {
       series: [44, 55],
       chartOptions: {
         chart: {
-          width: 580,
+          width: 400,
           type: "pie",
         },
         labels: ["Infected", "Non-Infected"],
@@ -151,7 +148,7 @@ export default {
             breakpoint: 580,
             options: {
               chart: {
-                width: 400,
+                width: 300,
               },
               legend: {
                 position: "bottom",
@@ -362,7 +359,6 @@ export default {
           title: "success",
           text: "added successfully",
         });
-  
       } catch (err) {
         Swal.fire({
           icon: "error",
