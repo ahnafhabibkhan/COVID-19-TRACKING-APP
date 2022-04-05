@@ -1,5 +1,5 @@
 <template>
-  <v-container class="bg-image">
+  <v-container>
     <v-row>
       <!-- book modal start -->
       <v-dialog v-model="date_dialoge" width="500px">
@@ -286,43 +286,43 @@
         </v-card>
       </v-dialog>
       <!-- status modal end -->
-      <v-col cols="12" md="6" class="my-0">
+      <v-col cols="12" md="6">
         <!-- buttons -->
-        <div class="d-flex flex-column align-center">
+      
           <div class="my-2 mx-3">
             <v-btn
-              class="white--text"
-              style="font-size: 18px; opacity: 90%"
+              dark
+              
               color="blue lighten-2"
-              width="400px"
-              height="75px"
+              block
+              large
               @click="myInfo"
               >My Info</v-btn
             >
           </div>
           <div class="mx-3">
             <v-btn
-              class="white--text"
-              style="font-size: 18px; opacity: 90%"
+              dark
+              
               color="blue lighten-2"
-              width="400px"
-              height="75px"
+             block
+              large
               @click="onAppointment"
               >Book an Appointment</v-btn
             >
           </div>
           <div class="my-2 mx-3">
             <v-btn
-              class="white--text"
-              style="font-size: 18px; opacity: 90%"
+              dark
+              
               color="blue lighten-2"
-              width="400px"
-              height="75px"
+              block
+              large
               @click="onUpdateStatus"
               >Update Status</v-btn
             >
           </div>
-        </div>
+     
 
         <!-- status rows -->
         <v-row>
@@ -458,10 +458,10 @@
         </v-row>
       </v-col>
 
-      <v-col cols="12" md="6" class="pt-6 mt-6">
+      <v-col cols="12" md="6" class="p2-6 mt-2">
         <!-- requested apppointments -->
         <div
-          style="width: 70%; background-color: rgba(256, 256, 256, 0.5)"
+          style="; background-color: rgba(256, 256, 256, 0.5)"
           class="pa-4 rounded-lg mb-5"
         >
           <h2>Requested Appointments :</h2>
@@ -473,7 +473,7 @@
         </div>
         <!-- approved apppointments -->
         <div
-          style="width: 70%; background-color: rgba(256, 256, 256, 0.5)"
+          style="; background-color: rgba(256, 256, 256, 0.5)"
           class="pa-4 rounded-lg mt-5"
         >
           <h2>Approved Appointments :</h2>
@@ -485,7 +485,7 @@
         </div>
         <!-- Doctor's Requested apppointments -->
         <div
-          style="width: 70%; background-color: rgba(256, 256, 256, 0.5)"
+          style="; background-color: rgba(256, 256, 256, 0.5)"
           class="pa-4 rounded-lg mt-5"
         >
           <h2>Doctor's Requested Appointments:</h2>
@@ -962,7 +962,7 @@ export default {
   },
   mounted() {
     this.init();
+    this.$emit('img','patient')
   },
 };
 </script>
-

@@ -10,18 +10,11 @@ export default {
   name: "AdminListOfPatients",
 
   components: { ListOfPatients },
+      mounted() {
+  
+    this.$emit('img','admin')
+  },
 };
 </script>
 
-<style>
-.admin-patients-list {
-  background-size: cover;
-  background-repeat: no-repeat;
-  min-height: 100%;
-  min-width: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  overflow: scroll;
-}
-</style>
+

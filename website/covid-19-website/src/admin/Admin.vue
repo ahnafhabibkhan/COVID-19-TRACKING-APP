@@ -3,74 +3,77 @@
     <v-dialog v-model="signUp_modal" width="500px">
       <SignUpDialog />
     </v-dialog>
-    <div class="btn-container-admin" style="text-align: center">
-      <div class="my-6 mx-3">
-        <v-btn
-          class="white--text"
-          style="font-size: 18px;"
-          color="blue lighten-2"
-          width="400px"
-          height="75px"
-          @click="onDashboardClick()"
-          >Dashboard</v-btn
-        >
-      </div>
-      <div class="my-6 mx-3">
-        <v-btn
-          class="white--text"
-          style="font-size: 18px;"
-          color="blue lighten-2"
-          width="400px"
-          height="75px"
-          @click="onPatientsClick()"
-          >List Of Patients</v-btn
-        >
-      </div>
-      <div class="my-6 mx-3">
-        <v-btn
-          class="white--text"
-          style="font-size: 18px;"
-          color="blue lighten-2"
-          width="400px"
-          height="75px"
-          @click="onPatientsClick()"
-          >List Of Doctors</v-btn
-        >
-      </div>
-      <div class="my-6 mx-3">
-        <v-btn
-          class="white--text"
-          style="font-size: 18px;"
-          color="blue lighten-2"
-          width="400px"
-          height="75px"
-          @click="onPatientsClick()"
-          >List Of Health Officials</v-btn
-        >
-      </div>
-      <div class="my-6 mx-3">
-        <v-btn
-          class="white--text"
-          style="font-size: 18px;"
-          color="blue lighten-2"
-          width="400px"
-          height="75px"
-          @click="onPatientsClick()"
-          >List Of Immigration Officials</v-btn
-        >
-      </div>
-      <div class="my-6 mx-3">
-        <v-btn
-          class="white--text"
-          style="font-size: 18px;"
-          color="blue lighten-2"
-          width="400px"
-          height="75px"
-          @click="signUp_modal = !signUp_modal"
-          >Create an Account</v-btn
-        >
-      </div>
-    </div>
+    <v-row justify="center">
+      <v-col cols="12" md="7">
+        <div class="my-6 mx-3">
+          <v-btn
+            class="white--text"
+            
+            color="blue lighten-2"
+           block
+            height="75px"
+            @click="onDashboardClick()"
+            >Dashboard</v-btn
+          >
+        </div>
+        <div class="my-6 mx-3">
+          <v-btn
+            class="white--text"
+            
+            color="blue lighten-2"
+           block
+            height="75px"
+            @click="onPatientsClick()"
+            >List Of Patients</v-btn
+          >
+        </div>
+        <div class="my-6 mx-3">
+          <v-btn
+            class="white--text"
+            
+            color="blue lighten-2"
+           block
+            height="75px"
+            @click="onPatientsClick()"
+            >List Of Doctors</v-btn
+          >
+        </div>
+        <div class="my-6 mx-3">
+          <v-btn
+            class="white--text"
+            
+            color="blue lighten-2"
+           block
+            height="75px"
+            @click="onPatientsClick()"
+            >List Of Health Officials</v-btn
+          >
+        </div>
+        <div class="my-6 mx-3">
+          <v-btn
+            class="white--text"
+            
+            color="blue lighten-2"
+           block
+            height="75px"
+            @click="onPatientsClick()"
+            >List Of Immigration Officials</v-btn
+          >
+        </div>
+        <div class="my-6 mx-3">
+          <v-btn
+            class="white--text"
+            
+            color="blue lighten-2"
+           block
+            height="75px"
+            @click="signUp_modal = !signUp_modal"
+            >Create an Account</v-btn
+          >
+        </div>
+      </v-col>
+    </v-row>
+   
   </div>
 </template>
 
@@ -90,7 +93,10 @@ export default {
     },
     onDashboardClick() {
       this.$router.push("/admin-dashboard");
-    }
+    },
+  },
+  mounted() {
+    this.$emit("img", "admin");
   },
 };
 </script>
