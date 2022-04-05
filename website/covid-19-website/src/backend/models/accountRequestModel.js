@@ -20,7 +20,7 @@ export const getAccountRequests = (result) => {
             console.log(err);
             result(err, null);
         } else {
-            result(null, results[0]);
+            result(null, results);
         }
     });
 }
@@ -38,7 +38,7 @@ export const insertAccountRequest = (data, result) => {
 }
 
 // Delete account request from Database
-export const deleteAccountRequestById = (email, result) => {
+export const deleteAccountRequestByEmail = (email, result) => {
     db.query("DELETE FROM accountrequest WHERE Email = ?", [email], (err, results) => {
         if(err) {
             console.log(err);
