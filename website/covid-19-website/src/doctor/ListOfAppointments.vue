@@ -1,5 +1,5 @@
 <template>
-  <v-row align="center" justify="center" >
+  <v-row align="center" justify="center">
     <!-- Dialog for appointment requests with patients -->
     <v-dialog v-model="appointment_dialog" width="600px">
       <v-card>
@@ -15,11 +15,13 @@
             </v-col>
             <v-col cols="12">
               <form>
-                <v-text-field
+                <v-select
+                  label="select Patient "
+                  :items="patients"
+                  item-value="UserID"
+                  item-text="LastName"
                   v-model="appointmentRequestForm.PID"
-                  label="Enter Patient ID"
-                  required
-                ></v-text-field>
+                />
                 <v-text-field
                   v-model="appointmentRequestForm.Hour"
                   label="Enter hour of appointment"
@@ -68,7 +70,7 @@
     <v-col cols="12" md="7">
       <div
         style="background-color: rgba(256, 256, 256, 0.9)"
-        class="pa-4 rounded-lg "
+        class="pa-4 rounded-lg"
       >
         <h2>Requested Appointments:</h2>
         <div v-for="(item, i) in requestedAppointments" :key="i">
@@ -79,10 +81,10 @@
       </div>
     </v-col>
     <!-- Own Requested apppointments -->
-    <v-col cols="12" md="7" >
+    <v-col cols="12" md="7">
       <div
         style="background-color: rgba(256, 256, 256, 0.9)"
-        class="pa-4 rounded-lg "
+        class="pa-4 rounded-lg"
       >
         <h2>Own Requested Appointments:</h2>
         <div v-for="(item, i) in ownRequestedAppointments" :key="i">
@@ -137,6 +139,7 @@ export default {
   data() {
     return {
       url: "http://localhost:5000/",
+      patients: [],
       appointments: [],
       appointment_dialog: false,
       requestedAppointments: [],
@@ -213,6 +216,17 @@ export default {
           DID: this.$store.state.user.UserID,
         });
         this.appointments = res.data;
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    // Get patients
+    async getPatients() {
+      try {
+        const res = await axios.post(`http://localhost:5000/users`, {
+          Role: "Patient",
+        });
+        this.patients = res.data;
       } catch (err) {
         console.log(err);
       }
@@ -364,6 +378,7 @@ export default {
       }
     },
     init() {
+      this.getPatients();
       this.getAppointments();
       this.getAppointmentRequests();
       this.getOwnAppointmentRequests();

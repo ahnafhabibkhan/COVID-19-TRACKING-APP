@@ -16,15 +16,15 @@
             </v-col>
             <!-- list -->
             <v-col cols="12">
-              <v-container>
-                <v-checkbox
-                  v-for="(item, i) in allAvailabilities"
-                  :key="i"
-                  v-model="available"
-                  :label="item"
-                  :value="item"
-                ></v-checkbox>
-              </v-container>
+              <v-autocomplete
+                :items="allAvailabilities"
+                v-model="available"
+                multiple
+                label="select "
+                small-chips
+                clearable
+                deletable-chips
+              />
             </v-col>
             <v-col cols="6">
               <v-btn
@@ -88,18 +88,18 @@
             >
           </div>
         </div>
-        <div class="chart">
-          <apexchart
-            type="pie"
-            :options="chartOptions"
-            :series="series"
-          ></apexchart>
-        </div>
+
+        *<apexchart
+          type="pie"
+          :options="chartOptions"
+          :series="series"
+        ></apexchartfo
+        >*
       </v-col>
       <v-col cols="12" md="6">
         <div
           style="background-color: rgba(256, 256, 256, 0.9)"
-          class="pa-4 rounded-lg "
+          class="pa-4 rounded-lg"
         >
           <h2>Availabilites:</h2>
           <div v-for="(item, i) in fetchAvailabilities" :key="i">
