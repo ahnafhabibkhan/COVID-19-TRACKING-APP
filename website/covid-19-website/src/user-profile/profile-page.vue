@@ -86,6 +86,13 @@
                 label="password"
                 type="password"
               />
+              <v-text-field
+                v-if="setHide()"
+                readonly
+                v-model="DoctorAssigned"
+                label="Doctor"
+                disabled
+              ></v-text-field>
             </ValidationProvider>
           </v-col>
           <v-col cols="12" md="6">
@@ -171,12 +178,14 @@ export default {
         FirstName: null,
         LastName: null,
         Email: null,
+
         Role: null,
         Telephone: null,
         Country: null,
         Address: null,
         Travelled: 0,
       },
+      DoctorAssigned: "None",
     };
   },
   methods: {
@@ -202,6 +211,35 @@ export default {
         });
       }
     },
+    setHide() {
+      // hide this the v-text field if its not a patient
+      if (this.$store.state.user.Role != "Patient") {
+        return false;
+      }
+      return true;
+    },
+    async getDoctorAssigned() {
+      const response = await axios.post(`http://localhost:5001/users`, {
+        Role: "Patient",
+      });
+      var users = response.data;
+      let doctorID = "";
+      for (var i = 0; i < users.length; i++) {
+        if (this.$store.state.user.UserID == users[i].UserID) {
+          doctorID = users[i].Doctor;
+        }
+      }
+      if (doctorID == "") {
+        // If there's no doctor found that is assigned to this patient
+        return;
+      }
+      const doctorResponse = await axios.post(`http://localhost:5001/users`, {
+        UserID: doctorID,
+      });
+      var myDoctor = doctorResponse.data;
+      this.DoctorAssigned = myDoctor[0].FirstName;
+      console.log("My doctor", this.DoctorAssigned);
+    },
     async get() {
       const email = this.userEmail;
       try {
@@ -225,6 +263,7 @@ export default {
   },
   mounted() {
     this.get();
+    this.getDoctorAssigned();
   },
 };
 </script>
