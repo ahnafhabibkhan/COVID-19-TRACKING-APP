@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "health-official",
 
@@ -53,6 +54,9 @@ export default {
       },
     };
   },
+  created() {
+    this.getChartData();
+  },
   methods: {
     onPatientsClick() {
       this.$router.push("/health-official-patients-list");
@@ -60,6 +64,44 @@ export default {
   },
   mounted() {
     this.$emit("img", "healthOfficial");
+  },
+  // Get infected and non infected data
+  async getChartData() {
+    try {
+      // Get all patients
+      const response = await axios.post(`http://localhost:5000/users`, {
+        Role: "Patient",
+      });
+      const patientList = response.data;
+      let infectedCount = 0;
+      let nonInfectedCount = 0;
+      let totalCount = 0;
+      let patientIDs = [];
+      // Make a list of their IDs
+      patientList.forEach((patient) => {
+        ++totalCount;
+        patientIDs.push(patient.UserID);
+      });
+      // For each ID get their latest health status and check if they have covid and calculate count;
+      for (let i = 0; i < patientIDs.length; ++i) {
+        const latestHSResponse = await axios.get(
+          `http://localhost:5000/healthstatus/${patientIDs[i]}`
+        );
+        const infected = latestHSResponse.data.Covid == 1;
+        if (infected) {
+          ++infectedCount;
+        } else {
+          ++nonInfectedCount;
+        }
+      }
+      // Write the data to series
+      this.series = [
+        (infectedCount / totalCount) * 100,
+        (nonInfectedCount / totalCount) * 100,
+      ];
+    } catch (err) {
+      console.log(err);
+    }
   },
 };
 </script>

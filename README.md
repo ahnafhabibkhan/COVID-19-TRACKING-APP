@@ -10,12 +10,12 @@ W## Team Members :technologist:
 | 1   | Mansoureh Edalati    | 40037283  |  MansiEdi2020       | UI Lead / Frontend           |
 | 2   | Tommy Soucy          | 40085762  |  TommySoucy         | Backend / Database Management|
 | 3   | Ahnaf Habib Khan     | 40079665  |  ahnafhabibkhan     | Tesitng & Micro-Management   |
-| 4   |                      |           |                     | Frontend Lead                |
-| 5   | Abdul Qadir Ali      | 40075793  |   AQA98             | Backend                      |
+| 4   | Weichen Wan          | 40072743  |  HWJFish            | Testing Lead                 |
+| 5   | Abdul Qadir Ali      | 40075793  |  AQA98              | Backend                      |
 | 6   | Yousha Hyatoolla     | 40099559  |  Yousha-hyat1999    | Fullstack                    |
-| 7   |                      |           |                     | Scrum Master                 |
-| 8   | Mohamed Abdul        | 40098785  |  M-Dimbio           | Fullstack                    |
-| 9   | Nafis Md. Ali        |           |                     | Documentation                |
+| 7   | Mohamed Abdul        | 40098785  |  M-Dimbio           | Fullstack                    |
+| 8   | Nafis Md. Ali        | 40095387  |                     | Documentation                |
+| 9   | Mirali Chavoshi      | 40064632  |                     | Documentation                |
 
 F = Frontend B = Backend
 
@@ -26,21 +26,18 @@ Objectives::trophy:
 Core features: 
 
 ----------------------------------
-Acceptance Tests
-See the features directory of the project.
 
 Technology Stack
 Frontend:
-Vue.JS + Vuetify
+Vue.JS + Vuetify<br/>
 Backend:
-Java
+Node JS<br/>
 Database:
-Mysql
-Continuous Integration
-GitHub Actions
-
+Mysql<br/>
+Continuous Integration:
+Jenkins<br/>
 Unit Testing:
-junit
+Mocha, chai, chai-HTTP, c8
 
 -------------------------------------------------------------
 Organizational Block Diagram
@@ -49,7 +46,7 @@ Organizational Block Diagram
 ### Server
 
 - Install MySQL on your computer as a development machine.
-- During installation, I think, you will be asked to make a user to connect as to the database server. Make that user: SOEN390 and password: SOEN390. This is what the application and website will assume the login credentials are when connecting to your database server.
+- During installation, you will be asked to make a user to connect as to the database server. Make that user: SOEN390 and password: SOEN390. This is what the application and website will assume the login credentials are when connecting to your database server.
 - In MySQL Workbench, create a new schema called SOEN390 (Might be able to name it anything, don't know)
 - Now to import the schema structure and data you can find here in the MySQL-Schema folder of the repo: In MySQL Workbench go to Server -> Data Import. 
 - In Import Options choose "Import from Self-contained File", choose the SOEN390.sql file.
