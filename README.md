@@ -74,9 +74,9 @@ This will install dependencies, run the frontend, then the backend server.
  
      ## For server side:
      - **\soen390Project\COVID-19-TRACKING-APP\MySQL-Schema>** --> here is the docker file. once you are there run this command to built the docker image
-     - docker build -t mysql .  
+     - docker build -t soen-db .  
      - once the image has been built run this command:
-     - docker run -p 3306:3306 -d  mysql
+     - docker run -d --name soen-sql -p 3306:3306 soen-dbdocker run -p 3306:3306 -d  mysql
      
      ## for frontend
      - **\COVID-19-TRACKING-APP\website\covid-19-website>** --> here is the docker file. once you are there run this command to built the docker image
@@ -92,19 +92,3 @@ This will install dependencies, run the frontend, then the backend server.
      
     ## Note: make sure the ports specified in the run command are free.
      
-     
-
-
--------------------------------------------------------------
-
-# Sprint 1 
-                                                 |links
-|---|---
-|1. User Stories Backlog (USB)                   |[USB]()
-|2. Release Plan (Sprint #2 planning)            |[Release Plan]()
-|3. Software Architecture Document (SAD)         |[SAD]() <br> [Viewpoints]()
-|4. Risk Assessment & Risk Management Plan (RMP) |[RMP]()
-|5. UI prototypes for Sprint #2 user stories     |[UIP]()
-|6. Testing Plan                                 |
-|7. Running prototype                            |
-|8. Short sprint retrospective                   |
