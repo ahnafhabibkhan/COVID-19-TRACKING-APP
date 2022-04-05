@@ -2,22 +2,22 @@
   <v-row>
     <v-col cols="12" md="3" sm="6">
       <div class="my-card">
-        <h3>Number of doctors: {{numberOfDoctors}}</h3>
+        <h3>Number of doctors: {{ numberOfDoctors }}</h3>
       </div>
     </v-col>
     <v-col cols="12" md="3" sm="6">
       <div class="my-card">
-        <h3>Number of patients: {{numberOfPatients}}</h3>
+        <h3>Number of patients: {{ numberOfPatients }}</h3>
       </div>
     </v-col>
     <v-col cols="12" md="3" sm="6">
       <div class="my-card">
-        <h3>Number of health officials: {{numberOfHOs}}</h3>
+        <h3>Number of health officials: {{ numberOfHOs }}</h3>
       </div>
     </v-col>
     <v-col cols="12" md="3" sm="6">
       <div class="my-card">
-        <h3>Number of immigration officers: {{numberOfIOs}}</h3>
+        <h3>Number of immigration officers: {{ numberOfIOs }}</h3>
       </div>
     </v-col>
     <v-col cols="12">
@@ -27,6 +27,12 @@
           width="480"
           :options="chartOptions"
           :series="series"
+        ></apexchart>
+        <apexchart
+          type="pie"
+          width="480"
+          :options="accountChartOptions"
+          :series="accountSeries"
         ></apexchart>
       </div>
     </v-col>
@@ -39,10 +45,10 @@ export default {
   name: "Dashboard",
   data: function () {
     return {
-      series: [44, 55],
+      series: [0, 0],
       chartOptions: {
         chart: {
-          width: 580,
+          width: 400,
           type: "pie",
         },
         labels: ["Infected", "Non-Infected"],
@@ -51,11 +57,31 @@ export default {
             breakpoint: 580,
             options: {
               chart: {
-                width: 400,
+                width: 300,
               },
               legend: {
-                position: "top",
-                horizontalAlign: "center",
+                position: "bottom",
+              },
+            },
+          },
+        ],
+      },
+      accountSeries: [0, 0],
+      accountChartOptions: {
+        chart: {
+          width: 400,
+          type: "pie",
+        },
+        labels: ["Account Requests", "Accounts Approved"],
+        responsive: [
+          {
+            breakpoint: 580,
+            options: {
+              chart: {
+                width: 300,
+              },
+              legend: {
+                position: "bottom",
               },
             },
           },
@@ -73,6 +99,7 @@ export default {
   created() {
     this.getChartData();
     this.getNumberOfUsers();
+    this.getNumberOfAccounts();
   },
   methods: {
     onPatientsClick() {
@@ -138,6 +165,16 @@ export default {
         Role: "HealthOfficial",
       });
       this.numberOfHOs = HOs.data.length;
+
+      //Calculating number of pending accounts
+      const accountRequestResponse = await axios.get(
+        `http://localhost:5000/accountrequests`
+      );
+
+      this.accountSeries = [
+        accountRequestResponse.data.length,
+        this.numberOfDoctors + this.numberOfIOs + this.numberOfHOs,
+      ];
     },
   },
 };
