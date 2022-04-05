@@ -318,7 +318,7 @@ export default {
           this.date
         );
       }
-      window.location.reload();
+      // window.location.reload();
     },
     disAvail(item) {
       const found = this.appointments.findIndex((a) => {

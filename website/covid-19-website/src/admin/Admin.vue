@@ -3,7 +3,7 @@
     <v-dialog v-model="signUp_modal" width="500px">
       <SignUpDialog />
     </v-dialog>
-    <v-col cols="7">
+    <v-col cols="12" md="7">
       <div class="my-6 mx-3">
         <v-btn
           dark
