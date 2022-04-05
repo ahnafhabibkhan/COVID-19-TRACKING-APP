@@ -1,12 +1,6 @@
 <template>
   <div>
-    <h1
-      style="
-        font-size: 50px;
-        text-align: center;
-        color: black;
-      "
-    >
+    <h1 style="font-size: 50px; text-align: center; color: black">
       Account Requests
     </h1>
     <v-card class="account-requests-list" outlined color="transparent">
@@ -94,6 +88,9 @@ export default {
       }
     },
   },
+  mounted() {
+    this.$emit("img", "admin");
+  }
 };
 </script>
 <style>

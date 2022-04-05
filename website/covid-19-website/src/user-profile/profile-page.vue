@@ -225,19 +225,19 @@ export default {
   },
   mounted() {
     this.get();
+    this.$emit('img','profile')
   },
 };
 </script>
 <style>
-.profile-page {
-  background-image: url("../assets/profilepage.png");
+.bg-img222 {
+  background-image: url("../assets/profilepage.png") !important;
   background-size: cover;
   background-repeat: no-repeat;
   min-height: 100%;
   min-width: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
+
+ 
 }
 .btn-container {
   /* border: 5px solid red; */

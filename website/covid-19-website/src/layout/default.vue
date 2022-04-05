@@ -64,9 +64,12 @@
         </v-list>
       </v-menu>
     </v-app-bar>
-    <v-main class="bg-img">
+    <v-main
+      class=" bg-img"
+      :class="img"
+    >
       <v-container>
-        <router-view></router-view>
+        <router-view @img="img = $event"></router-view>
       </v-container>
     </v-main>
   </v-app>
@@ -80,6 +83,7 @@ export default {
   components: {},
 
   data: () => ({
+    img: null,
     notifs: [],
     pending: false,
   }),
@@ -150,6 +154,9 @@ export default {
         return item.Read == 0;
       }).length;
     },
+    background() {
+      return `../assets/${this.img}`;
+    },
   },
   mounted() {
     this.getNotifs();
@@ -159,3 +166,30 @@ export default {
   },
 };
 </script>
+
+<style>
+.bg-img {
+  background-size: cover;
+  background-repeat: no-repeat;
+  min-height: 100%;
+  min-width: 100%;
+}
+.patient{
+  background-image: url('../assets/Patient.png');
+}
+.doctor{
+  background-image: url('../assets/docimage.png');
+}
+.healthOfficial{
+  background-image: url('../assets/HealthOfficial1.png');
+}
+.officer{
+  background-image: url('../assets/io1.png');
+}
+.admin{
+  background-image: url('../assets/Admin1.png');
+}
+.profile{
+  background-image: url('../assets/profilepage.png');
+}
+</style>

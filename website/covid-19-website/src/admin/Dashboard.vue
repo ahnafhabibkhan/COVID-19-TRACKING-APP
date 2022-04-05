@@ -1,13 +1,27 @@
 <template>
-  <div class="dashboard">
-    <div class="different-users">
-      <div class="stats"><h3>Number of doctors: 3</h3></div>
-      <div class="stats"><h3>Number of patients: 12</h3></div>
-      <div class="stats"><h3>Number of health officials: 7</h3></div>
-      <div class="stats"><h3>Number of immigration officers: 1</h3></div>
-    </div>
-    <div class="bottom-part">
-      <div class="pie-chart-stats">
+  <v-row>
+    <v-col cols="12" md="3" sm="6">
+      <div class="my-card">
+        <h3>Number of doctors: {{numberOfDoctors}}</h3>
+      </div>
+    </v-col>
+    <v-col cols="12" md="3" sm="6">
+      <div class="my-card">
+        <h3>Number of patients: {{numberOfPatients}}</h3>
+      </div>
+    </v-col>
+    <v-col cols="12" md="3" sm="6">
+      <div class="my-card">
+        <h3>Number of health officials: {{numberOfHOs}}</h3>
+      </div>
+    </v-col>
+    <v-col cols="12" md="3" sm="6">
+      <div class="my-card">
+        <h3>Number of immigration officers: {{numberOfIOs}}</h3>
+      </div>
+    </v-col>
+    <v-col cols="12">
+      <div class="my-card">
         <apexchart
           type="pie"
           width="480"
@@ -15,8 +29,8 @@
           :series="series"
         ></apexchart>
       </div>
-    </div>
-  </div>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -47,10 +61,18 @@ export default {
           },
         ],
       },
+      numberOfPatients: 0,
+      numberOfDoctors: 0,
+      numberOfIOs: 0,
+      numberOfHOs: 0,
     };
+  },
+  mounted() {
+    this.$emit("img", "admin");
   },
   created() {
     this.getChartData();
+    this.getNumberOfUsers();
   },
   methods: {
     onPatientsClick() {
@@ -95,12 +117,45 @@ export default {
         console.log(err);
       }
     },
+    async getNumberOfUsers() {
+      //Get number of patients
+      const patients = await axios.post(`http://localhost:5000/users`, {
+        Role: "Patient",
+      });
+      this.numberOfPatients = patients.data.length;
+      //Get number of doctors
+      const doctors = await axios.post(`http://localhost:5000/users`, {
+        Role: "Doctor",
+      });
+      this.numberOfDoctors = doctors.data.length;
+      //Get number of immigration officers
+      const IOs = await axios.post(`http://localhost:5000/users`, {
+        Role: "ImmigrationOfficer",
+      });
+      this.numberOfIOs = IOs.data.length;
+      //Get number of health officials
+      const HOs = await axios.post(`http://localhost:5000/users`, {
+        Role: "HealthOfficial",
+      });
+      this.numberOfHOs = HOs.data.length;
+    },
   },
 };
 </script>
 
 <style>
-.dashboard {
+.my-card {
+  padding: 10px 3px;
+  border: 1px dashed blue;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  min-height: 100px;
+  background-color: rgba(255, 252, 252, 0.3);
+}
+/* .dashboard {
   height: 100%;
   width: 100%;
 }
@@ -119,5 +174,5 @@ export default {
 .pie-chart-stats {
   margin-top: 30px;
   border: 4px solid rgb(56, 54, 54);
-}
+} */
 </style>
