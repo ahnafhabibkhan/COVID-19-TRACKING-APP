@@ -1,5 +1,5 @@
 <template>
-  <v-row align="center" justify="center" >
+  <v-row align="center" justify="center">
     <!-- Dialog for appointment requests with patients -->
     <v-dialog v-model="appointment_dialog" width="600px">
       <v-card>
@@ -14,31 +14,60 @@
               ></v-date-picker>
             </v-col>
             <v-col cols="12">
-              <form>
-                <v-text-field
-                  v-model="appointmentRequestForm.PID"
-                  label="Enter Patient ID"
-                  required
-                ></v-text-field>
-                <v-text-field
-                  v-model="appointmentRequestForm.Hour"
-                  label="Enter hour of appointment"
-                  required
-                ></v-text-field>
-                <v-text-field
-                  v-model="appointmentRequestForm.Minute"
-                  label="Enter minute of appointment"
-                  required
-                ></v-text-field>
-              </form>
+              <v-select
+                dense
+                :hide-details="true"
+                label="select Patient "
+                :items="patients"
+                item-value="UserID"
+                item-text="LastName"
+                v-model="appointmentRequestForm.PID"
+              />
             </v-col>
             <v-col cols="12">
-              <h4>Level of Emergency:</h4>
-              <v-radio-group v-model="appointmentRequestForm.EmergencyLevel">
-                <v-radio label="High" value="0"> </v-radio>
-                <v-radio label="Medium" value="1"> </v-radio>
-                <v-radio label="Low" value="2"> </v-radio>
-              </v-radio-group>
+              <v-menu
+                ref="menu"
+                v-model="menu2"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                :return-value.sync="time"
+                transition="scale-transition"
+                offset-y
+                max-width="290px"
+                min-width="290px"
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                    dense
+                    :hide-details="true"
+                    v-model="appointmentRequestForm.Time"
+                    label="select time"
+                    prepend-icon="mdi-clock-time-four-outline"
+                    readonly
+                    v-bind="attrs"
+                    v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-time-picker
+                  v-if="menu2"
+                  v-model="appointmentRequestForm.Time"
+                  format="24hr"
+                  @click:minute="$refs.menu.save(time)"
+                ></v-time-picker>
+              </v-menu>
+            </v-col>
+            <v-col cols="12">
+              <v-select
+                label="emergency "
+                :items="[
+                  { text: 'high', value: 0 },
+                  { text: 'medium', value: 1 },
+                  { text: 'low', value: 2 },
+                ]"
+                item-value="value"
+                item-text="text"
+                v-model="appointmentRequestForm.EmergencyLevel"
+              />
             </v-col>
             <v-col cols="6">
               <v-btn
@@ -68,7 +97,7 @@
     <v-col cols="12" md="7">
       <div
         style="background-color: rgba(256, 256, 256, 0.9)"
-        class="pa-4 rounded-lg "
+        class="pa-4 rounded-lg"
       >
         <h2>Requested Appointments:</h2>
         <div v-for="(item, i) in requestedAppointments" :key="i">
@@ -79,10 +108,10 @@
       </div>
     </v-col>
     <!-- Own Requested apppointments -->
-    <v-col cols="12" md="7" >
+    <v-col cols="12" md="7">
       <div
         style="background-color: rgba(256, 256, 256, 0.9)"
-        class="pa-4 rounded-lg "
+        class="pa-4 rounded-lg"
       >
         <h2>Own Requested Appointments:</h2>
         <div v-for="(item, i) in ownRequestedAppointments" :key="i">
@@ -132,11 +161,14 @@
 </template>
 <script>
 import axios from "axios";
+
 export default {
   name: "ListOfAppointments",
   data() {
     return {
+      menu2: false,
       url: "http://localhost:5000/",
+      patients: [],
       appointments: [],
       appointment_dialog: false,
       requestedAppointments: [],
@@ -146,8 +178,7 @@ export default {
         Date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
           .toISOString()
           .substr(0, 10),
-        Hour: 0,
-        Minute: 0,
+        Time: null,
         EmergencyLevel: 0,
         Priority: 0,
       },
@@ -213,6 +244,17 @@ export default {
           DID: this.$store.state.user.UserID,
         });
         this.appointments = res.data;
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    // Get patients
+    async getPatients() {
+      try {
+        const res = await axios.post(`http://localhost:5000/users`, {
+          Role: "Patient",
+        });
+        this.patients = res.data;
       } catch (err) {
         console.log(err);
       }
@@ -296,10 +338,11 @@ export default {
     async requestAppointment() {
       try {
         const Date = this.appointmentRequestForm.Date.toString();
-        const Time = this.appointmentRequestForm.Hour.toString().concat(
-          ":",
-          this.appointmentRequestForm.Minute.toString()
-        );
+        // const Time = this.appointmentRequestForm.Hour.toString().concat(
+        //   ":",
+        //   this.appointmentRequestForm.Minute.toString()
+        // );
+        const Time = this.appointmentRequestForm.Time;
         const RequestedBy = "D";
         const DID = this.$store.state.user.UserID;
         const PID = parseInt(this.appointmentRequestForm.PID);
@@ -364,6 +407,7 @@ export default {
       }
     },
     init() {
+      this.getPatients();
       this.getAppointments();
       this.getAppointmentRequests();
       this.getOwnAppointmentRequests();
