@@ -64,10 +64,7 @@
         </v-list>
       </v-menu>
     </v-app-bar>
-    <v-main
-      class=" bg-img"
-      :class="img"
-    >
+    <v-main class="bg-img" :class="img">
       <v-container>
         <router-view @img="img = $event"></router-view>
       </v-container>
@@ -174,22 +171,22 @@ export default {
   min-height: 100%;
   min-width: 100%;
 }
-.patient{
-  background-image: url('../assets/Patient.png');
+.patient {
+  background-image: url("../assets/Patient.png");
 }
-.doctor{
-  background-image: url('../assets/docimage.png');
+.doctor {
+  background-image: url("../assets/docimage.png");
 }
-.healthOfficial{
-  background-image: url('../assets/HealthOfficial1.png');
+.healthOfficial {
+  background-image: url("../assets/HealthOfficial1.png");
 }
-.officer{
-  background-image: url('../assets/io1.png');
+.officer {
+  background-image: url("../assets/io1.png");
 }
-.admin{
-  background-image: url('../assets/Admin1.png');
+.admin {
+  background-image: url("../assets/Admin1.png");
 }
-.profile{
-  background-image: url('../assets/profilepage.png');
+.profile {
+  background-image: url("../assets/profilepage.png");
 }
 </style>

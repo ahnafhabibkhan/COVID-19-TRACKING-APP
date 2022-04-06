@@ -1,5 +1,5 @@
 <template>
-  <v-row align="center" justify="center">
+  <v-row  justify="center">
     <!-- Dialog for appointment requests with patients -->
     <v-dialog v-model="appointment_dialog" width="600px">
       <v-card>
@@ -148,10 +148,7 @@
       <div class="my-6" style="text-align: center">
         <v-btn
           class="white--text"
-          style="font-size: 18px"
           color="blue lighten-2"
-          width="400px"
-          height="75px"
           @click="appointment_dialog = !appointment_dialog"
           >Request Appointment with Patient</v-btn
         >
