@@ -661,7 +661,7 @@ export default {
         console.log("err", err);
         // alert("Failed ; add new status");
       }
-    },
+    }, 
     async deleteStatus(status) {
       Swal.fire({
         title: "Are you sure?",
@@ -716,8 +716,12 @@ export default {
       try {
         await axios.post(this.url + "appointmentrequest", params);
         this.addNotif(
-          `an appointment [${Date + "-" + params.Time}]`,
+          `an appointment [${params.Date + "-" + params.Time}] is requested`,
           this.userId
+        );
+        this.addNotif(
+          `an appointment [${params.Date + "-" + params.Time}] is requested`,
+          did
         );
         Swal.fire({
           icon: "success",
