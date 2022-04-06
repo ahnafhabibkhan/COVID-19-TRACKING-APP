@@ -1,5 +1,5 @@
 // Import function from account request Model
-import { getAccountRequestByEmail, getAccountRequests, insertAccountRequest, deleteAccountRequestById } from "../models/accountRequestModel.js";
+import { getAccountRequestByEmail, getAccountRequests, insertAccountRequest, deleteAccountRequestByEmail } from "../models/accountRequestModel.js";
 
 // Get Single account request by Email
 export const showAccountRequestByEmail = (req, res) => {
@@ -37,8 +37,8 @@ export const createAccountRequest = (req, res) => {
 
 // Delete account request
 export const deleteAccountRequest = (req, res) => {
-    const id = req.params.id;
-    deleteAccountRequestById(id, (err, results) => {
+    const email = req.params.email;
+    deleteAccountRequestByEmail(email, (err, results) => {
         if (err){
             res.send(err);
         }else{
