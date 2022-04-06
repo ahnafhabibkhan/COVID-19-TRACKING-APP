@@ -244,7 +244,7 @@
       </v-card>
     </v-dialog>
     <!-- login modal end -->
-    <div class="navbar">
+    <div class="navbar" v-if="false">
       <v-toolbar-items>
         <v-btn
           class="btn"
@@ -260,8 +260,8 @@
       </v-toolbar-items>
     </div>
     <div class="main">
-      <p class="main-title">COVID-19 TRACKER</p>
-      <p class="main-middle-text">
+      <p class="main-title d-none d-md-block">COVID-19 TRACKER</p>
+      <p class="main-middle-text " >
         Stay Alert, Control the Virus, and Save Lives!
       </p>
       <center>
@@ -554,16 +554,7 @@ export default {
 </script>
 
 <style>
-.login {
-  background-image: url("../assets/CovidTrackingApp.png");
-  background-size: cover;
-  background-repeat: no-repeat;
-  min-height: 100%;
-  min-width: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-}
+
 .navbar {
   margin-top: 15px;
   float: right;
@@ -590,16 +581,19 @@ export default {
   font-family: Arial, Helvetica, sans-serif;
   color: antiquewhite;
 }
-.main {
-  margin-top: 300px;
-  margin-left: 200px;
-  width: 40%;
+.login{
+  /* background-color: red; */
+  height: 100%;
 }
-.main-btn {
+.main {
+height: 100%;
+  /* width: 40%; */
+}
+/* .main-btn {
   margin-top: 40px;
   font-size: 25px;
   font-weight: 500;
   font-family: Arial, Helvetica, sans-serif;
   color: antiquewhite;
-}
+} */
 </style>

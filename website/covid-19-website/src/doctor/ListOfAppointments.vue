@@ -14,33 +14,60 @@
               ></v-date-picker>
             </v-col>
             <v-col cols="12">
-              <form>
-                <v-select
-                  label="select Patient "
-                  :items="patients"
-                  item-value="UserID"
-                  item-text="LastName"
-                  v-model="appointmentRequestForm.PID"
-                />
-                <v-text-field
-                  v-model="appointmentRequestForm.Hour"
-                  label="Enter hour of appointment"
-                  required
-                ></v-text-field>
-                <v-text-field
-                  v-model="appointmentRequestForm.Minute"
-                  label="Enter minute of appointment"
-                  required
-                ></v-text-field>
-              </form>
+              <v-select
+                dense
+                :hide-details="true"
+                label="select Patient "
+                :items="patients"
+                item-value="UserID"
+                item-text="LastName"
+                v-model="appointmentRequestForm.PID"
+              />
             </v-col>
             <v-col cols="12">
-              <h4>Level of Emergency:</h4>
-              <v-radio-group v-model="appointmentRequestForm.EmergencyLevel">
-                <v-radio label="High" value="0"> </v-radio>
-                <v-radio label="Medium" value="1"> </v-radio>
-                <v-radio label="Low" value="2"> </v-radio>
-              </v-radio-group>
+              <v-menu
+                ref="menu"
+                v-model="menu2"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                :return-value.sync="time"
+                transition="scale-transition"
+                offset-y
+                max-width="290px"
+                min-width="290px"
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                    dense
+                    :hide-details="true"
+                    v-model="appointmentRequestForm.Time"
+                    label="select time"
+                    prepend-icon="mdi-clock-time-four-outline"
+                    readonly
+                    v-bind="attrs"
+                    v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-time-picker
+                  v-if="menu2"
+                  v-model="appointmentRequestForm.Time"
+                  format="24hr"
+                  @click:minute="$refs.menu.save(time)"
+                ></v-time-picker>
+              </v-menu>
+            </v-col>
+            <v-col cols="12">
+              <v-select
+                label="emergency "
+                :items="[
+                  { text: 'high', value: 0 },
+                  { text: 'medium', value: 1 },
+                  { text: 'low', value: 2 },
+                ]"
+                item-value="value"
+                item-text="text"
+                v-model="appointmentRequestForm.EmergencyLevel"
+              />
             </v-col>
             <v-col cols="6">
               <v-btn
@@ -134,10 +161,12 @@
 </template>
 <script>
 import axios from "axios";
+
 export default {
   name: "ListOfAppointments",
   data() {
     return {
+      menu2: false,
       url: "http://localhost:5000/",
       patients: [],
       appointments: [],
@@ -149,8 +178,7 @@ export default {
         Date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
           .toISOString()
           .substr(0, 10),
-        Hour: 0,
-        Minute: 0,
+        Time: null,
         EmergencyLevel: 0,
         Priority: 0,
       },
@@ -310,10 +338,11 @@ export default {
     async requestAppointment() {
       try {
         const Date = this.appointmentRequestForm.Date.toString();
-        const Time = this.appointmentRequestForm.Hour.toString().concat(
-          ":",
-          this.appointmentRequestForm.Minute.toString()
-        );
+        // const Time = this.appointmentRequestForm.Hour.toString().concat(
+        //   ":",
+        //   this.appointmentRequestForm.Minute.toString()
+        // );
+        const Time = this.appointmentRequestForm.Time;
         const RequestedBy = "D";
         const DID = this.$store.state.user.UserID;
         const PID = parseInt(this.appointmentRequestForm.PID);

@@ -89,12 +89,11 @@
           </div>
         </div>
 
-        *<apexchart
+        <apexchart
           type="pie"
           :options="chartOptions"
           :series="series"
-        ></apexchartfo
-        >*
+        ></apexchart>
       </v-col>
       <v-col cols="12" md="6">
         <div
@@ -129,7 +128,7 @@
 <script>
 import moment from "moment";
 import axios from "axios";
-
+import Swal from "sweetalert2";
 export default {
   name: "Doctor",
 
@@ -172,17 +171,17 @@ export default {
     };
   },
 
-  created() {
-    this.getMessages();
-    this.getAvailabilities();
-    this.listOfAvailabilities();
-    this.getChartData();
-  },
   mounted() {
+    this.init();
     this.$emit("img", "doctor");
   },
   methods: {
-    chatBox() {},
+    init() {
+      this.getMessages();
+      this.getAvailabilities();
+      this.listOfAvailabilities();
+      this.getChartData();
+    },
 
     // Get infected and non infected data
     async getChartData() {
@@ -278,7 +277,7 @@ export default {
         item.EndTime,
         item.SpecificDay.substr(0, 10)
       );
-      window.location.reload();
+      this.init();
     },
 
     async addNotif(Message) {
@@ -318,7 +317,9 @@ export default {
           this.date
         );
       }
-      // window.location.reload();
+      this.getAvailabilities();
+      this.listOfAvailabilities();
+      this.date_dialog = false;
     },
     disAvail(item) {
       const found = this.appointments.findIndex((a) => {
@@ -356,8 +357,18 @@ export default {
           EndTime: EndTime,
           SpecificDay: SpecificDay,
         });
+        Swal.fire({
+          icon: "success",
+          title: "success",
+          text: "added successfully",
+        });
+  
       } catch (err) {
-        console.log(err);
+        Swal.fire({
+          icon: "error",
+          title: "error",
+          text: "failed add availability",
+        });
       }
     },
 
