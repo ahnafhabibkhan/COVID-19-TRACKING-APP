@@ -34,7 +34,6 @@ describe('AccountRequest related test',function(){
             Address: "123 Main", 
             Role: "Patient", 
             Password: "TestPass", 
-            City:'testCity', 
             Country: "Canada",
             Time: new Date("2022-02-07T06:00:00.000Z").toJSON().slice(0, 19).replace('T', ' '),
             Date: new Date("2022-02-07T05:00:00.000Z").toJSON().slice(0, 19).replace('T', ' ')},

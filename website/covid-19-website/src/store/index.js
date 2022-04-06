@@ -20,6 +20,9 @@ export default new Vuex.Store({
 
         setUser(state, p) {
             state.user = p
+        },
+        delUser(state) {
+            state.user = null
         }
     }
 })

@@ -228,15 +228,17 @@
                 label="Username"
                 style="text-align: center"
                 dense
-                hide-details
+                :hide-details="!unErr"
+                :error-messages="unErr"
               ></v-text-field>
             </v-col>
             <v-col cols="12">
               <v-text-field
+                :error-messages="pwdErr"
                 v-model="login.pass"
                 label="Password"
                 dense
-                hide-details
+               :hide-details="!pwdErr"
                 type="password"
               ></v-text-field>
             </v-col>
@@ -353,6 +355,8 @@ export default {
   components: { SignUpDialog },
   data() {
     return {
+      pwdErr: null,
+      unErr: null,
       nav: [
         {
           icon: "info",
@@ -437,6 +441,8 @@ export default {
       if (!email || !password) {
         return;
       }
+      this.unErr = null;
+      this.pwdErr = null;
       try {
         const response = await axios.get(
           `http://localhost:5000/users/${email}`
@@ -466,7 +472,11 @@ export default {
             } else if (response.data.Role == "ImmigrationOfficer") {
               this.$router.push("/immigration-officer");
             }
+          } else {
+            this.pwdErr = "invalid password";
           }
+        } else {
+          this.unErr = "invalid username";
         }
       } catch (err) {
         console.log(err);
@@ -603,15 +613,12 @@ export default {
     onNavClick(text) {
       if (text == "Sign Up") {
         this.signUp_modal = !this.signUp_modal;
-      }
-      else if (text == "Sign In") {
+      } else if (text == "Sign In") {
         this.login_modal = !this.login_modal;
-      }
-      else if (text == "About") {
-       this.$router.push('/about')
-      }
-      else if (text == "Contact") {
-       this.$router.push('/contact')
+      } else if (text == "About") {
+        this.$router.push("/about");
+      } else if (text == "Contact") {
+        this.$router.push("/contact");
       }
     },
   },
