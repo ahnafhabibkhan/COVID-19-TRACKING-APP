@@ -1,10 +1,10 @@
 <template>
-  <v-container >
+  <v-container>
     <!-- ChatBox modal -->
     <v-dialog v-model="chatbox_modal" width="350px">
       <Chatbox />
     </v-dialog>
-  <v-container>
+
     <v-row>
       <!-- book modal start -->
       <v-dialog v-model="date_dialoge" width="500px">
@@ -89,6 +89,7 @@
           </v-container>
         </v-card>
       </v-dialog>
+
       <!-- book modal end -->
 
       <!-- status modal start -->
@@ -293,41 +294,22 @@
       <!-- status modal end -->
       <v-col cols="12" md="6">
         <!-- buttons -->
-      
-          <div class="my-2 mx-3">
-            <v-btn
-              dark
-              
-              color="blue lighten-2"
-              block
-              large
-              @click="myInfo"
-              >My Info</v-btn
-            >
-          </div>
-          <div class="mx-3">
-            <v-btn
-              dark
-              
-              color="blue lighten-2"
-             block
-              large
-              @click="onAppointment"
-              >Book an Appointment</v-btn
-            >
-          </div>
-          <div class="my-2 mx-3">
-            <v-btn
-              dark
-              
-              color="blue lighten-2"
-              block
-              large
-              @click="onUpdateStatus"
-              >Update Status</v-btn
-            >
-          </div>
-     
+
+        <div class="my-2 mx-3">
+          <v-btn dark color="blue lighten-2" block large @click="myInfo"
+            >My Info</v-btn
+          >
+        </div>
+        <div class="mx-3">
+          <v-btn dark color="blue lighten-2" block large @click="onAppointment"
+            >Book an Appointment</v-btn
+          >
+        </div>
+        <div class="my-2 mx-3">
+          <v-btn dark color="blue lighten-2" block large @click="onUpdateStatus"
+            >Update Status</v-btn
+          >
+        </div>
 
         <!-- status rows -->
         <v-row>
@@ -466,7 +448,7 @@
       <v-col cols="12" md="6" class="p2-6 mt-2">
         <!-- requested apppointments -->
         <div
-          style="; background-color: rgba(256, 256, 256, 0.5)"
+          style="background-color: rgba(256, 256, 256, 0.5)"
           class="pa-4 rounded-lg mb-5"
         >
           <h2>Requested Appointments :</h2>
@@ -478,7 +460,7 @@
         </div>
         <!-- approved apppointments -->
         <div
-          style="; background-color: rgba(256, 256, 256, 0.5)"
+          style="background-color: rgba(256, 256, 256, 0.5)"
           class="pa-4 rounded-lg mt-5"
         >
           <h2>Approved Appointments :</h2>
@@ -490,7 +472,7 @@
         </div>
         <!-- Doctor's Requested apppointments -->
         <div
-          style="; background-color: rgba(256, 256, 256, 0.5)"
+          style="background-color: rgba(256, 256, 256, 0.5)"
           class="pa-4 rounded-lg mt-5"
         >
           <h2>Doctor's Requested Appointments:</h2>
@@ -545,7 +527,7 @@ export default {
   components: { ValidationProvider, ValidationObserver, Chatbox },
   data() {
     return {
-      url: "http://localhost:5000/",
+      url: "http://localhost:5001/",
       edit_mode: false,
       show_more: false,
       date_dialoge: false,
@@ -690,7 +672,7 @@ export default {
         console.log("err", err);
         // alert("Failed ; add new status");
       }
-    }, 
+    },
     async deleteStatus(status) {
       Swal.fire({
         title: "Are you sure?",
@@ -725,7 +707,7 @@ export default {
       const did = this.doctorId;
       const pid = this.userId;
       const covidStatusInt = await axios.get(
-        `http://localhost:5000/healthstatus/${pid}`
+        `http://localhost:5001/healthstatus/${pid}`
       );
       var levelOfEmergency = 0;
       if (this.emergencyLevel == "High") {
@@ -870,7 +852,7 @@ export default {
     async getDoctorAppointmentRequests() {
       try {
         const res = await axios.post(
-          `http://localhost:5000/appointmentrequests`,
+          `http://localhost:5001/appointmentrequests`,
           {
             DID: this.doctorId,
             PID: this.userId,
@@ -914,7 +896,7 @@ export default {
     async approveAppointment(PID, DID, Date, Time, LevelOfEmergency, Priority) {
       try {
         this.cancelAppointmentRequest(PID, DID, Date, Time);
-        await axios.post(`http://localhost:5000/appointment`, {
+        await axios.post(`http://localhost:5001/appointment`, {
           PID: PID,
           DID: DID,
           Date: Date,
@@ -933,7 +915,7 @@ export default {
     // Cancel an appointment from the doctor
     async cancelAppointmentRequest(PID, DID, Date, Time) {
       try {
-        await axios.post(`http://localhost:5000/deleteappointmentrequest`, {
+        await axios.post(`http://localhost:5001/deleteappointmentrequest`, {
           PID: PID,
           DID: DID,
           Date: Date,
@@ -953,7 +935,7 @@ export default {
         const ct = true;
         var count = 0;
         while (ct) {
-          const userResponse = await axios.post(`http://localhost:5000/users`, {
+          const userResponse = await axios.post(`http://localhost:5001/users`, {
             UserID: this.$store.state.user.UserID,
           });
 
@@ -967,7 +949,7 @@ export default {
               idToUse
           );
           const messagesResponse = await axios.get(
-            `http://localhost:5000/messages/${this.$store.state.user.UserID}/${idToUse}`
+            `http://localhost:5001/messages/${this.$store.state.user.UserID}/${idToUse}`
           );
 
           //Getting the array of message exchange between Docter and patient
@@ -995,7 +977,7 @@ export default {
               //when the chatbox is open change the flag to false
               if (this.chatbox_modal == true && count > 0) {
                 await axios.put(
-                  `http://localhost:5000/message/${
+                  `http://localhost:5001/message/${
                     this.messages[this.messages.length - 1].ID
                   }`,
                   {
@@ -1069,7 +1051,7 @@ export default {
 
   mounted() {
     this.init();
-    this.$emit('img','patient')
+    this.$emit("img", "patient");
   },
 };
 </script>

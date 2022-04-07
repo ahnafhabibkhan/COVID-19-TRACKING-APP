@@ -168,7 +168,7 @@ export default {
   components: { ValidationProvider, ValidationObserver },
   data() {
     return {
-      url: "http://localhost:5000/",
+      url: "http://localhost:5001/",
       roles: [
         "Admin",
         "Patient",
@@ -203,7 +203,7 @@ export default {
     },
 
     async getDoctorAssigned() {
-      const response = await axios.post("http://localhost:5000/users", {
+      const response = await axios.post("http://localhost:5001/users", {
         Role: "Patient",
       });
       var users = response.data;
@@ -217,7 +217,7 @@ export default {
         // If there's no doctor found that is assigned to this patient
         return;
       }
-      const doctorResponse = await axios.post("http://localhost:5000/users", {
+      const doctorResponse = await axios.post("http://localhost:5001/users", {
         UserID: doctorID,
       });
       var myDoctor = doctorResponse.data;

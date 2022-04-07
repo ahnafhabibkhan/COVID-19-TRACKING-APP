@@ -12,14 +12,12 @@
         style="display: inline-table"
         width="350px"
         height="100px"
-        ><h2 class="my-2">
-          {{ item.FirstName }} {{ item.LastName }}
-        </h2>
+        ><h2 class="my-2">{{ item.FirstName }} {{ item.LastName }}</h2>
         <p>
           Contact:<br />
           Phone: {{ item.Telephone }} <br />
           Email: {{ item.Email }} <br />
-          Role: {{item.Role}}
+          Role: {{ item.Role }}
         </p>
         <v-btn @click="approveAccountRequest(item)">Approve</v-btn>
         <v-btn class="mx-3" @click="rejectAccountRequest(item)">Reject</v-btn>
@@ -43,7 +41,9 @@ export default {
     // Get all account requests
     async getAccountRequests() {
       try {
-        const requestResponse = await axios.get(`http://localhost:5000/accountrequests`);
+        const requestResponse = await axios.get(
+          `http://localhost:5001/accountrequests`
+        );
         this.requestList = requestResponse.data;
       } catch (err) {
         console.log(err);
@@ -54,7 +54,7 @@ export default {
     async approveAccountRequest(item) {
       try {
         // Create new account
-        await axios.post(`http://localhost:5000/user`, {
+        await axios.post(`http://localhost:5001/user`, {
           Email: item.Email,
           FirstName: item.FirstName,
           LastName: item.LastName,
@@ -66,7 +66,9 @@ export default {
         });
 
         // Delete account request
-        await axios.delete(`http://localhost:5000/accountrequest/${item.Email}`);
+        await axios.delete(
+          `http://localhost:5001/accountrequest/${item.Email}`
+        );
 
         // Reload account requests
         this.getAccountRequests();
@@ -79,7 +81,9 @@ export default {
     async rejectAccountRequest(item) {
       try {
         // Delete account request
-        await axios.delete(`http://localhost:5000/accountrequest/${item.Email}`);
+        await axios.delete(
+          `http://localhost:5001/accountrequest/${item.Email}`
+        );
 
         // Reload account requests
         this.getAccountRequests();
@@ -90,7 +94,7 @@ export default {
   },
   mounted() {
     this.$emit("img", "admin");
-  }
+  },
 };
 </script>
 <style>
