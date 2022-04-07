@@ -165,7 +165,7 @@ export default {
 
       if (doctorID == null) {
         // console.log("show me the value", user);
-        document.getElementById("doc" + user).innerText = "None";
+        // document.getElementById("doc" + user).innerText = "None";
         return;
       }
       // Get all doctors
@@ -188,7 +188,8 @@ export default {
       } else if (doctorName != "") {
         //  this.isPatient = true;
         console.log(doctorName, doctorID);
-        document.getElementById("doc" + user).innerText = doctorName;
+        // document.getElementById("doc" + user).innerText = doctorName;
+        console.log(user);
         return;
       }
     },
