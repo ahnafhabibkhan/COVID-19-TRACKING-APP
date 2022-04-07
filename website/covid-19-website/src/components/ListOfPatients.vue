@@ -95,6 +95,15 @@
           Covid Status: {{ item.covidStatus }} <br />
           Role: {{ item.patientsList.Role }}
         </p>
+        <p
+          :id="'doc' + item.patientsList.UserID"
+          v-if="item.patientsList.Role == 'Patient'"
+        >
+          Doctor:
+          {{
+            getDoctorName(item.patientsList.Doctor, item.patientsList.UserID)
+          }}
+        </p>
         <v-btn @click.stop="deleteUser(item.patientsList.UserID)">Delete</v-btn>
         <v-btn
           @click="getListOfDoctor(item.patientsList.UserID)"
@@ -130,6 +139,40 @@ export default {
     this.getPatients();
   },
   methods: {
+    //Get doctor Names for the frontend
+
+    async getDoctorName(doctorID, user) {
+      var doctorName = "";
+
+      if (doctorID == null) {
+        // console.log("show me the value", user);
+        // document.getElementById("doc" + user).innerText = "None";
+        return;
+      }
+      // Get all doctors
+      const response = await axios.post(`http://localhost:5001/users`, {
+        Role: "Doctor",
+      });
+
+      var doctorInfo = response.data;
+      for (var i = 0; i < doctorInfo.length; i++) {
+        if (doctorInfo[i].UserID == doctorID) {
+          doctorName = doctorInfo[i].FirstName;
+          //  this.isPatient = true;
+          break;
+        }
+      }
+      if (doctorName == "") {
+        // this.isPatient = false;
+        document.getElementById("doc" + doctorID).innerText = "user";
+        return;
+      } else if (doctorName != "") {
+        //  this.isPatient = true;
+        console.log(doctorName, doctorID);
+        document.getElementById("doc" + user).innerText = doctorName;
+        return;
+      }
+    },
     // Get all users depending on role of current user
     async getPatients() {
       console.log("getPatients called");
@@ -248,6 +291,7 @@ export default {
           this.getPatients();
         });
     },
+
     async getListOfDoctor(PID) {
       //Array for doctor with less than 10 patients
       let doctorLessThanTreshold = [];
