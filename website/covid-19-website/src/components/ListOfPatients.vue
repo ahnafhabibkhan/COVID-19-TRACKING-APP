@@ -25,22 +25,23 @@
       outlined
       color="transparent"
     >
-      <v-card
-        v-for="(item, UserID) in filteredPatients"
-        :key="UserID"
-        :title="item.title"
-        class="pa-2 mx-8 my-8"
-        style="display: inline-table"
-        width="30%"
-        height="10%"
-        @click="onPatientClick()"
-        ><h2 class="my-2">{{ item.FirstName }} {{ item.LastName }}</h2>
-        <p>
-          Contact:<br />
-          Phone: {{ item.Telephone }} <br />
-          Email: {{ item.Email }}
-        </p>
-      </v-card>
+      <v-row>
+        <v-col
+          cols="12"
+          md="6"
+          v-for="(item, UserID) in filteredPatients"
+          :key="UserID"
+        >
+          <v-card :title="item.title" class="pa-2" @click="onPatientClick()"
+            ><h2 class="my-2">{{ item.FirstName }} {{ item.LastName }}</h2>
+            <p>
+              Contact:<br />
+              Phone: {{ item.Telephone }} <br />
+              Email: {{ item.Email }}
+            </p>
+          </v-card>
+        </v-col>
+      </v-row>
     </v-card>
     <v-card
       v-if="userRole == 'health-official' || userRole == 'doctor'"
@@ -48,26 +49,30 @@
       outlined
       color="transparent"
     >
-      <v-card
-        v-for="(item, UserID) in filteredPatients"
-        :key="UserID"
-        :title="item.title"
-        class="pa-2 mx-8 my-8"
-        style="display: inline-table"
-        width="350px"
-        height="100px"
-        @click="onPatientClick()"
-        :color="item.covidStatus === 'Positive' ? '#FF4933' : 'white'"
-        ><h2 class="my-2">
-          {{ item.patientsList.FirstName }} {{ item.patientsList.LastName }}
-        </h2>
-        <p>
-          Contact:<br />
-          Phone: {{ item.patientsList.Telephone }} <br />
-          Email: {{ item.patientsList.Email }} <br />
-          Covid Status: {{ item.covidStatus }}
-        </p>
-      </v-card>
+      <v-row>
+        <v-col
+          cols="12"
+          md="6"
+          v-for="(item, UserID) in filteredPatients"
+          :key="UserID"
+        >
+          <v-card
+            :title="item.title"
+            class="pa-2"
+            @click="onPatientClick()"
+            :color="item.covidStatus === 'Positive' ? '#FF4933' : 'white'"
+            ><h2 class="my-2">
+              {{ item.patientsList.FirstName }} {{ item.patientsList.LastName }}
+            </h2>
+            <p>
+              Contact:<br />
+              Phone: {{ item.patientsList.Telephone }} <br />
+              Email: {{ item.patientsList.Email }} <br />
+              Covid Status: {{ item.covidStatus }}
+            </p>
+          </v-card>
+        </v-col>
+      </v-row>
     </v-card>
     <v-card
       v-if="userRole == 'admin'"
@@ -75,43 +80,57 @@
       outlined
       color="transparent"
     >
-      <v-card
-        v-for="(item, UserID) in filteredPatients"
-        :key="UserID"
-        :title="item.title"
-        class="pa-2 mx-8 my-8"
-        style="display: inline-table"
-        width="350px"
-        height="100px"
-        @click="onPatientClick()"
-        :color="item.covidStatus === 'Positive' ? '#FF4933' : 'white'"
-        ><h2 class="my-2">
-          {{ item.patientsList.FirstName }} {{ item.patientsList.LastName }}
-        </h2>
-        <p>
-          Contact:<br />
-          Phone: {{ item.patientsList.Telephone }} <br />
-          Email: {{ item.patientsList.Email }} <br />
-          Covid Status: {{ item.covidStatus }} <br />
-          Role: {{ item.patientsList.Role }}
-        </p>
-        <p
-          :id="'doc' + item.patientsList.UserID"
-          v-if="item.patientsList.Role == 'Patient'"
+      <v-row>
+        <v-col
+          cols="12"
+          md="6"
+          v-for="(item, UserID) in filteredPatients"
+          :key="UserID"
         >
-          Doctor:
-          {{
-            getDoctorName(item.patientsList.Doctor, item.patientsList.UserID)
-          }}
-        </p>
-        <v-btn @click.stop="deleteUser(item.patientsList.UserID)">Delete</v-btn>
-        <v-btn
-          @click="getListOfDoctor(item.patientsList.UserID)"
-          v-if="item.patientsList.Role == 'Patient'"
-          class="mx-3"
-          >Assign Doctor</v-btn
-        >
-      </v-card>
+          <v-card
+            v-for="(item, UserID) in filteredPatients"
+            :key="UserID"
+            :title="item.title"
+            class="pa-2 mx-8 my-8"
+            style="display: inline-table"
+            width="350px"
+            height="100px"
+            @click="onPatientClick()"
+            :color="item.covidStatus === 'Positive' ? '#FF4933' : 'white'"
+            ><h2 class="my-2">
+              {{ item.patientsList.FirstName }} {{ item.patientsList.LastName }}
+            </h2>
+            <p>
+              Contact:<br />
+              Phone: {{ item.patientsList.Telephone }} <br />
+              Email: {{ item.patientsList.Email }} <br />
+              Covid Status: {{ item.covidStatus }} <br />
+              Role: {{ item.patientsList.Role }}
+            </p>
+            <p
+              :id="'doc' + item.patientsList.UserID"
+              v-if="item.patientsList.Role == 'Patient'"
+            >
+              Doctor:
+              {{
+                getDoctorName(
+                  item.patientsList.Doctor,
+                  item.patientsList.UserID
+                )
+              }}
+            </p>
+            <v-btn @click.stop="deleteUser(item.patientsList.UserID)"
+              >Delete</v-btn
+            >
+            <v-btn
+              @click="getListOfDoctor(item.patientsList.UserID)"
+              v-if="item.patientsList.Role == 'Patient'"
+              class="mx-3"
+              >Assign Doctor</v-btn
+            >
+          </v-card>
+        </v-col>
+      </v-row>
     </v-card>
   </div>
 </template>

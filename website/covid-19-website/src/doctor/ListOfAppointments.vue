@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 70%; margin: auto">
+  <v-row justify="center">
     <!-- Dialog for appointment requests with patients -->
     <v-dialog v-model="appointment_dialog" width="600px">
       <v-card>
@@ -14,31 +14,67 @@
               ></v-date-picker>
             </v-col>
             <v-col cols="12">
-              <form>
-                <v-text-field
-                  v-model="appointmentRequestForm.PID"
-                  label="Enter Patient ID"
-                  required
-                ></v-text-field>
-                <v-text-field
-                  v-model="appointmentRequestForm.Hour"
-                  label="Enter hour of appointment"
-                  required
-                ></v-text-field>
-                <v-text-field
-                  v-model="appointmentRequestForm.Minute"
-                  label="Enter minute of appointment"
-                  required
-                ></v-text-field>
-              </form>
+              <v-select
+                dense
+                :hide-details="true"
+                label="select Patient "
+                :items="patients"
+                item-value="UserID"
+                item-text="LastName"
+                v-model="appointmentRequestForm.PID"
+              >
+                <template v-slot:selection="{ item }">
+                  {{ item.FirstName + " " + item.LastName }}
+                </template>
+                <template v-slot:item="{ item }">
+                  {{ item.FirstName + " " + item.LastName }}
+                </template>
+              </v-select>
             </v-col>
             <v-col cols="12">
-              <h4>Level of Emergency:</h4>
-              <v-radio-group v-model="appointmentRequestForm.EmergencyLevel">
-                <v-radio label="High" value="0"> </v-radio>
-                <v-radio label="Medium" value="1"> </v-radio>
-                <v-radio label="Low" value="2"> </v-radio>
-              </v-radio-group>
+              <v-menu
+                ref="menu"
+                v-model="menu2"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                :return-value.sync="time"
+                transition="scale-transition"
+                offset-y
+                max-width="290px"
+                min-width="290px"
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                    dense
+                    :hide-details="true"
+                    v-model="appointmentRequestForm.Time"
+                    label="select time"
+                    prepend-icon="mdi-clock-time-four-outline"
+                    readonly
+                    v-bind="attrs"
+                    v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-time-picker
+                  v-if="menu2"
+                  v-model="appointmentRequestForm.Time"
+                  format="24hr"
+                  @click:minute="$refs.menu.save(time)"
+                ></v-time-picker>
+              </v-menu>
+            </v-col>
+            <v-col cols="12">
+              <v-select
+                label="emergency "
+                :items="[
+                  { text: 'high', value: 0 },
+                  { text: 'medium', value: 1 },
+                  { text: 'low', value: 2 },
+                ]"
+                item-value="value"
+                item-text="text"
+                v-model="appointmentRequestForm.EmergencyLevel"
+              />
             </v-col>
             <v-col cols="6">
               <v-btn
@@ -65,73 +101,79 @@
       </v-card>
     </v-dialog>
     <!-- requested apppointments -->
-    <div
-      style="background-color: rgba(256, 256, 256, 0.9)"
-      class="pa-4 rounded-lg mb-5"
-    >
-      <h2>Requested Appointments:</h2>
-      <div v-for="(item, i) in requestedAppointments" :key="i">
-        {{ item.Date.substr(0, 10) + " -- " + item.Time }}
+    <v-col cols="12" md="7">
+      <div
+        style="background-color: rgba(256, 256, 256, 0.9)"
+        class="pa-4 rounded-lg"
+      >
+        <h2>Requested Appointments:</h2>
+        <div v-for="(item, i) in requestedAppointments" :key="i">
+          {{ item.Date.substr(0, 10) + " -- " + item.Time }}
 
-        <v-btn x-small @click="acceptAppointment(item)"> approve </v-btn>
-      </div>
-    </div>
-    <!-- Own Requested apppointments -->
-    <div
-      style="background-color: rgba(256, 256, 256, 0.9)"
-      class="pa-4 rounded-lg mb-5"
-    >
-      <h2>Own Requested Appointments:</h2>
-      <div v-for="(item, i) in ownRequestedAppointments" :key="i">
-        {{ item.Date.substr(0, 10) + " -- " + item.Time }}
-
-        <v-btn x-small @click="deleteRequested(item)"> cancel </v-btn>
-      </div>
-    </div>
-    <!-- approved apppointments -->
-    <div
-      style="background-color: rgba(256, 256, 256, 0.9)"
-      class="pa-4 rounded-lg mt-5"
-    >
-      <h2>Appointments:</h2>
-      <div v-for="(item, i) in appointments" :key="i">
-        {{
-          item.Date.substr(0, 10) +
-          " -- " +
-          item.Time +
-          " Priority: " +
-          item.Priority +
-          " Emergency level: " +
-          item.LevelOfEmergency
-        }}
-
-        <v-btn x-small @click="deleteApproved(item)"> cancel </v-btn>
-      </div>
-    </div>
-    <v-row align="center">
-      <v-col>
-        <div class="my-6" style="text-align: center">
-          <v-btn
-            class="white--text"
-            style="font-size: 18px"
-            color="blue lighten-2"
-            width="400px"
-            height="75px"
-            @click="appointment_dialog = !appointment_dialog"
-            >Request Appointment with Patient</v-btn
-          >
+          <v-btn x-small @click="acceptAppointment(item)"> approve </v-btn>
+          <v-btn x-small @click="onCancelAR(item)"> cancel </v-btn>
         </div>
-      </v-col>
-    </v-row>
-  </div>
+      </div>
+    </v-col>
+    <!-- Own Requested apppointments -->
+    <v-col cols="12" md="7">
+      <div
+        style="background-color: rgba(256, 256, 256, 0.9)"
+        class="pa-4 rounded-lg"
+      >
+        <h2>Own Requested Appointments:</h2>
+        <div v-for="(item, i) in ownRequestedAppointments" :key="i">
+          {{ item.Date.substr(0, 10) + " -- " + item.Time }}
+
+          <v-btn x-small @click="deleteRequested(item)"> cancel </v-btn>
+        </div>
+      </div>
+    </v-col>
+    <!-- approved apppointments -->
+    <v-col cols="12" md="7">
+      <div
+        style="background-color: rgba(256, 256, 256, 0.9)"
+        class="pa-4 rounded-lg mt-5"
+      >
+        <h2>Appointments:</h2>
+        <div v-for="(item, i) in appointments" :key="i">
+          {{
+            item.Date.substr(0, 10) +
+            " -- " +
+            item.Time +
+            " Priority: " +
+            item.Priority +
+            " Emergency level: " +
+            item.LevelOfEmergency
+          }}
+
+          <v-btn x-small @click="deleteApproved(item)"> cancel </v-btn>
+        </div>
+      </div>
+    </v-col>
+
+    <v-col cols="12" justify="center">
+      <div class="my-6" style="text-align: center">
+        <v-btn
+          class="white--text"
+          color="blue lighten-2"
+          @click="appointment_dialog = !appointment_dialog"
+          >Request Appointment with Patient</v-btn
+        >
+      </div>
+    </v-col>
+  </v-row>
 </template>
 <script>
 import axios from "axios";
+import Swal from "sweetalert2";
 export default {
   name: "ListOfAppointments",
   data() {
     return {
-      url: "http://localhost:5001/",
+      menu2: false,
+      url: "http://localhost:5000/",
+      patients: [],
       appointments: [],
       appointment_dialog: false,
       requestedAppointments: [],
@@ -141,14 +183,46 @@ export default {
         Date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
           .toISOString()
           .substr(0, 10),
-        Hour: 0,
-        Minute: 0,
+        Time: null,
         EmergencyLevel: 0,
         Priority: 0,
       },
     };
   },
   methods: {
+    onCancelAR(item) {
+      Swal.fire({
+        title: "cancel ?",
+        text: "Are you sure?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.cancelAppointmentRequest(
+            item.PID,
+            item.DID,
+            item.Date.substr(0, 10),
+            item.Time
+          );
+          this.addNotif(
+            `Appointment request[${
+              item.Date.substr(0, 10) + " - " + item.Time
+            }] deleted!`,
+            item.DID
+          );
+          this.addNotif(
+            `Appointment request[${
+              item.Date.substr(0, 10) + " - " + item.Time
+            }] deleted!`,
+            item.PID
+          );
+          window.location.reload();
+        }
+      });
+    },
     // Request an appointment with a patient
     requestAppointmentWithPatient() {
       this.requestAppointment();
@@ -162,43 +236,109 @@ export default {
 
     //Accept appointment
     acceptAppointment(item) {
-      this.approveAppointment(
-        item.PID,
-        item.DID,
-        item.Date.substr(0, 10),
-        item.Time,
-        item.LevelOfEmergency,
-        item.Priority
-      );
-      this.addNotif("Appointment approved!", item.DID);
-      this.addNotif("Appointment approved!", item.PID);
-      window.location.reload();
+      Swal.fire({
+        title: "Are you sure?",
+        text: "approve ?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.approveAppointment(
+            item.PID,
+            item.DID,
+            item.Date.substr(0, 10),
+            item.Time,
+            item.LevelOfEmergency,
+            item.Priority
+          );
+          this.addNotif(
+            `Appointment[${
+              item.Date.substr(0, 10) + " - " + item.Time
+            }] approved!`,
+            item.DID
+          );
+          this.addNotif(
+            `Appointment[${
+              item.Date.substr(0, 10) + " - " + item.Time
+            }] approved!`,
+            item.PID
+          );
+          window.location.reload();
+        }
+      });
     },
 
     // Delete own requested appointment
     deleteRequested(item) {
-      this.cancelAppointmentRequest(
-        item.PID,
-        item.DID,
-        item.Date.substr(0, 10),
-        item.Time
-      );
-      this.addNotif("Appointment request deleted!", item.DID);
-      this.addNotif("Appointment resquest deleted!", item.PID);
-      window.location.reload();
+      Swal.fire({
+        title: "cancel ?",
+        text: "Are you sure?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.cancelAppointmentRequest(
+            item.PID,
+            item.DID,
+            item.Date.substr(0, 10),
+            item.Time
+          );
+          this.addNotif(
+            `Appointment resquest[${
+              item.Date.substr(0, 10) + " - " + item.Time
+            }] deleted!`,
+            item.DID
+          );
+          this.addNotif(
+            `Appointment resquest[${
+              item.Date.substr(0, 10) + " - " + item.Time
+            }] deleted!`,
+            item.PID
+          );
+          window.location.reload();
+        }
+      });
     },
 
     //Delete Approved Appointment
     deleteApproved(item) {
-      this.cancelAppointment(
-        item.PID,
-        item.DID,
-        item.Date.substr(0, 10),
-        item.Time
-      );
-      this.addNotif("Appointment deleted!", item.DID);
-      this.addNotif("Appointment deleted!", item.PID);
-      window.location.reload();
+      Swal.fire({
+        title: "cancel ?",
+        text: "Are you sure?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.cancelAppointment(
+            item.PID,
+            item.DID,
+            item.Date.substr(0, 10),
+            item.Time
+          );
+          this.addNotif(
+            `Appointment request[${
+              item.Date.substr(0, 10) + " - " + item.Time
+            }] deleted!`,
+            item.DID
+          );
+          this.addNotif(
+            `Appointment request[${
+              item.Date.substr(0, 10) + " - " + item.Time
+            }] deleted!`,
+            item.PID
+          );
+          window.location.reload();
+        }
+      });
     },
 
     // Get appointments
@@ -208,6 +348,17 @@ export default {
           DID: this.$store.state.user.UserID,
         });
         this.appointments = res.data;
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    // Get patients
+    async getPatients() {
+      try {
+        const res = await axios.post(`http://localhost:5000/users`, {
+          Role: "Patient",
+        });
+        this.patients = res.data;
       } catch (err) {
         console.log(err);
       }
@@ -243,7 +394,7 @@ export default {
         });
 
         this.addNotif(
-          `Your requested appointment on [${Date + "-" + Time}] was approved`,
+          `  appointment on [${Date + "-" + Time}] was approved`,
           PID
         );
       } catch (err) {
@@ -261,7 +412,10 @@ export default {
           Time: Time,
         });
 
-        this.addNotif("an appointment is booked for you by doctor", PID);
+        this.addNotif(
+          `an appointment[${Date + " - " + Time}] is booked for you by doctor`,
+          PID
+        );
       } catch (err) {
         console.log(err);
       }
@@ -291,10 +445,11 @@ export default {
     async requestAppointment() {
       try {
         const Date = this.appointmentRequestForm.Date.toString();
-        const Time = this.appointmentRequestForm.Hour.toString().concat(
-          ":",
-          this.appointmentRequestForm.Minute.toString()
-        );
+        // const Time = this.appointmentRequestForm.Hour.toString().concat(
+        //   ":",
+        //   this.appointmentRequestForm.Minute.toString()
+        // );
+        const Time = this.appointmentRequestForm.Time;
         const RequestedBy = "D";
         const DID = this.$store.state.user.UserID;
         const PID = parseInt(this.appointmentRequestForm.PID);
@@ -359,6 +514,7 @@ export default {
       }
     },
     init() {
+      this.getPatients();
       this.getAppointments();
       this.getAppointmentRequests();
       this.getOwnAppointmentRequests();
@@ -366,7 +522,8 @@ export default {
   },
   mounted() {
     this.init();
+
+    this.$emit("img", "doctor");
   },
 };
 </script>
-<style></style>
