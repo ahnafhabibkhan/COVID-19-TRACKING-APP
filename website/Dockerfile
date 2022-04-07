@@ -8,4 +8,4 @@ RUN npm install
 
 COPY ./covid-19-website/src/backend /app
 
-CMD [ "node", "index.js" ]
+CMD [ "node", "index" ]
