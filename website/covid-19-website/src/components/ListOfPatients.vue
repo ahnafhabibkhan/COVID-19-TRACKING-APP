@@ -146,7 +146,7 @@ export default {
 
       if (doctorID == null) {
         // console.log("show me the value", user);
-        // document.getElementById("doc" + user).innerText = "None";
+        document.getElementById("doc" + user).innerText = "None";
         return;
       }
       // Get all doctors
