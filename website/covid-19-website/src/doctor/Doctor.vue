@@ -1,5 +1,5 @@
 <template>
-  <div class="doctor">
+  <v-row>
     <!-- date modal start -->
     <v-dialog v-model="date_dialog" width="600px">
       <v-card>
@@ -16,15 +16,15 @@
             </v-col>
             <!-- list -->
             <v-col cols="12">
-              <v-container>
-                <v-checkbox
-                  v-for="(item, i) in allAvailabilities"
-                  :key="i"
-                  v-model="available"
-                  :label="item"
-                  :value="item"
-                ></v-checkbox>
-              </v-container>
+              <v-autocomplete
+                :items="allAvailabilities"
+                v-model="available"
+                multiple
+                label="select "
+                small-chips
+                clearable
+                deletable-chips
+              />
             </v-col>
             <v-col cols="6">
               <v-btn
@@ -51,85 +51,81 @@
       </v-card>
     </v-dialog>
     <!-- date modal end -->
-    <v-row>
-      <v-col cols="12" md="6">
-        <div class="px-5">
-          <div>
-            <v-btn
-              class="white--text"
-              style="font-size: 18px"
-              color="blue lighten-2"
-              block
-              height="75px"
-              @click="onPatientsClick()"
-              >List Of Patients</v-btn
-            >
-          </div>
-          <div class="my-6">
-            <v-btn
-              class="white--text"
-              style="font-size: 18px"
-              color="blue lighten-2"
-              block
-              height="75px"
-              @click="listOfAppointments()"
-              >List of Appointments</v-btn
-            >
-          </div>
-          <div class="my-6">
-            <v-btn
-              class="white--text"
-              style="font-size: 18px"
-              color="blue lighten-2"
-              block
-              height="75px"
-              @click="date_dialog = !date_dialog"
-              >Update Availabilities</v-btn
-            >
-          </div>
-        </div>
-        <div class="chart">
-          <apexchart
-            type="pie"
-            :options="chartOptions"
-            :series="series"
-          ></apexchart>
-        </div>
-      </v-col>
-      <v-col cols="12" md="6">
-        <div
-          style="background-color: rgba(256, 256, 256, 0.9)"
-          class="pa-4 rounded-lg "
-        >
-          <h2>Availabilites:</h2>
-          <div v-for="(item, i) in fetchAvailabilities" :key="i">
-            {{
-              item.SpecificDay.substr(0, 10) +
-              " -- " +
-              item.StartTime +
-              "-" +
-              item.EndTime
-            }}
 
-            <v-btn x-small @click="deleteAvailability(item)"> Delete </v-btn>
-          </div>
+    <v-col cols="12" md="6">
+      <div>
+        <v-btn
+          class="white--text"
+          style="font-size: 18px"
+          color="blue lighten-2"
+          block
+          height="75px"
+          @click="onPatientsClick()"
+          >List Of Patients</v-btn
+        >
+      </div>
+      <div class="my-6">
+        <v-btn
+          class="white--text"
+          style="font-size: 18px"
+          color="blue lighten-2"
+          block
+          height="75px"
+          @click="listOfAppointments()"
+          >List of Appointments</v-btn
+        >
+      </div>
+      <div class="my-6">
+        <v-btn
+          class="white--text"
+          style="font-size: 18px"
+          color="blue lighten-2"
+          block
+          height="75px"
+          @click="date_dialog = !date_dialog"
+          >Update Availabilities</v-btn
+        >
+      </div>
+
+      <apexchart
+     
+        :options="chartOptions"
+        :series="series"
+      ></apexchart>
+    </v-col>
+    <v-col cols="12" md="6">
+      <div
+        style="background-color: rgba(256, 256, 256, 0.9)"
+        class="pa-4 rounded-lg"
+      >
+        <h2>Availabilites:</h2>
+        <div v-for="(item, i) in fetchAvailabilities" :key="i">
+          {{
+            item.SpecificDay.substr(0, 10) +
+            " -- " +
+            item.StartTime +
+            "-" +
+            item.EndTime
+          }}
+
+          <v-btn x-small @click="deleteAvailability(item)"> Delete </v-btn>
         </div>
-        <div style="margin-top: 50%; margin-left: 75%">
-          <v-btn @click="ChatboxClick" icon height="80px" width="80px">
-            <v-icon color="blue darken-3" style="font-size: 80px">
-              mdi-message-text
-            </v-icon>
-          </v-btn>
-        </div>
-      </v-col>
-    </v-row>
-  </div>
+      </div>
+      <div style="margin-top: 50%; margin-left: 75%">
+        <v-btn @click="ChatboxClick" icon height="80px" width="80px">
+          <v-icon color="blue darken-3" style="font-size: 80px">
+            mdi-message-text
+          </v-icon>
+        </v-btn>
+      </div>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
 import moment from "moment";
 import axios from "axios";
-
+import Swal from "sweetalert2";
 export default {
   name: "Doctor",
 
@@ -143,7 +139,7 @@ export default {
       series: [44, 55],
       chartOptions: {
         chart: {
-          width: 580,
+          width: 400,
           type: "pie",
         },
         labels: ["Infected", "Non-Infected"],
@@ -152,7 +148,7 @@ export default {
             breakpoint: 580,
             options: {
               chart: {
-                width: 400,
+                width: 300,
               },
               legend: {
                 position: "bottom",
@@ -172,17 +168,17 @@ export default {
     };
   },
 
-  created() {
-    this.getMessages();
-    this.getAvailabilities();
-    this.listOfAvailabilities();
-    this.getChartData();
-  },
   mounted() {
+    this.init();
     this.$emit("img", "doctor");
   },
   methods: {
-    chatBox() {},
+    init() {
+      this.getMessages();
+      this.getAvailabilities();
+      this.listOfAvailabilities();
+      this.getChartData();
+    },
 
     // Get infected and non infected data
     async getChartData() {
@@ -278,7 +274,7 @@ export default {
         item.EndTime,
         item.SpecificDay.substr(0, 10)
       );
-      window.location.reload();
+      this.init();
     },
 
     async addNotif(Message) {
@@ -318,7 +314,9 @@ export default {
           this.date
         );
       }
-      // window.location.reload();
+      this.getAvailabilities();
+      this.listOfAvailabilities();
+      this.date_dialog = false;
     },
     disAvail(item) {
       const found = this.appointments.findIndex((a) => {
@@ -356,8 +354,17 @@ export default {
           EndTime: EndTime,
           SpecificDay: SpecificDay,
         });
+        Swal.fire({
+          icon: "success",
+          title: "success",
+          text: "added successfully",
+        });
       } catch (err) {
-        console.log(err);
+        Swal.fire({
+          icon: "error",
+          title: "error",
+          text: "failed add availability",
+        });
       }
     },
 

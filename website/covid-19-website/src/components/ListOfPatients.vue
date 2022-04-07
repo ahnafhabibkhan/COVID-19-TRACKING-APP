@@ -102,10 +102,26 @@
               Covid Status: {{ item.covidStatus }} <br />
               Role: {{ item.patientsList.Role }}
             </p>
+            <p
+              :id="'doc' + item.patientsList.UserID"
+              v-if="item.patientsList.Role == 'Patient'"
+            >
+              Doctor:
+              {{
+                getDoctorName(
+                  item.patientsList.Doctor,
+                  item.patientsList.UserID
+                )
+              }}
+            </p>
+            <p v-else>No Doctor Needed</p>
             <v-btn @click.stop="deleteUser(item.patientsList.UserID)"
               >Delete</v-btn
             >
-            <v-btn v-if="item.patientsList.Role == 'Patient'" class="mx-3"
+            <v-btn
+              @click="getListOfDoctor(item.patientsList.UserID)"
+              v-if="item.patientsList.Role == 'Patient'"
+              class="mx-3"
               >Assign Doctor</v-btn
             >
           </v-card>
@@ -138,6 +154,40 @@ export default {
     this.getPatients();
   },
   methods: {
+    async getDoctorName(doctorID, user) {
+      var doctorName = "";
+
+      if (!doctorID) {
+        // console.log("show me the value", user);
+        document.getElementById("doc" + user).innerText = "None";
+        return;
+      }
+      // Get all doctors
+      const response = await axios.post("http://localhost:5000/users", {
+        Role: "Doctor",
+      });
+
+      var doctorInfo = response.data;
+      for (var i = 0; i < doctorInfo.length; i++) {
+        if (doctorInfo[i].UserID == doctorID) {
+          doctorName = doctorInfo[i].FirstName;
+          //  this.isPatient = true;
+          break;
+        }
+      }
+      if (doctorName == "") {
+        // this.isPatient = false;
+        document.getElementById("doc" + doctorID).innerText = "user";
+        return;
+      } else if (doctorName != "") {
+        //  this.isPatient = true;
+        console.log(doctorName, doctorID);
+        document.getElementById("doc" + user).innerText = doctorName;
+        console.log(user);
+        return;
+      }
+    },
+
     // Get all users depending on role of current user
     async getPatients() {
       console.log("getPatients called");
@@ -195,6 +245,79 @@ export default {
       }
     },
 
+    async getListOfDoctor(PID) {
+      //Array for doctor with less than 10 patients
+      let doctorLessThanTreshold = [];
+      if (this.userRole == "admin") {
+        //Empty array
+        this.doctorList = [];
+        // Get all doctors
+        const doctorResponse = await axios.post("http://localhost:5000/users", {
+          Role: "Doctor",
+        });
+        // looping through all the doctors and getting their names and number of patient
+        this.doctorList = doctorResponse.data;
+
+        var assignedPatients = "";
+        // getting the list of doctor less than 10 patients
+        for (var i = 0; i < this.doctorList.length; i++) {
+          // Get users assigned to this doctor ID
+          const Patientresponse = await axios.post(
+            "http://localhost:5000/users",
+            {
+              Doctor: this.doctorList[i].UserID,
+            }
+          );
+          assignedPatients = Patientresponse.data;
+          // verifying the total of patients assign to a doctor
+          if (assignedPatients[i] != undefined) {
+            if (assignedPatients.length < 10) {
+              doctorLessThanTreshold.push(this.doctorList[i]);
+            }
+          } else if (assignedPatients[i] == undefined) {
+            doctorLessThanTreshold.push(this.doctorList[i]);
+          }
+        }
+
+        const inputOptions = new Promise((resolve) => {
+          let docs = {};
+          setTimeout(() => {
+            for (var i = 0; i < doctorLessThanTreshold.length; i++) {
+              docs["" + doctorLessThanTreshold[i].FirstName] =
+                doctorLessThanTreshold[i].FirstName;
+            }
+            resolve(docs);
+          }, 1000);
+        });
+        const { value: doctor } = await Swal.fire({
+          title: "Select doctor",
+          confirmButtonColor: "#DD6B55",
+          input: "radio",
+          inputOptions: inputOptions,
+          inputValidator: (value) => {
+            if (!value) {
+              return "You need to choose something!";
+            }
+          },
+        });
+
+        if (doctor) {
+          var doctorFirstName = "";
+          Swal.fire({ html: `You selected: ${doctor} ` });
+          var doctorDID = "";
+          this.doctorList.forEach((doctors) => {
+            if (doctors.FirstName == doctor) {
+              doctorDID = doctors.UserID;
+              doctorFirstName = doctor;
+            }
+          });
+          console.log("assigned", PID, doctorDID);
+          this.assignDoctor(PID, doctorDID);
+          document.getElementById("doc" + PID).innerText = doctorFirstName;
+        }
+      }
+    },
+
     // Go to patient's profile
     onPatientClick() {
       if (this.userRole == "admin") {
@@ -234,27 +357,7 @@ export default {
         }
       }
     },
-    // deleteUser() {
-    //   Swal.fire({
-    //     icon: "warning",
-    //     title: "Are you sure you want to remove permanently ",
-    //     showCancelButton: true,
-    //     confirmButtonColor: "#3085d6",
-    //     cancelButtonColor: "#d33",
-    //     confirmButtonText: "Delete",
-    //   })
-    //     .then((result) => {
-    //       if (result.isConfirmed) {
-    //         // del status
-    //         //TODO add the delete API
-    //         Swal.fire("Deleted!", "The account has been deleted", "success");
-    //       }
-    //     })
-    //     .then(() => {
-    //       this.getPatients();
-    //     });
-    // },
-    // Deletes the specified user
+
     async deleteUser(ID) {
       Swal.fire({
         icon: "warning",
@@ -283,22 +386,27 @@ export default {
         return;
       }
       // Verify existence of both and correct roles
-      const patientResponse = await axios.post(`http://localhost:5000/users/`, {
+      const patientResponse = await axios.post("http://localhost:5000/users/", {
         UserID: PID,
       });
       if (
-        patientResponse.data.UserID != PID ||
-        doctorResponse.data.Role != "Patient"
+        patientResponse.data[0].UserID != PID ||
+        patientResponse.data[0].Role != "Patient"
       ) {
-        console.log("AssignDoctor: PID does not exist or is not patient");
+        console.log(
+          "AssignDoctor: PID does not exist or is not patient" +
+            patientResponse.data.UserID +
+            " : " +
+            patientResponse.data.Role
+        );
         return;
       }
-      const doctorResponse = await axios.post(`http://localhost:5000/users/`, {
+      const doctorResponse = await axios.post("http://localhost:5000/users/", {
         UserID: DID,
       });
       if (
-        doctorResponse.data.UserID != DID ||
-        doctorResponse.data.Role != "Doctor"
+        doctorResponse.data[0].UserID != DID ||
+        doctorResponse.data[0].Role != "Doctor"
       ) {
         console.log("AssignDoctor: DID does not exist or is not doctor");
         return;
