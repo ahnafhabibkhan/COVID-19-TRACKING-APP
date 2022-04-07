@@ -65,7 +65,7 @@
         :color="item.covidStatus === 'Positive' ? '#FF4933' : 'white'"
       >
         <h2 class="my-2">
-          <v-badge :value="flag" class="mx-6" color="red" overlap>
+          <v-badge :value="false" class="mx-6" color="red" overlap>
             {{ item.patientsList.FirstName }} {{ item.patientsList.LastName }}
           </v-badge>
         </h2>
