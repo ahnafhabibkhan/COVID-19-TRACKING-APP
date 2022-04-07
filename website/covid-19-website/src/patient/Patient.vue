@@ -522,7 +522,7 @@ extend("double", {
   ...double,
   message: "Please enter a number",
 });
-// end
+// end 
 export default {
   name: "Patient",
   // register as component

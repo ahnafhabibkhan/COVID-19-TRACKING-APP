@@ -357,7 +357,7 @@ export default {
     async getPatients() {
       try {
         const res = await axios.post(`http://localhost:5000/users`, {
-          Role: "Patient",
+          Role: "Patient",Doctor:this.$store.state.user.UserID
         });
         this.patients = res.data;
       } catch (err) {
