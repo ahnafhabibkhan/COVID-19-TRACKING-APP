@@ -1,5 +1,43 @@
 <template>
   <div class="login">
+    <v-app-bar
+      dark
+      app
+      color="transparent"
+      elevate-on-scroll
+      scroll-target="#scrolling-techniques-7"
+    >
+      <v-spacer></v-spacer>
+      <v-menu offset-x bottom left>
+        <template v-slot:activator="{ on, attrs }">
+          <v-icon v-bind="attrs" v-on="on" dark class="d-md-none" large
+            >mdi-menu</v-icon
+          >
+        </template>
+        <v-list>
+          <v-list-item
+            v-for="(item, i) in nav"
+            :key="i"
+            @click="onNavClick(item.text)"
+          >
+            <v-list-item-title>
+              {{ item.text }}
+            </v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+      <v-btn
+        class="d-none d-md-block"
+        v-for="(item, i) in nav"
+        :key="i"
+        :title="item.title"
+        text
+        color="white"
+        x-large
+        @click="onNavClick(item.text)"
+        >{{ item.text }}</v-btn
+      >
+    </v-app-bar>
     <!-- Sign Up modal -->
     <v-dialog v-model="signUp_modal" width="500px">
       <SignUpDialog @onSaveDialogClick="onSave()" />
@@ -190,15 +228,17 @@
                 label="Username"
                 style="text-align: center"
                 dense
-                hide-details
+                :hide-details="!unErr"
+                :error-messages="unErr"
               ></v-text-field>
             </v-col>
             <v-col cols="12">
               <v-text-field
+                :error-messages="pwdErr"
                 v-model="login.pass"
                 label="Password"
                 dense
-                hide-details
+               :hide-details="!pwdErr"
                 type="password"
               ></v-text-field>
             </v-col>
@@ -244,7 +284,7 @@
       </v-card>
     </v-dialog>
     <!-- login modal end -->
-    <div class="navbar">
+    <div class="navbar" v-if="false">
       <v-toolbar-items>
         <v-btn
           class="btn"
@@ -259,8 +299,29 @@
         >
       </v-toolbar-items>
     </div>
-    <div class="main">
-      <p class="main-title">COVID-19 TRACKER</p>
+    <v-row justify="center" class="box">
+      <v-col cols="12" md="6" class="d-flex justify-center" justify="center">
+        <div>
+          <p class="main-title">COVID-19 TRACKER</p>
+          <p class="main-middle-text">
+            Stay Alert, Control the Virus, and Save Lives!
+          </p>
+          <center>
+            <v-btn
+              class="mt-10"
+              x-large
+              color="success"
+              elevation="0"
+              @click="login_modal = !login_modal"
+              >Sign In</v-btn
+            >
+          </center>
+        </div>
+      </v-col>
+      <v-col cols="12" md="6" class="d-none d-md-block"> </v-col>
+    </v-row>
+    <!-- <div class="main">
+      <p class="main-title d-none d-md-block">COVID-19 TRACKER</p>
       <p class="main-middle-text">
         Stay Alert, Control the Virus, and Save Lives!
       </p>
@@ -269,7 +330,7 @@
           >Sign In</v-btn
         >
       </center>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -294,6 +355,8 @@ export default {
   components: { SignUpDialog },
   data() {
     return {
+      pwdErr: null,
+      unErr: null,
       nav: [
         {
           icon: "info",
@@ -378,6 +441,8 @@ export default {
       if (!email || !password) {
         return;
       }
+      this.unErr = null;
+      this.pwdErr = null;
       try {
         const response = await axios.get(
           `http://localhost:5000/users/${email}`
@@ -407,7 +472,11 @@ export default {
             } else if (response.data.Role == "ImmigrationOfficer") {
               this.$router.push("/immigration-officer");
             }
+          } else {
+            this.pwdErr = "invalid password";
           }
+        } else {
+          this.unErr = "invalid username";
         }
       } catch (err) {
         console.log(err);
@@ -544,9 +613,12 @@ export default {
     onNavClick(text) {
       if (text == "Sign Up") {
         this.signUp_modal = !this.signUp_modal;
-      }
-      if (text == "Sign In") {
+      } else if (text == "Sign In") {
         this.login_modal = !this.login_modal;
+      } else if (text == "About") {
+        this.$router.push("/about");
+      } else if (text == "Contact") {
+        this.$router.push("/contact");
       }
     },
   },
@@ -554,52 +626,34 @@ export default {
 </script>
 
 <style>
-.login {
-  background-image: url("../assets/CovidTrackingApp.png");
-  background-size: cover;
-  background-repeat: no-repeat;
-  min-height: 100%;
-  min-width: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-}
-.navbar {
-  margin-top: 15px;
-  float: right;
-}
-.btn {
-  margin-left: 35px;
-  margin-right: 20px;
-  font-size: 25px;
-  color: antiquewhite;
-  font-weight: 500;
-  font-family: Arial, Helvetica, sans-serif;
-}
 .main-title {
-  font-size: 75px;
-  font-weight: 500;
+  font-weight: 600;
+  font-size: 25px;
   font-family: Arial, Helvetica, sans-serif;
   color: antiquewhite;
   text-align: center;
 }
 .main-middle-text {
   text-align: center;
-  font-size: 25px;
+  font-size: 20px;
   font-weight: 500;
   font-family: Arial, Helvetica, sans-serif;
   color: antiquewhite;
 }
-.main {
-  margin-top: 300px;
-  margin-left: 200px;
-  width: 40%;
+.box {
+  margin-top: 30px;
 }
-.main-btn {
-  margin-top: 40px;
-  font-size: 25px;
-  font-weight: 500;
-  font-family: Arial, Helvetica, sans-serif;
-  color: antiquewhite;
+@media only screen and (min-width: 960px) {
+  .box {
+    position: absolute;
+    top: 20%;
+    width: 1800px;
+  }
+  .main-middle-text {
+    font-size: 25px;
+  }
+  .main-title {
+    font-size: 75px;
+  }
 }
 </style>

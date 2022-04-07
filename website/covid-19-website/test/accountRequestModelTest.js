@@ -1,7 +1,7 @@
 
 // import the class for testing
 import { assert } from 'chai';
-import { getAccountRequests,getAccountRequestByEmail, insertAccountRequest, deleteAccountRequestById} from"../src/backend/models/accountRequestModel.js";
+import { getAccountRequests,getAccountRequestByEmail, insertAccountRequest, deleteAccountRequestByEmail} from"../src/backend/models/accountRequestModel.js";
 import {sleep} from "./commonFunctions.js";
 
 
@@ -15,7 +15,7 @@ describe('AccountRequest related test',function(){
             assert.equal(results['FirstName'],'Benoit');
         });
         getAccountRequests((err,results)=>{
-            assert.equal(results['FirstName'],'Benoit');
+            assert.equal(results[0]['FirstName'],'Benoit');
         });
     });
 
@@ -34,7 +34,6 @@ describe('AccountRequest related test',function(){
             Address: "123 Main", 
             Role: "Patient", 
             Password: "TestPass", 
-            City:'testCity', 
             Country: "Canada",
             Time: new Date("2022-02-07T06:00:00.000Z").toJSON().slice(0, 19).replace('T', ' '),
             Date: new Date("2022-02-07T05:00:00.000Z").toJSON().slice(0, 19).replace('T', ' ')},
@@ -52,7 +51,7 @@ describe('AccountRequest related test',function(){
     }
     
     async function deleteAAccountRequest(){
-        deleteAccountRequestById("testOnly@gmail.com",(err, results) => {
+        deleteAccountRequestByEmail("testOnly@gmail.com",(err, results) => {
             
         
         });
