@@ -2,7 +2,7 @@
   <v-card
     elevation="15"
     width="500px"
-    color="blue lighten-2"
+    color="accent"
     style="border-radius: 20px; opacity: 95%; margin: auto"
   >
     <v-container>
@@ -15,94 +15,139 @@
         </h1>
       </center>
       <v-row justify="center">
-        <v-col md="7">
+        <v-col cols="12" md="6">
           <v-text-field
+            dense
+            hide-details
             label="First Name"
             v-model="form.firstName"
-            solo
+            outlined
+            background-color="white"
             :autocomplete="false"
           ></v-text-field>
-
+        </v-col>
+        <v-col cols="12" md="6">
           <v-text-field
+            dense
+            hide-details
+            background-color="white"
             label="Last Name"
             v-model="form.lastName"
-            solo
+            outlined
             :autocomplete="false"
           ></v-text-field>
-
+        </v-col>
+        <v-col cols="12">
           <v-text-field
+            dense
+            hide-details
+            background-color="white"
             label="Email"
             v-model="form.email"
             type="email"
-            solo
+            outlined
             :autocomplete="false"
           ></v-text-field>
-
+        </v-col>
+        <v-col cols="12" md="6">
           <v-text-field
+            dense
+            hide-details
+            background-color="white"
             label="Telephone Number"
             v-model="form.telephone"
             type="phone"
-            solo
+            outlined
             :autocomplete="false"
           ></v-text-field>
-
+        </v-col>
+        <v-col cols="12" md="6">
           <v-text-field
+            dense
+            hide-details
+            background-color="white"
             label="Address"
             v-model="form.address"
-            solo
+            outlined
             :autocomplete="false"
           ></v-text-field>
-
-          <!-- <v-text-field
+        </v-col>
+        <v-col cols="12" md="6">
+          <v-text-field
+            dense
+            hide-details
+            background-color="white"
             label="City"
             v-model="form.city"
-            solo
-            :autocomplete="false"
-          ></v-text-field> -->
-
-          <v-text-field
-            label="Country"
-            v-model="form.country"
-            solo
+            outlined
             :autocomplete="false"
           ></v-text-field>
-
+        </v-col>
+        <v-col cols="12" md="6">
           <v-text-field
+            dense
+            hide-details
+            background-color="white"
+            label="Country"
+            v-model="form.country"
+            outlined
+            :autocomplete="false"
+          ></v-text-field>
+        </v-col>
+        <v-col cols="12" md="6">
+          <v-text-field
+            dense
+            hide-details
+            background-color="white"
             label="BirthDate"
             v-model="form.birthDate"
             type="date"
-            solo
+            outlined
           ></v-text-field>
+        </v-col>
 
+        <v-col cols="12" md="6">
           <v-select
+            dense
+            hide-details
+            background-color="white"
             v-model="form.role"
             item-text="title"
             item-value="value"
             :items="roles"
             label="Role"
-            solo
+            outlined
           ></v-select>
-
+        </v-col>
+        <v-col cols="12" md="6">
           <v-text-field
+            dense
+            hide-details
+            background-color="white"
             v-model="form.password"
             label="Password"
             type="password"
-            solo
+            outlined
           />
-
+        </v-col>
+        <v-col cols="12" md="6">
           <v-text-field
+            dense
+            hide-details
+            background-color="white"
             v-model="form.passwordConfirm"
             label="Confirm Password"
             type="password"
-            solo
+            outlined
           />
-
-          <div class="d-flex justify-center">
-            <v-btn @click="signupUser(form)" width="150px" class="mx-2"
-              >save</v-btn
-            >
-            <v-btn @click="back" width="150px">cancel</v-btn>
-          </div>
+        </v-col>
+        <v-col cols="12" md="6">
+          <v-btn @click="onCancel" block color="primary">cancel</v-btn>
+        </v-col>
+        <v-col cols="12" md="6">
+          <v-btn @click="signupUser(form)" block color="success" class="mr-2"
+            >save</v-btn
+          >
         </v-col>
       </v-row>
     </v-container>
@@ -110,10 +155,12 @@
 </template>
 <script>
 import axios from "axios";
+import Swal from "sweetalert2";
 export default {
   name: "SignUpDialog",
   data() {
     return {
+      url: "http://localhost:5000/",
       roles: [
         { title: "Admin", value: 1 },
         { title: "Patient", value: 2 },
@@ -131,7 +178,7 @@ export default {
         birthDate: null,
         telephone: null,
         address: null,
-        // city: null,
+        city: null,
         country: null,
       },
     };
@@ -139,6 +186,25 @@ export default {
 
   methods: {
     // Sign the user up
+    async addNotif(Message, Recipient) {
+      let d = new Date();
+      let Time = d.toTimeString().split(" ")[0];
+      const params = {
+        Message,
+        Recipient,
+        Read: 0,
+        Time,
+      };
+      try {
+        await axios.post(this.url + "notification", params);
+        // alert("statuse added successfully");
+        this.getStatuses();
+        this.status_dialoge = false;
+      } catch (err) {
+        console.log("err", err);
+        // alert("Failed ; add new status");
+      }
+    },
     async signupUser(formStruct) {
       console.log(`Signup pressed`);
       // Validate form data
@@ -151,11 +217,11 @@ export default {
         !formStruct.lastName ||
         !formStruct.telephone ||
         !formStruct.address ||
-        // !formStruct.city ||
+        !formStruct.city ||
         !formStruct.country ||
         formStruct.password != formStruct.passwordConfirm
       ) {
-        console.log(`Form invalid`);
+        alert(` invalid data entry`);
         return;
       }
       try {
@@ -194,6 +260,7 @@ export default {
               // City: formStruct.city,
               Country: formStruct.country,
             });
+            Swal.fire("success!", "successfull registration.", "success");
           } else {
             console.log(
               `Role not patient, checking is account request already exists`
@@ -211,40 +278,59 @@ export default {
               const day = currentDate.getDate();
               const hour = currentDate.getHours();
               const minute = currentDate.getMinutes();
-              await axios.post(`http://localhost:5000/accountRequest`, {
-                Email: formStruct.email,
-                FirstName: formStruct.firstName,
-                LastName: formStruct.lastName,
-                Telephone: formStruct.telephone,
-                Address: formStruct.address,
-                Role: role,
-                Password: formStruct.password,
-                Country: formStruct.country,
-                Date:
-                  "" +
-                  year +
-                  "-" +
-                  (month < 10 ? "0" : "") +
-                  month +
-                  "-" +
-                  (day < 10 ? "0" : "") +
-                  day,
-                Time:
-                  "" +
-                  (hour < 10 ? "0" : "") +
-                  hour +
-                  ":" +
-                  (minute < 10 ? "0" : "") +
-                  minute,
-              });
+
+              const res = await axios.post(
+                `http://localhost:5000/accountRequest`,
+                {
+                  City: formStruct.city,
+                  Email: formStruct.email,
+                  FirstName: formStruct.firstName,
+                  LastName: formStruct.lastName,
+                  Telephone: formStruct.telephone,
+                  Address: formStruct.address,
+                  Role: role,
+                  Password: formStruct.password,
+                  Country: formStruct.country,
+                  Date:
+                    "" +
+                    year +
+                    "-" +
+                    (month < 10 ? "0" : "") +
+                    month +
+                    "-" +
+                    (day < 10 ? "0" : "") +
+                    day,
+                  Time:
+                    "" +
+                    (hour < 10 ? "0" : "") +
+                    hour +
+                    ":" +
+                    (minute < 10 ? "0" : "") +
+                    minute,
+                }
+              );
+              console.log("ddd", res);
+
+              const id = this.$store?.state?.user?.UserID || 2;
+              this.addNotif("new account request", id);
+              Swal.fire("success!", "successfull account request.", "success");
+            } else {
+              alert("emaiL ALREADY EXIST");
             }
           }
+        } else {
+          alert("user with this email already exist");
         }
+
         this.$emit("onSaveDialogClick");
       } catch (err) {
         console.log(err);
+        Swal.fire("error!", "Action Failed.", "error");
       }
     },
+    onCancel(){
+       this.$emit("onSaveDialogClick");
+    }
   },
 };
 </script>
