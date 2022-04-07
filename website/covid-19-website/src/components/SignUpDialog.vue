@@ -66,13 +66,24 @@
             dense
             hide-details
             background-color="white"
+            label="BirthDate"
+            v-model="form.birthDate"
+            type="date"
+            outlined
+          ></v-text-field>
+        </v-col>
+        <v-col cols="12">
+          <v-text-field
+            dense
+            hide-details
+            background-color="white"
             label="Address"
             v-model="form.address"
             outlined
             :autocomplete="false"
           ></v-text-field>
         </v-col>
-        <v-col cols="12" md="6">
+        <!-- <v-col cols="12" md="6">
           <v-text-field
             dense
             hide-details
@@ -82,7 +93,7 @@
             outlined
             :autocomplete="false"
           ></v-text-field>
-        </v-col>
+        </v-col> -->
         <v-col cols="12" md="6">
           <v-text-field
             dense
@@ -92,17 +103,6 @@
             v-model="form.country"
             outlined
             :autocomplete="false"
-          ></v-text-field>
-        </v-col>
-        <v-col cols="12" md="6">
-          <v-text-field
-            dense
-            hide-details
-            background-color="white"
-            label="BirthDate"
-            v-model="form.birthDate"
-            type="date"
-            outlined
           ></v-text-field>
         </v-col>
 
@@ -178,7 +178,7 @@ export default {
         birthDate: null,
         telephone: null,
         address: null,
-        city: null,
+        // city: null,
         country: null,
       },
     };
@@ -217,7 +217,7 @@ export default {
         !formStruct.lastName ||
         !formStruct.telephone ||
         !formStruct.address ||
-        !formStruct.city ||
+        // !formStruct.city ||
         !formStruct.country ||
         formStruct.password != formStruct.passwordConfirm
       ) {
@@ -282,7 +282,7 @@ export default {
               const res = await axios.post(
                 `http://localhost:5000/accountRequest`,
                 {
-                  City: formStruct.city,
+                  // City: formStruct.city,
                   Email: formStruct.email,
                   FirstName: formStruct.firstName,
                   LastName: formStruct.lastName,
@@ -328,9 +328,9 @@ export default {
         Swal.fire("error!", "Action Failed.", "error");
       }
     },
-    onCancel(){
-       this.$emit("onSaveDialogClick");
-    }
+    onCancel() {
+      this.$emit("onSaveDialogClick");
+    },
   },
 };
 </script>

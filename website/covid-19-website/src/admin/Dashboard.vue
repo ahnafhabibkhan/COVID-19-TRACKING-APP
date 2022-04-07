@@ -24,7 +24,6 @@
       <div class="my-card">
         <v-row>
           <v-col cols="12" md="6">
-
         <apexchart
           type="pie"
           width="480"
@@ -33,7 +32,6 @@
         ></apexchart>
           </v-col>
           <v-col cols="12" md="6">
-
         <apexchart
           type="pie"
           width="480"
