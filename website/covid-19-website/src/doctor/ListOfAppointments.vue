@@ -1,5 +1,5 @@
 <template>
-  <v-row  justify="center">
+  <v-row justify="center">
     <!-- Dialog for appointment requests with patients -->
     <v-dialog v-model="appointment_dialog" width="600px">
       <v-card>
@@ -14,6 +14,7 @@
               ></v-date-picker>
             </v-col>
             <v-col cols="12">
+             
               <v-select
                 dense
                 :hide-details="true"
@@ -22,7 +23,14 @@
                 item-value="UserID"
                 item-text="LastName"
                 v-model="appointmentRequestForm.PID"
-              />
+              >
+                <template v-slot:selection="{ item }">
+                  {{ item.FirstName + " " + item.LastName }}
+                </template>
+                <template v-slot:item="{ item }">
+                  {{ item.FirstName + " " + item.LastName }}
+                </template>
+              </v-select>
             </v-col>
             <v-col cols="12">
               <v-menu
@@ -104,6 +112,7 @@
           {{ item.Date.substr(0, 10) + " -- " + item.Time }}
 
           <v-btn x-small @click="acceptAppointment(item)"> approve </v-btn>
+          <v-btn x-small @click="onCancelAR(item)"> cancel </v-btn>
         </div>
       </div>
     </v-col>
@@ -158,7 +167,7 @@
 </template>
 <script>
 import axios from "axios";
-
+import Swal from "sweetalert2";
 export default {
   name: "ListOfAppointments",
   data() {
@@ -182,6 +191,39 @@ export default {
     };
   },
   methods: {
+    onCancelAR(item) {
+      Swal.fire({
+        title: "cancel ?",
+        text: "Are you sure?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.cancelAppointmentRequest(
+            item.PID,
+            item.DID,
+            item.Date.substr(0, 10),
+            item.Time
+          );
+          this.addNotif(
+            `Appointment request[${
+              item.Date.substr(0, 10) + " - " + item.Time
+            }] deleted!`,
+            item.DID
+          );
+          this.addNotif(
+            `Appointment request[${
+              item.Date.substr(0, 10) + " - " + item.Time
+            }] deleted!`,
+            item.PID
+          );
+          window.location.reload();
+        }
+      });
+    },
     // Request an appointment with a patient
     requestAppointmentWithPatient() {
       this.requestAppointment();
@@ -195,43 +237,109 @@ export default {
 
     //Accept appointment
     acceptAppointment(item) {
-      this.approveAppointment(
-        item.PID,
-        item.DID,
-        item.Date.substr(0, 10),
-        item.Time,
-        item.LevelOfEmergency,
-        item.Priority
-      );
-      this.addNotif("Appointment approved!", item.DID);
-      this.addNotif("Appointment approved!", item.PID);
-      window.location.reload();
+      Swal.fire({
+        title: "Are you sure?",
+        text: "approve ?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.approveAppointment(
+            item.PID,
+            item.DID,
+            item.Date.substr(0, 10),
+            item.Time,
+            item.LevelOfEmergency,
+            item.Priority
+          );
+          this.addNotif(
+            `Appointment[${
+              item.Date.substr(0, 10) + " - " + item.Time
+            }] approved!`,
+            item.DID
+          );
+          this.addNotif(
+            `Appointment[${
+              item.Date.substr(0, 10) + " - " + item.Time
+            }] approved!`,
+            item.PID
+          );
+          window.location.reload();
+        }
+      });
     },
 
     // Delete own requested appointment
     deleteRequested(item) {
-      this.cancelAppointmentRequest(
-        item.PID,
-        item.DID,
-        item.Date.substr(0, 10),
-        item.Time
-      );
-      this.addNotif("Appointment request deleted!", item.DID);
-      this.addNotif("Appointment resquest deleted!", item.PID);
-      window.location.reload();
+      Swal.fire({
+        title: "cancel ?",
+        text: "Are you sure?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.cancelAppointmentRequest(
+            item.PID,
+            item.DID,
+            item.Date.substr(0, 10),
+            item.Time
+          );
+          this.addNotif(
+            `Appointment resquest[${
+              item.Date.substr(0, 10) + " - " + item.Time
+            }] deleted!`,
+            item.DID
+          );
+          this.addNotif(
+            `Appointment resquest[${
+              item.Date.substr(0, 10) + " - " + item.Time
+            }] deleted!`,
+            item.PID
+          );
+          window.location.reload();
+        }
+      });
     },
 
     //Delete Approved Appointment
     deleteApproved(item) {
-      this.cancelAppointment(
-        item.PID,
-        item.DID,
-        item.Date.substr(0, 10),
-        item.Time
-      );
-      this.addNotif("Appointment deleted!", item.DID);
-      this.addNotif("Appointment deleted!", item.PID);
-      window.location.reload();
+      Swal.fire({
+        title: "cancel ?",
+        text: "Are you sure?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.cancelAppointment(
+            item.PID,
+            item.DID,
+            item.Date.substr(0, 10),
+            item.Time
+          );
+          this.addNotif(
+            `Appointment request[${
+              item.Date.substr(0, 10) + " - " + item.Time
+            }] deleted!`,
+            item.DID
+          );
+          this.addNotif(
+            `Appointment request[${
+              item.Date.substr(0, 10) + " - " + item.Time
+            }] deleted!`,
+            item.PID
+          );
+          window.location.reload();
+        }
+      });
     },
 
     // Get appointments
@@ -287,7 +395,7 @@ export default {
         });
 
         this.addNotif(
-          `Your requested appointment on [${Date + "-" + Time}] was approved`,
+          `  appointment on [${Date + "-" + Time}] was approved`,
           PID
         );
       } catch (err) {
@@ -305,7 +413,10 @@ export default {
           Time: Time,
         });
 
-        this.addNotif("an appointment is booked for you by doctor", PID);
+        this.addNotif(
+          `an appointment[${Date + " - " + Time}] is booked for you by doctor`,
+          PID
+        );
       } catch (err) {
         console.log(err);
       }

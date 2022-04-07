@@ -85,8 +85,9 @@ export default {
     pending: false,
   }),
   methods: {
-    logout() {
-      alert("you will be log out");
+    async logout() {
+      this.$store.commit("delUser");
+      this.$router.push('/')
     },
     // get notifs
     async getNotifs() {
@@ -157,9 +158,9 @@ export default {
   },
   mounted() {
     this.getNotifs();
-    // setInterval(() => {
-    //   this.getNotifs();
-    // }, 5000);
+    setInterval(() => {
+      this.getNotifs();
+    }, 5000);
   },
 };
 </script>
