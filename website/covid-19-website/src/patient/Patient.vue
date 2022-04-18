@@ -1,10 +1,10 @@
 <template>
-  <v-container >
+  <v-container>
     <!-- ChatBox modal -->
     <v-dialog v-model="chatbox_modal" width="350px">
       <Chatbox />
     </v-dialog>
-  <v-container>
+
     <v-row>
       <!-- book modal start -->
       <v-dialog v-model="date_dialoge" width="500px">
@@ -89,6 +89,7 @@
           </v-container>
         </v-card>
       </v-dialog>
+
       <!-- book modal end -->
 
       <!-- status modal start -->
@@ -293,41 +294,22 @@
       <!-- status modal end -->
       <v-col cols="12" md="6">
         <!-- buttons -->
-      
-          <div class="my-2 mx-3">
-            <v-btn
-              dark
-              
-              color="blue lighten-2"
-              block
-              large
-              @click="myInfo"
-              >My Info</v-btn
-            >
-          </div>
-          <div class="mx-3">
-            <v-btn
-              dark
-              
-              color="blue lighten-2"
-             block
-              large
-              @click="onAppointment"
-              >Book an Appointment</v-btn
-            >
-          </div>
-          <div class="my-2 mx-3">
-            <v-btn
-              dark
-              
-              color="blue lighten-2"
-              block
-              large
-              @click="onUpdateStatus"
-              >Update Status</v-btn
-            >
-          </div>
-     
+
+        <div class="my-2 mx-3">
+          <v-btn dark color="blue lighten-2" block large @click="myInfo"
+            >My Info</v-btn
+          >
+        </div>
+        <div class="mx-3">
+          <v-btn dark color="blue lighten-2" block large @click="onAppointment"
+            >Book an Appointment</v-btn
+          >
+        </div>
+        <div class="my-2 mx-3">
+          <v-btn dark color="blue lighten-2" block large @click="onUpdateStatus"
+            >Update Status</v-btn
+          >
+        </div>
 
         <!-- status rows -->
         <v-row>
@@ -466,7 +448,7 @@
       <v-col cols="12" md="6" class="p2-6 mt-2">
         <!-- requested apppointments -->
         <div
-          style="; background-color: rgba(256, 256, 256, 0.5)"
+          style="background-color: rgba(256, 256, 256, 0.5)"
           class="pa-4 rounded-lg mb-5"
         >
           <h2>Requested Appointments :</h2>
@@ -478,7 +460,7 @@
         </div>
         <!-- approved apppointments -->
         <div
-          style="; background-color: rgba(256, 256, 256, 0.5)"
+          style="background-color: rgba(256, 256, 256, 0.5)"
           class="pa-4 rounded-lg mt-5"
         >
           <h2>Approved Appointments :</h2>
@@ -490,7 +472,7 @@
         </div>
         <!-- Doctor's Requested apppointments -->
         <div
-          style="; background-color: rgba(256, 256, 256, 0.5)"
+          style="background-color: rgba(256, 256, 256, 0.5)"
           class="pa-4 rounded-lg mt-5"
         >
           <h2>Doctor's Requested Appointments:</h2>
@@ -538,7 +520,7 @@ extend("double", {
   ...double,
   message: "Please enter a number",
 });
-// end 
+// end
 export default {
   name: "Patient",
   // register as component
@@ -690,7 +672,7 @@ export default {
         console.log("err", err);
         // alert("Failed ; add new status");
       }
-    }, 
+    },
     async deleteStatus(status) {
       Swal.fire({
         title: "Are you sure?",
@@ -1069,7 +1051,13 @@ export default {
 
   mounted() {
     this.init();
-    this.$emit('img','patient')
+    this.$emit("img", "patient");
   },
 };
 </script>
+
+<style>
+.chatbox-css {
+  float: right;
+}
+</style>
