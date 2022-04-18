@@ -1,9 +1,10 @@
 <template>
-  <v-container class="bg-image">
+  <v-container >
     <!-- ChatBox modal -->
     <v-dialog v-model="chatbox_modal" width="350px">
       <Chatbox />
     </v-dialog>
+  <v-container>
     <v-row>
       <!-- book modal start -->
       <v-dialog v-model="date_dialoge" width="500px">
@@ -292,50 +293,56 @@
       <!-- status modal end -->
       <v-col cols="12" md="6">
         <!-- buttons -->
-        <div class="d-flex flex-column align-center mt-5">
-          <div class="my-6 mx-3">
+      
+          <div class="my-2 mx-3">
             <v-btn
-              class="white--text"
-              style="font-size: 18px; opacity: 90%"
+              dark
+              
               color="blue lighten-2"
-              width="400px"
-              height="75px"
+              block
+              large
               @click="myInfo"
               >My Info</v-btn
             >
           </div>
           <div class="mx-3">
             <v-btn
-              class="white--text"
-              style="font-size: 18px; opacity: 90%"
+              dark
+              
               color="blue lighten-2"
-              width="400px"
-              height="75px"
+             block
+              large
               @click="onAppointment"
               >Book an Appointment</v-btn
             >
           </div>
-          <div class="my-6 mx-3">
+          <div class="my-2 mx-3">
             <v-btn
-              class="white--text"
-              style="font-size: 18px; opacity: 90%"
+              dark
+              
               color="blue lighten-2"
-              width="400px"
-              height="75px"
+              block
+              large
               @click="onUpdateStatus"
               >Update Status</v-btn
             >
           </div>
-        </div>
+     
 
         <!-- status rows -->
         <v-row>
           <v-col v-if="isOverDue">
-            <v-alert type="error"> You overDue ! </v-alert>
+            <v-alert type="error" dense>
+              Your updated status is overdue!
+            </v-alert>
           </v-col>
-          <v-col cols="12">
+          <v-col cols="12" class="my-0">
             <v-expansion-panels>
-              <v-expansion-panel v-for="(item, i) in statusesFiltered" :key="i">
+              <v-expansion-panel
+                d
+                v-for="(item, i) in statusesFiltered"
+                :key="i"
+              >
                 <v-expansion-panel-header>
                   <span> Date: {{ item.fillOutDate.substr(0, 10) }} </span>
                   <span>
@@ -456,10 +463,10 @@
         </v-row>
       </v-col>
 
-      <v-col cols="12" md="6" class="pt-6 mt-6">
+      <v-col cols="12" md="6" class="p2-6 mt-2">
         <!-- requested apppointments -->
         <div
-          style="width: 70%; background-color: rgba(256, 256, 256, 0.5)"
+          style="; background-color: rgba(256, 256, 256, 0.5)"
           class="pa-4 rounded-lg mb-5"
         >
           <h2>Requested Appointments :</h2>
@@ -471,7 +478,7 @@
         </div>
         <!-- approved apppointments -->
         <div
-          style="width: 70%; background-color: rgba(256, 256, 256, 0.5)"
+          style="; background-color: rgba(256, 256, 256, 0.5)"
           class="pa-4 rounded-lg mt-5"
         >
           <h2>Approved Appointments :</h2>
@@ -483,7 +490,7 @@
         </div>
         <!-- Doctor's Requested apppointments -->
         <div
-          style="width: 70%; background-color: rgba(256, 256, 256, 0.5)"
+          style="; background-color: rgba(256, 256, 256, 0.5)"
           class="pa-4 rounded-lg mt-5"
         >
           <h2>Doctor's Requested Appointments:</h2>
@@ -521,17 +528,17 @@ import { required, numeric, double } from "vee-validate/dist/rules";
 // extend  rules
 extend("required", {
   ...required,
-  message: "This field is required",
+  message: "This field is required!",
 });
 extend("numeric", {
   ...numeric,
-  message: "This field shuold be a number",
+  message: "Please enter a number",
 });
 extend("double", {
   ...double,
-  message: "This field shuold be a double",
+  message: "Please enter a number",
 });
-// end
+// end 
 export default {
   name: "Patient",
   // register as component
@@ -548,8 +555,8 @@ export default {
         .substr(0, 10),
       statuses: [],
       form_default: {
-        fillOutDate: "2022-02-14",
-        lastUpdateTime: "13:30:30",
+        fillOutDate: "2022-03-17",
+        lastUpdateTime: "15:30:30",
         Weight: null,
         SympDescription: null,
         Temperature: null,
@@ -650,6 +657,25 @@ export default {
         // alert("Failed ; add new status");
       }
     },
+    async addNotif(Message, Recipient) {
+      let d = new Date();
+      let Time = d.toTimeString().split(" ")[0];
+      const params = {
+        Message,
+        Recipient,
+        Read: 0,
+        Time,
+      };
+      try {
+        await axios.post(this.url + "notification", params);
+        // alert("statuse added successfully");
+        this.getStatuses();
+        this.status_dialoge = false;
+      } catch (err) {
+        console.log("err", err);
+        // alert("Failed ; add new status");
+      }
+    },
     async updateStatus() {
       const PID = this.userId;
       const date = this.form.fillOutDate.substr(0, 10);
@@ -664,7 +690,7 @@ export default {
         console.log("err", err);
         // alert("Failed ; add new status");
       }
-    },
+    }, 
     async deleteStatus(status) {
       Swal.fire({
         title: "Are you sure?",
@@ -718,6 +744,14 @@ export default {
       };
       try {
         await axios.post(this.url + "appointmentrequest", params);
+        this.addNotif(
+          `an appointment [${params.Date + "-" + params.Time}] is requested`,
+          this.userId
+        );
+        this.addNotif(
+          `an appointment [${params.Date + "-" + params.Time}] is requested`,
+          did
+        );
         Swal.fire({
           icon: "success",
           title: "success",
@@ -734,7 +768,7 @@ export default {
     async deleteAppointment(item) {
       Swal.fire({
         title: "Are you sure?",
-        text: "You won't be able to revert this!",
+        text: "delete appointment ?",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -748,7 +782,11 @@ export default {
             try {
               axios.post(this.url + "deleteappointmentrequest", item);
 
-              window.location.reload();
+              // window.location.reload();
+              this.addNotif(
+                `an appointment[${item.Date}] deleted`,
+                this.userId
+              );
             } catch (err) {
               console.log("err", err);
               alert("Failed ; delete appointment");
@@ -776,6 +814,10 @@ export default {
           delete item.RequestedBy;
           try {
             axios.post(this.url + "deleteappointment", item);
+            this.addNotif(
+              `an approver appointment[${item.Date}] was deleted`,
+              item.DID
+            );
             this.getApproved();
           } catch (err) {
             console.log("err", err);
@@ -845,16 +887,28 @@ export default {
     },
     //Accept requested appointment
     approveRequested(item) {
-      console.log(item);
-      this.approveAppointment(
-        item.PID,
-        item.DID,
-        item.Date.substr(0, 10),
-        item.Time,
-        item.LevelOfEmergency,
-        item.Priority
-      );
-      window.location.reload();
+      Swal.fire({
+        title: "Are you sure?",
+        text: "Approve this appointment?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Approve it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.approveAppointment(
+            item.PID,
+            item.DID,
+            item.Date.substr(0, 10),
+            item.Time,
+            item.LevelOfEmergency,
+            item.Priority
+          );
+          // window.location.reload();
+          this.init();
+        }
+      });
     },
     // Approve an appointment
     async approveAppointment(PID, DID, Date, Time, LevelOfEmergency, Priority) {
@@ -868,6 +922,10 @@ export default {
           LevelOfEmergency: LevelOfEmergency,
           Priority: Priority,
         });
+        this.addNotif(
+          `an appoitment on [${Date + "-" + Time}]approved by patient`,
+          DID
+        );
       } catch (err) {
         console.log(err);
       }
@@ -881,6 +939,10 @@ export default {
           Date: Date,
           Time: Time,
         });
+        this.addNotif(
+          `the appointment[${Date + "-" + Time}] reuest was deleted`,
+          DID
+        );
       } catch (err) {
         console.log(err);
       }
@@ -955,6 +1017,13 @@ export default {
         console.log(err);
       }
     },
+    init() {
+      this.getApproved();
+      this.getStatuses();
+      this.getAppointments();
+      this.getDoctorAppointmentRequests();
+      this.form = Object.assign({}, this.form_default);
+    },
   },
   computed: {
     statusesFiltered() {
@@ -980,7 +1049,7 @@ export default {
     isOverDue() {
       if (this.statuses.length == 0) return false;
       // get last status
-      const last_status = this.statuses[this.statuses.length - 1];
+      const last_status = this.statuses[0];
       const last_status_date = +new Date(last_status.fillOutDate);
       // get today time stamp
       const today = +new Date();
@@ -999,17 +1068,8 @@ export default {
   },
 
   mounted() {
-    this.getApproved();
-    this.getStatuses();
-    this.getAppointments();
-    this.getDoctorAppointmentRequests();
-    this.form = Object.assign({}, this.form_default);
+    this.init();
+    this.$emit('img','patient')
   },
 };
 </script>
-
-<style>
-.chatbox-css {
-  float: right;
-}
-</style>

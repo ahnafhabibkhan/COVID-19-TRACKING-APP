@@ -1,73 +1,51 @@
 <template>
-  <div class="admin">
+  <v-row justify="center">
     <v-dialog v-model="signUp_modal" width="500px">
-      <SignUpDialog />
+      <SignUpDialog   @onSaveDialogClick="onSave()" />
     </v-dialog>
-    <div class="btn-container-admin" style="text-align: center">
+    <v-col cols="12" md="7">
       <div class="my-6 mx-3">
         <v-btn
-          class="white--text"
-          style="font-size: 18px;"
+          dark
           color="blue lighten-2"
-          width="400px"
+          block
           height="75px"
+          @click="onDashboardClick()"
           >Dashboard</v-btn
         >
       </div>
       <div class="my-6 mx-3">
         <v-btn
-          class="white--text"
-          style="font-size: 18px;"
+          dark
           color="blue lighten-2"
-          width="400px"
+          block
           height="75px"
           @click="onPatientsClick()"
-          >List Of Patients</v-btn
+          >List Of Users</v-btn
         >
       </div>
       <div class="my-6 mx-3">
         <v-btn
-          class="white--text"
-          style="font-size: 18px;"
+          dark
           color="blue lighten-2"
-          width="400px"
+          block
           height="75px"
-          >List Of Doctors</v-btn
+          @click="onAccountRequestsClick()"
+          >Account Requests</v-btn
         >
       </div>
       <div class="my-6 mx-3">
         <v-btn
-          class="white--text"
-          style="font-size: 18px;"
+          dark
           color="blue lighten-2"
-          width="400px"
-          height="75px"
-          >List Of Health Officials</v-btn
-        >
-      </div>
-      <div class="my-6 mx-3">
-        <v-btn
-          class="white--text"
-          style="font-size: 18px;"
-          color="blue lighten-2"
-          width="400px"
-          height="75px"
-          >List Of Immigration Officials</v-btn
-        >
-      </div>
-      <div class="my-6 mx-3">
-        <v-btn
-          class="white--text"
-          style="font-size: 18px;"
-          color="blue lighten-2"
-          width="400px"
+          block
           height="75px"
           @click="signUp_modal = !signUp_modal"
           >Create an Account</v-btn
         >
       </div>
-    </div>
-  </div>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -84,6 +62,19 @@ export default {
     onPatientsClick() {
       this.$router.push("/admin-patients-list");
     },
+    onDashboardClick() {
+      this.$router.push("/admin-dashboard");
+    },
+    onAccountRequestsClick() {
+      this.$router.push("/admin-account-requests-list");
+    },
+        onSave(saveText) {
+      console.log(saveText);
+      this.signUp_modal = false;
+    }, 
+  },
+  mounted() {
+    this.$emit("img", "admin");
   },
 };
 </script>

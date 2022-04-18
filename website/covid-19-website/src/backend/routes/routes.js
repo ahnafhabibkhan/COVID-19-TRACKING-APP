@@ -109,8 +109,8 @@ router.get('/accountrequests', showAccountRequests);
 // Create New account request
 router.post('/accountrequest', createAccountRequest);
 
-// Delete account request by user ID
-router.delete('/accountrequest/:id', deleteAccountRequest);
+// Delete account request by email
+router.delete('/accountrequest/:email', deleteAccountRequest);
 
 ////////////PASSWORD RESET REQUEST
 // Get Single password reset request by user ID

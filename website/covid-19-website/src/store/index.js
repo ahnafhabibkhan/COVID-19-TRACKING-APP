@@ -24,6 +24,9 @@ export default new Vuex.Store({
         },
         setSelectedUser(state, p) {
             state.selectedUser = p
+        delUser(state) {
+            state.user = null
         }
     }
+},
 })

@@ -89,6 +89,15 @@
             </ValidationProvider>
           </v-col>
           <v-col cols="12" md="6">
+            <v-text-field
+              v-if="setHide()"
+              readonly
+              v-model="DoctorAssigned"
+              label="Doctor"
+              disabled
+            ></v-text-field>
+          </v-col>
+          <v-col cols="12" md="6">
             <ValidationProvider rules="required" v-slot="{ errors }">
               <v-textarea
                 :hide-details="errors.length == 0"
@@ -177,11 +186,43 @@ export default {
         Address: null,
         Travelled: 0,
       },
+      DoctorAssigned: "None",
     };
   },
   methods: {
     back() {
       this.$router.go(-1);
+    },
+
+    setHide() {
+      // hide this the v-text field if its not a patient
+      if (this.$store.state.user.Role != "Patient") {
+        return false;
+      }
+      return true;
+    },
+
+    async getDoctorAssigned() {
+      const response = await axios.post("http://localhost:5000/users", {
+        Role: "Patient",
+      });
+      var users = response.data;
+      let doctorID = "";
+      for (var i = 0; i < users.length; i++) {
+        if (this.$store.state.user.UserID == users[i].UserID) {
+          doctorID = users[i].Doctor;
+        }
+      }
+      if (doctorID == "") {
+        // If there's no doctor found that is assigned to this patient
+        return;
+      }
+      const doctorResponse = await axios.post("http://localhost:5000/users", {
+        UserID: doctorID,
+      });
+      var myDoctor = doctorResponse.data;
+      this.DoctorAssigned = myDoctor[0].FirstName;
+      console.log("My doctor", this.DoctorAssigned);
     },
 
     async save() {
@@ -225,19 +266,18 @@ export default {
   },
   mounted() {
     this.get();
+    this.$emit("img", "profile");
+    this.getDoctorAssigned();
   },
 };
 </script>
 <style>
-.profile-page {
-  background-image: url("../assets/profilepage.png");
+.bg-img222 {
+  background-image: url("../assets/profilepage.png") !important;
   background-size: cover;
   background-repeat: no-repeat;
   min-height: 100%;
   min-width: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
 }
 .btn-container {
   /* border: 5px solid red; */

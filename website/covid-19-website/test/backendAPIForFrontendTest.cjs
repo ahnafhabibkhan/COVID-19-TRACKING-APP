@@ -12,68 +12,37 @@ var url='http://localhost:5000'
 
 //similiar sleep with unit testing
 async function sleep(ms) {
-  if (ms == undefined) ms = 50;
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
-}
+    if(ms==undefined)
+        ms=200;
+    return new Promise((resolve) => {
+      setTimeout(resolve, ms);
+    });
+};
 
-describe("User related API intergration test", async function () {
-  it("test get user by email API", async function () {
-    chai
-      .request(url)
-      .get("/users/admin@gmail.com")
-      .end((err, res) => {
-        assert.equal(res["body"]["FirstName"], "Admin");
-      });
-  });
-  it("test get all users", async function () {
-    chai
-      .request(url)
-      .get("/users")
-      .end((err, res) => {
-        assert.equal(res["body"][1]["FirstName"], "Admin");
-      });
-  });
-  it("test get lastest covid user", async function () {
-    chai
-      .request(url)
-      .get("/usersByCovid")
-      .end((err, res) => {
-        assert.equal(res["body"][0]["FirstName"], "John");
-      });
-  });
-  it("test get user by data", async function () {
-    await sleep();
-    chai
-      .request(url)
-      .get("/users")
-      .send({ FirstName: "John" })
-      .then((err, res) => {
-        assert.equal(res["body"][0]["FirstName"], "Smith");
-      });
-  });
-
-  var id;
-  async function iniCheck() {
-    chai
-      .request(url)
-      .get("/users/testAPIOnly@gmail.com")
-      .end((err, res) => {
-        assert.equal(res["body"]["FirstName"], undefined);
-        console.log(res);
-      });
-  }
-  async function addAUser() {
-    chai.request(url).post("/user").send({
-      Email: "testAPIOnly@gmail.com",
-      FirstName: "testFirst",
-      LastName: "testLast",
-      Telephone: "4504664545",
-      Address: "123 Main",
-      Role: "Patient",
-      Password: "TestPass",
-      Country: "Canada",
+describe('User related API intergration test',async function(){
+    
+    it('test get user by email API',async function(){
+        chai.request(url).get('/users/admin@gmail.com').then((err,res)=>{
+            assert.equal(res['body']['FirstName'],"Admin");
+        });
+        
+    });
+    it('test get all users',async function(){
+        chai.request(url).get('/users').then((err,res)=>{
+            assert.equal(res['body'][1]['FirstName'],'Admin');
+        });
+    });
+    it('test get lastest covid user',async function(){
+        chai.request(url).get('/usersByCovid').then((err,res)=>{
+            assert.equal(res['body'][0]['FirstName'],'John');
+        });
+    });
+    it('test get user by data',async function(){
+        await sleep();
+        chai.request(url).get('/users').send({FirstName:'John'}).then((err,res)=>{
+            assert.equal(res['body'][0]['FirstName'],'Smith');
+        });
+        
     });
   }
   async function checkAfterAdding() {
@@ -87,7 +56,7 @@ describe("User related API intergration test", async function () {
     
     var id;
     async function iniCheck(){
-        chai.request(url).get('/users/testAPIOnly@gmail.com').end((err,res)=>{
+        chai.request(url).get('/users/testAPIOnly@gmail.com').then((err,res)=>{
             assert.equal(res['body']['FirstName'],undefined);
             //console.log(res);
         });
@@ -101,12 +70,12 @@ describe("User related API intergration test", async function () {
             Address: "123 Main", 
             Role: "Patient", 
             Password: "TestPass", 
-            Country: "Canada"}).end((err,res)=>{
+            Country: "Canada"}).then((err,res)=>{
 
             });
     }
     async function checkAfterAdding(){
-        chai.request(url).get('/users/testAPIOnly@gmail.com').end((err,res)=>{
+        chai.request(url).get('/users/testAPIOnly@gmail.com').then((err,res)=>{
             assert.equal(res['body']['FirstName'],"testFirst");
             
             id=res['body']['UserID'];
@@ -120,12 +89,12 @@ describe("User related API intergration test", async function () {
         });
     }
     async function checkAfterModify(){
-        chai.request(url).get('/users/testAPIOnly@gmail.com').end((err,res)=>{
+        chai.request(url).get('/users/testAPIOnly@gmail.com').then((err,res)=>{
             assert.equal(res['body']['FirstName'],"alteredtestFirst");
         });
     }
     async function deleteTheUser(){
-        chai.request(url).delete('/users/'+id).end((err,res)=>{
+        chai.request(url).delete('/users/'+id).then((err,res)=>{
         
         });
     }
@@ -145,7 +114,7 @@ describe("User related API intergration test", async function () {
         await iniCheck();
     }
 
-    it('test add and delete user',async function(){
+    it('test add, modify, and delete user',async function(){
         
         await runModifyUserTest();
         
@@ -154,9 +123,11 @@ describe("User related API intergration test", async function () {
 });
 
 describe('avaliablilty related test',async function(){
-    var id=4;
+    
+    
+    var id=100;
     async function iniCheck(){
-        chai.request(url).get('/availability/'+id).end((err,res)=>{
+        chai.request(url).get('/availability/'+id).then((err,res)=>{
             assert.equal(res['body'][0],undefined);
              
         });
@@ -168,12 +139,12 @@ describe('avaliablilty related test',async function(){
             StartTime: new Date("2022-02-07T05:00:00.000Z").toJSON().slice(0, 19).replace('T', ' '),
             EndTime: new Date("2022-02-07T06:00:00.000Z").toJSON().slice(0, 19).replace('T', ' '),
             SpecificDay: new Date("2022-02-07T05:00:00.000Z").toJSON().slice(0, 19).replace('T', ' '),})
-            .end((err,res)=>{
+            .then((err,res)=>{
                 
             });
     }
     async function checkAfterAdding(){
-        chai.request(url).get('/availability/'+id).end((err,res)=>{
+        chai.request(url).get('/availability/'+id).then((err,res)=>{
             assert.equal(res['body'][0]['DayOfWeek'],"Monday");
             
             
@@ -181,7 +152,7 @@ describe('avaliablilty related test',async function(){
     }
     async function deleteTheAvailability(){
         chai.request(url).post('/deleteavailability').send({DID:id})
-        .end((err,res)=>{
+        .then((err,res)=>{
 
         });
     }
@@ -206,16 +177,32 @@ describe('avaliablilty related test',async function(){
 });
 
 describe('messages related test',async function(){
-    var rid=7;
-    var sid=4;
+    it('test get messages by ID',async function(){
+        chai.request(url).get('/messages/'+3).then((err,res)=>{
+            assert.equal(res['body'][0],'hey');
+             
+        });
+
+    })
+    it('test get messages by data',async function(){
+        chai.request(url).post('/messages').send({ReceiveUserID:1}).then((err,res)=>{
+            assert.equal(res['body'][0],'hello');
+            assert.equal(res['body'][1],"w4tw4t");
+        });
+
+    })
+    
+    var rid=101;
+    var sid=100;
+    var mid;
     async function iniCheck(){
-        chai.request(url).get('/messages/'+rid).end((err,res)=>{
+        chai.request(url).get('/messages/'+rid).then((err,res)=>{
             assert.equal(res['body'][0],undefined);
              
         });
     }    
     async function addAMessage(){
-        chai.request(url).post('/messages').send({
+        chai.request(url).post('/message').send({
             SendUserID:sid,
             ReceiveUserID: rid,
             Text:"Hello!",
@@ -223,20 +210,32 @@ describe('messages related test',async function(){
             State:'Sent',
             Time: new Date("2022-02-07T06:00:00.000Z").toJSON().slice(0, 19).replace('T', ' '),
             Date: new Date("2022-02-07T05:00:00.000Z").toJSON().slice(0, 19).replace('T', ' ')})
-            .end((err,res)=>{
+            .then((err,res)=>{
                 
             });
     }
     async function checkAfterAdding(){
-        chai.request(url).get('/messages/'+rid).end((err,res)=>{
+        chai.request(url).get('/messages/'+rid).then((err,res)=>{
             assert.equal(res['body'][0]['Text'],"Hello!");
+            mid=res['body'][0]['ID'];
+            
+        });
+    }
+    async function modifyTheMessage(){
+        chai.request(url).put('message/'+mid).send({Text:"Modified"}).then((err,res)=>{
+
+        })
+    }
+    async function checkAfterModifying(){
+        chai.request(url).get('/messages/'+rid).then((err,res)=>{
+            assert.equal(res['body'][0]['Text'],"Modified");
             
             
         });
     }
     async function deleteTheMessage(){
-        chai.request(url).delete('/messages').send({ReceiveUserID:rid})
-        .end((err,res)=>{
+        chai.request(url).post('/deletemessages').send({ReceiveUserID:rid})
+        .then((err,res)=>{
 
         });
     }
@@ -245,6 +244,10 @@ describe('messages related test',async function(){
         await addAMessage();
         await sleep();
         await checkAfterAdding();
+        await sleep();
+        await modifyTheMessage();
+        await sleep();
+        await checkAfterModifying();
         await sleep();
         await deleteTheMessage();
         await sleep();
@@ -260,11 +263,82 @@ describe('messages related test',async function(){
 
 });
 
-describe('AppointmentRequests related test',async function(){
-    var did=4;
-    var pid=1;
+describe('notifications related test',async function(){
+    
+    
+    var rid=101;
+    
+    var mid;
     async function iniCheck(){
-        chai.request(url).post('/appointmentrequests').send({PID:pid}).end((err,res)=>{
+        chai.request(url).post('/notifications').send({Recipient: rid}).then((err,res)=>{
+            assert.equal(res['body'][0],undefined);
+             
+        });
+    }    
+    async function addANotification(){
+        chai.request(url).post('/notification').send({
+            Message:"Hello!",
+            Recipient: rid,
+            Read:0,
+            Time: new Date("2022-02-07T06:00:00.000Z").toJSON().slice(0, 19).replace('T', ' ')})
+            .then((err,res)=>{
+                
+            });
+    }
+    async function checkAfterAdding(){
+        chai.request(url).post('/notifications').send({Recipient: rid}).then((err,res)=>{
+            assert.equal(res['body'][0]['Message'],"Hello!");
+            mid=res['body'][0]['ID'];
+            
+        });
+    }
+    async function modifyTheNotification(){
+        chai.request(url).put('notification/'+mid).send({Message:"Modified"}).then((err,res)=>{
+
+        })
+    }
+    async function checkAfterModifying(){
+        chai.request(url).post('/notifications').send({Recipient: rid}).then((err,res)=>{
+            assert.equal(res['body'][0]['Message'],"Modified");
+            
+            
+        });
+    }
+    async function deleteTheNotification(){
+        chai.request(url).post('/deletenotifications').send({Recipient: rid})
+        .then((err,res)=>{
+
+        });
+    }
+    async function runNotificationTest(){
+        await iniCheck();
+        await addANotification();
+        await sleep();
+        await checkAfterAdding();
+        await sleep();
+        await modifyTheNotification();
+        await sleep();
+        await checkAfterModifying();
+        await sleep();
+        await deleteTheNotification();
+        await sleep();
+        await iniCheck();
+    }
+
+    it('test add and delete notification',async function(){
+        
+        await runNotificationTest();
+        
+    })
+
+
+});
+
+describe('AppointmentRequests related test',async function(){
+    var did=100;
+    var pid=101;
+    async function iniCheck(){
+        chai.request(url).post('/appointmentrequests').send({PID:pid}).then((err,res)=>{
             assert.equal(res['body'][0],undefined);
              
         });
@@ -278,12 +352,12 @@ describe('AppointmentRequests related test',async function(){
             Priority:1,
             Time: new Date("2022-02-07T06:00:00.000Z").toJSON().slice(0, 19).replace('T', ' '),
             Date: new Date("2022-02-07T05:00:00.000Z").toJSON().slice(0, 19).replace('T', ' ')})
-            .end((err, results) =>{
+            .then((err, results) =>{
                 
             });
     }
     async function checkAfterAdding(){
-        chai.request(url).post('/appointmentrequests').send({PID:pid}).end((err,res)=>{
+        chai.request(url).post('/appointmentrequests').send({PID:pid}).then((err,res)=>{
             assert.equal(res['body'][0]['RequestedBy'],"P");
             
             
@@ -291,7 +365,7 @@ describe('AppointmentRequests related test',async function(){
     }
     async function deleteTheAppointmentRequest(){
         chai.request(url).post('/deleteappointmentrequest').send({PID:pid})
-        .end((err,res)=>{
+        .then((err,res)=>{
 
         });
     }
@@ -316,10 +390,10 @@ describe('AppointmentRequests related test',async function(){
 });
 
 describe('Appointments related test',async function(){
-    var did=4;
-    var pid=1;
+    var did=100;
+    var pid=101;
     async function iniCheck(){
-        chai.request(url).post('/appointments').send({PID:pid}).end((err,res)=>{
+        chai.request(url).post('/appointments').send({PID:pid}).then((err,res)=>{
             assert.equal(res['body'][0],undefined);
              
         });
@@ -332,12 +406,12 @@ describe('Appointments related test',async function(){
             Priority:1,
             Time: new Date("2022-02-07T06:00:00.000Z").toJSON().slice(0, 19).replace('T', ' '),
             Date: new Date("2022-02-07T05:00:00.000Z").toJSON().slice(0, 19).replace('T', ' ')})
-            .end((err, results) =>{
+            .then((err, results) =>{
                 
             });
     }
     async function checkAfterAdding(){
-        chai.request(url).post('/appointments').send({PID:pid}).end((err,res)=>{
+        chai.request(url).post('/appointments').send({PID:pid}).then((err,res)=>{
             assert.equal(res['body'][0]['DID'],did);
             
             
@@ -345,7 +419,7 @@ describe('Appointments related test',async function(){
     }
     async function deleteTheAppointment(){
         chai.request(url).post('/deleteappointment').send({PID:pid})
-        .end((err,res)=>{
+        .then((err,res)=>{
 
         });
     }
@@ -371,7 +445,7 @@ describe('Appointments related test',async function(){
 
 describe('Account request related test',async function(){
     it('test get all accountrequest',async function(){
-        chai.request(url).get('/accountrequests').end((err,res)=>{
+        chai.request(url).get('/accountrequests').then((err,res)=>{
             
             assert.equal(res['body']['LastName'],'Jean');
              
@@ -381,7 +455,7 @@ describe('Account request related test',async function(){
     var email='testAPIOnly@gmail.com'
     
     async function iniCheck(){
-        chai.request(url).get('/accountrequest/'+email).end((err,res)=>{
+        chai.request(url).get('/accountrequest/'+email).then((err,res)=>{
             assert.equal(res['body'][0],undefined);
              
         });
@@ -399,19 +473,19 @@ describe('Account request related test',async function(){
             Country: "Canada",
             Time: new Date("2022-02-07T06:00:00.000Z").toJSON().slice(0, 19).replace('T', ' '),
             Date: new Date("2022-02-07T05:00:00.000Z").toJSON().slice(0, 19).replace('T', ' ')})
-            .end((err, results) =>{
+            .then((err, results) =>{
                 
             });
     }
     async function checkAfterAdding(){
-        chai.request(url).get('/accountrequest/'+email).end((err,res)=>{
+        chai.request(url).get('/accountrequest/'+email).then((err,res)=>{
             assert.equal(res['body']['FirstName'],'testFirst');
              
         });
     }   
     async function deleteTheAccountrequest(){
         chai.request(url).delete('/acountrequest/'+email)
-        .end((err,res)=>{
+        .then((err,res)=>{
 
         });
     }
@@ -438,31 +512,31 @@ describe('Account request related test',async function(){
 
 describe('password reset request related test',async function(){
     it('test get passwordresetrequest',async function(){
-        chai.request(url).get('/passwordresetrequest/5').end((err,res)=>{
+        chai.request(url).get('/passwordresetrequest/1').then((err,res)=>{
             
-            assert.equal(res['body']['Key'],'C3THLR');
+            assert.equal(res['body']['Key'],'BE7CUI');
              
         });
     });
     
-    var id=20;
+    var id=200;
     
     async function iniCheck(){
-        chai.request(url).get('/passwordresetrequest/'+id).end((err,res)=>{
+        chai.request(url).get('/passwordresetrequest/'+id).then((err,res)=>{
             assert.equal(res['body'],'');
              
         });
     }    
     async function addAPasswordresetrequest(){
         chai.request(url).post('/passwordresetrequest').send({
-            UserID: 20,
+            UserID: id,
             Key: "TEST11"})
-            .end((err, results) =>{
+            .then((err, results) =>{
                 
             });
     }
     async function checkAfterAdding(){
-        chai.request(url).get('/passwordresetrequest/'+id).end((err,res)=>{
+        chai.request(url).get('/passwordresetrequest/'+id).then((err,res)=>{
             
             assert.equal(res['body']['Key'],"TEST11");
              
@@ -470,13 +544,13 @@ describe('password reset request related test',async function(){
     } 
     
     async function modeifyThePasswordresetrequest(){
-        chai.request(url).put('/passwordresetrequest/'+id).send({Key:'TEST20'}).end((err,res)=>{
+        chai.request(url).put('/passwordresetrequest/'+id).send({Key:'TEST20'}).then((err,res)=>{
 
         });
     }
 
     async function checkAfterModifying(){
-        chai.request(url).get('/passwordresetrequest/'+id).end((err,res)=>{
+        chai.request(url).get('/passwordresetrequest/'+id).then((err,res)=>{
             
             assert.equal(res['body']['Key'],"TEST20");
              
@@ -485,7 +559,7 @@ describe('password reset request related test',async function(){
 
     async function deleteThePasswordresetrequest(){
         chai.request(url).delete('/passwordresetrequest/'+id)
-        .end((err,res)=>{
+        .then((err,res)=>{
 
         });
     }
@@ -516,12 +590,12 @@ describe('password reset request related test',async function(){
 
 describe('healthstatus related test',async function(){
     it('test get healthstatus',async function(){
-        chai.request(url).get('/healthstatus/5').end((err,res)=>{
+        chai.request(url).get('/healthstatus/5').then((err,res)=>{
             
             assert.equal(res['body']['Weight'],80);
              
         });
-        chai.request(url).get('/healthstatuses/1').end((err,res)=>{
+        chai.request(url).get('/healthstatuses/1').then((err,res)=>{
             
             assert.equal(res['body'][0]['Weight'],85);
              
@@ -531,7 +605,7 @@ describe('healthstatus related test',async function(){
     var id=20;
     
     async function iniCheck(){
-        chai.request(url).get('/healthstatus/'+id).end((err,res)=>{
+        chai.request(url).get('/healthstatus/'+id).then((err,res)=>{
             assert.equal(res['body'],'');
              
         });
@@ -554,12 +628,12 @@ describe('healthstatus related test',async function(){
             Headache: "0",
             SoreThroat: "0",
             Covid:"0"})
-            .end((err, results) =>{
+            .then((err, results) =>{
                 
             });
     }
     async function checkAfterAdding(){
-        chai.request(url).get('/healthstatus/'+id).end((err,res)=>{
+        chai.request(url).get('/healthstatus/'+id).then((err,res)=>{
             
             assert.equal(res['body']['Weight'],84);
              
@@ -568,13 +642,13 @@ describe('healthstatus related test',async function(){
     
     async function modeifyTheHealthstatus(){
         chai.request(url).put('/healthstatus/'+id+'/'
-            +"2022-02-06").send({Weight:86}).end((err,res)=>{
+            +"2022-02-06").send({Weight:86}).then((err,res)=>{
 
         });
     }
 
     async function checkAfterModifying(){
-        chai.request(url).get('/healthstatus/'+id).end((err,res)=>{
+        chai.request(url).get('/healthstatus/'+id).then((err,res)=>{
             
             assert.equal(res['body']['Weight'],86);
              
@@ -583,7 +657,7 @@ describe('healthstatus related test',async function(){
 
     async function deleteTheHealthstatus(){
         chai.request(url).delete('/healthstatus/'+id+'/'
-            +"2022-02-06").end((err,res)=>{
+            +"2022-02-06").then((err,res)=>{
 
         });
     }
@@ -605,13 +679,13 @@ describe('healthstatus related test',async function(){
             Headache: "0",
             SoreThroat: "0",
             Covid:"0"})
-            .end((err, results) =>{
+            .then((err, results) =>{
                 
             });
     }
     async function deleteAllHealthstatuses(){
         chai.request(url).delete('/healthstatus/'+id)
-        .end((err,res)=>{
+        .then((err,res)=>{
 
         });
     }

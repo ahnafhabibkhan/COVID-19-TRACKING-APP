@@ -32,7 +32,6 @@ CREATE TABLE `accountrequest` (
   `Password` varchar(45) NOT NULL,
   `Date` date NOT NULL,
   `Time` time NOT NULL,
-  `City` varchar(45) NOT NULL,
   `Country` varchar(45) NOT NULL,
   PRIMARY KEY (`Email`),
   UNIQUE KEY `Email_UNIQUE` (`Email`)
@@ -45,7 +44,7 @@ CREATE TABLE `accountrequest` (
 
 LOCK TABLES `accountrequest` WRITE;
 /*!40000 ALTER TABLE `accountrequest` DISABLE KEYS */;
-INSERT INTO `accountrequest` VALUES ('benoit@gmail.com','Benoit','Jean','5487582026','49857 Low','HealthOfficial','password','2022-02-14','15:22:00','Brossard','Canada');
+INSERT INTO `accountrequest` VALUES ('benoit@gmail.com','Benoit','Jean','5487582026','49857 Low','HealthOfficial','password','2022-02-14','15:22:00','Canada');
 /*!40000 ALTER TABLE `accountrequest` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -183,7 +182,7 @@ CREATE TABLE `message` (
   `Time` time NOT NULL,
   `ID` int unsigned NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -192,7 +191,7 @@ CREATE TABLE `message` (
 
 LOCK TABLES `message` WRITE;
 /*!40000 ALTER TABLE `message` DISABLE KEYS */;
-INSERT INTO `message` VALUES (4,1,'hello','MTL','Read','2022-03-15','02:33:00',4),(1,4,'hi','MTL','Read','2022-03-15','02:50:00',5),(4,3,'hey','MTL','Read','2022-03-14','15:02:32',6),(4,1,'w4tw4t','MTL','Read','2022-03-15','16:33:40',7),(4,1,'w4tw4t','MTL','Read','2022-03-15','16:33:40',8);
+INSERT INTO `message` VALUES (4,1,'hello','MTL','Read','2022-03-15','02:33:00',4),(1,4,'hi','MTL','Read','2022-03-15','02:50:00',5),(4,3,'hey','MTL','Read','2022-03-14','15:02:32',6),(4,1,'w4tw4t','MTL','Read','2022-03-15','16:33:40',7),(4,1,'w4tw4t','MTL','Read','2022-03-15','16:33:40',8),(4,1,'hello','MTL','Sent','2022-03-16','16:58:43',9);
 /*!40000 ALTER TABLE `message` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -267,7 +266,7 @@ CREATE TABLE `user` (
   `Travelled` tinyint NOT NULL DEFAULT '0',
   PRIMARY KEY (`UserID`),
   UNIQUE KEY `Email_UNIQUE` (`Email`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -276,7 +275,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'first@gmail.com','John','Smith','4504664852','7458 Main','Patient','JSmith0',4,'Canada',0),(2,'admin@gmail.com','Admin','Admin','5144768016','0 Admin','Admin','Admin',NULL,'Canada',0),(3,'test@gmail.com','Tester','Mann','5148758221','436 street montreal','Patient','password',4,'Canada',1),(4,'doctor@gmail.com','Doc','Lessard','7784582102','42 Health','Doctor','Doctor',NULL,'Canada',1),(5,'soucy.tommy@gmail.com','Tommy','Soucy','5144768016','1823 Langevin','Patient','password',NULL,'Canada',0),(6,'immigration@gmail.com','Immigrator','Last','5165470021','84 Kilo','ImmigrationOfficer','password',NULL,'Canada',0),(7,'tester2@gmail.com','Tester','Mann2','5144758450','84 Lane','Patient','Password',NULL,'Canada',0),(8,'testemail@gmail.com','Test3','Test','5144475801','4684 Street','Patient','password',NULL,'Canada',0),(9,'esgeg','awdawd','awdawd','516845310','se','Patient','wef',NULL,'canada',0),(10,'wef','wef','wef','wef','wwfewf','Patient','wef',NULL,'wef',0),(11,'d','d','d','d','d','Patient','d',NULL,'d',0),(12,'df','dfdfddf','dfdf','d','d','Patient','s',NULL,'d',0),(13,'153','153','153','153153','153','Patient','153',NULL,'153',0),(14,'sef','sef','sef','sef','sef','Patient','wef',NULL,'aefesf',0),(15,'test3@gmail.com','Test','Name','5144785012','34 Street','Patient','password',NULL,'Canada',0);
+INSERT INTO `user` VALUES (1,'first@gmail.com','John','Smith','4504664852','7458 Main','Patient','JSmith0',4,'Canada',0),(2,'admin@gmail.com','Admin','Admin','5144768016','0 Admin','Admin','Admin',NULL,'Canada',0),(3,'test@gmail.com','Tester','Mann','5148758221','436 street montreal','Patient','password',4,'Canada',1),(4,'doctor@gmail.com','Doc','Lessard','7784582102','42 Health','Doctor','Doctor',NULL,'Canada',1),(5,'soucy.tommy@gmail.com','Tommy','Soucy','5144768016','1823 Langevin','Patient','password',NULL,'Canada',0),(16,'ho@gmail.com','Health','Official','5144502102','684 Health Montreal','HealthOfficial','password',NULL,'Canada',0);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -289,4 +288,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-03-16 16:26:53
+-- Dump completed on 2022-04-05 14:06:37
