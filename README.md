@@ -7,13 +7,13 @@ W## Team Members :technologist:
 
 | #   | Name                 | ID        | Github Username     | Role                         |
 | --- | :------------------- | :-------- | :------------------ |:-----------------------------|
-| 1   | Mansoureh Edalati    | 40037283  |  MansiEdi2020       | UI Lead / Frontend           |
+| 1   | Mansoureh Edalati    | 40037283  |  MansiEdi2020       | Frontend           |
 | 2   | Tommy Soucy          | 40085762  |  TommySoucy         | Backend / Database Management|
 | 3   | Ahnaf Habib Khan     | 40079665  |  ahnafhabibkhan     | Tesitng & Micro-Management   |
 | 4   | Weichen Wan          | 40072743  |  HWJFish            | Testing Lead                 |
 | 5   | Abdul Qadir Ali      | 40075793  |  AQA98              | Backend                       |
-| 6   | Yousha Hyatoolla     | 40099559  |  Yousha-hyat1999    | Fullstack                    |
-| 7   | Mohamed Abdul        | 40098785  |  M-Dimbio           | Fullstack                    |
+| 6   | Yousha Hyatoolla     | 40099559  |  Yousha-hyat1999    | UI Frontend Lead                   |
+| 7   | Mohamed Abdul        | 40098785  |  M-Dimbio           | Frontend                    |
 | 8   | Nafis Md. Ali        | 40095387  |                     | Documentation                |
 | 9   | Mirali Chavoshi      | 40064632  |                     | Documentation                |
 
@@ -94,6 +94,14 @@ This will install dependencies, run the frontend, then the backend server.
      - docker build . -t backend/node-web-app
      - Once the image has been built run this command:
      - docker run -d --name backend -p 5000:5000 --network=soen390-network backend/node-web-app 
+
+     ## for testing
+     - for unit testing, follow the instruction of "For server" first to run the server 
+     - run "npm run test-unit" at "**\COVID-19-TRACKING-APP\website\covid-19-website"
+     - for intergration testing, follow the instruction of "for backend" to run the backend
+     - run "npm run test-intergraion" at "**\COVID-19-TRACKING-APP\website\covid-19-website"
+     - for system testing, follow the instruction of "for frontend" to run the frontend
+     - open localhost:8080 and start testing different features 
      
     ## Note: make sure the ports specified in the run command are free.
      
