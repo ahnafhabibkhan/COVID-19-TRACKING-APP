@@ -24,20 +24,20 @@
       <div class="my-card">
         <v-row>
           <v-col cols="12" md="6">
-        <apexchart
-          type="pie"
-          width="480"
-          :options="chartOptions"
-          :series="series"
-        ></apexchart>
+            <apexchart
+              type="pie"
+              width="480"
+              :options="chartOptions"
+              :series="series"
+            ></apexchart>
           </v-col>
           <v-col cols="12" md="6">
-        <apexchart
-          type="pie"
-          width="480"
-          :options="accountChartOptions"
-          :series="accountSeries"
-        ></apexchart>
+            <apexchart
+              type="pie"
+              width="480"
+              :options="accountChartOptions"
+              :series="accountSeries"
+            ></apexchart>
           </v-col>
         </v-row>
       </div>

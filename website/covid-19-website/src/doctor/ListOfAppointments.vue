@@ -14,7 +14,6 @@
               ></v-date-picker>
             </v-col>
             <v-col cols="12">
-             
               <v-select
                 dense
                 :hide-details="true"
@@ -357,7 +356,8 @@ export default {
     async getPatients() {
       try {
         const res = await axios.post(`http://localhost:5000/users`, {
-          Role: "Patient",Doctor:this.$store.state.user.UserID
+          Role: "Patient",
+          Doctor: this.$store.state.user.UserID,
         });
         this.patients = res.data;
       } catch (err) {
@@ -528,5 +528,3 @@ export default {
   },
 };
 </script>
-
-

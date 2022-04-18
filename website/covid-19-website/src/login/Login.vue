@@ -238,7 +238,7 @@
                 v-model="login.pass"
                 label="Password"
                 dense
-               :hide-details="!pwdErr"
+                :hide-details="!pwdErr"
                 type="password"
               ></v-text-field>
             </v-col>
@@ -414,7 +414,7 @@ export default {
     onSave(saveText) {
       console.log(saveText);
       this.signUp_modal = false;
-    }, 
+    },
     //Forget Password Cancel Button
     cancelButtonAction() {
       this.login_modal = !this.login_modal;
