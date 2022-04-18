@@ -414,7 +414,7 @@ export default {
     onSave(saveText) {
       console.log(saveText);
       this.signUp_modal = false;
-    },
+    }, 
     //Forget Password Cancel Button
     cancelButtonAction() {
       this.login_modal = !this.login_modal;

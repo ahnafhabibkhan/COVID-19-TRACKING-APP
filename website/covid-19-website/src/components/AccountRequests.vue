@@ -27,6 +27,8 @@
 </template>
 <script>
 import axios from "axios";
+import Swal from "sweetalert2";
+
 export default {
   data() {
     return {
@@ -42,7 +44,7 @@ export default {
     async getAccountRequests() {
       try {
         const requestResponse = await axios.get(
-          `http://localhost:5001/accountrequests`
+          `http://localhost:5000/accountrequests`
         );
         this.requestList = requestResponse.data;
       } catch (err) {
@@ -51,45 +53,77 @@ export default {
     },
 
     // Approve account request
-    async approveAccountRequest(item) {
-      try {
-        // Create new account
-        await axios.post(`http://localhost:5001/user`, {
-          Email: item.Email,
-          FirstName: item.FirstName,
-          LastName: item.LastName,
-          Telephone: item.Telephone,
-          Address: item.Address,
-          Role: item.Role,
-          Password: item.Password,
-          Country: item.Country,
+    approveAccountRequest(item) {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "Approve ?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, approve it!",
+      })
+        .then((result) => {
+          if (result.isConfirmed) {
+            // Create new account
+            axios.post(`http://localhost:5000/user`, {
+              Email: item.Email,
+              FirstName: item.FirstName,
+              LastName: item.LastName,
+              Telephone: item.Telephone,
+              Address: item.Address,
+              Role: item.Role,
+              Password: item.Password,
+              Country: item.Country,
+            });
+          }
+        })
+        .then(() => {
+          // Delete account request
+          axios.delete(`http://localhost:5000/accountrequest/${item.Email}`);
+        })
+        .then(() => {
+          // Reload account requests
+          setTimeout(() => {
+            this.getAccountRequests();
+          }, 500);
+        })
+        .catch((err) => {
+          alert("error occured");
+          console.log(err);
         });
-
-        // Delete account request
-        await axios.delete(
-          `http://localhost:5001/accountrequest/${item.Email}`
-        );
-
-        // Reload account requests
-        this.getAccountRequests();
-      } catch (err) {
-        console.log(err);
-      }
     },
 
     // Reject account request
-    async rejectAccountRequest(item) {
-      try {
-        // Delete account request
-        await axios.delete(
-          `http://localhost:5001/accountrequest/${item.Email}`
-        );
+    rejectAccountRequest(item) {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "reject ?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, reject it!",
+      })
+        .then((result) => {
+          if (result.isConfirmed) {
+            // Delete account request
+            axios.delete(`http://localhost:5000/accountrequest/${item.Email}`);
 
-        // Reload account requests
-        this.getAccountRequests();
-      } catch (err) {
-        console.log(err);
-      }
+            // Reload account requests
+            this.getAccountRequests();
+          }
+        })
+        .then(() => {
+          // Reload account requests
+          setTimeout(() => {
+            this.getAccountRequests();
+          }, 500);
+        })
+        .catch((err) => {
+          alert("error occured");
+          console.log(err);
+        });
     },
   },
   mounted() {
