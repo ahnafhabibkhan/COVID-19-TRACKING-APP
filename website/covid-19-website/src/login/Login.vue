@@ -414,7 +414,7 @@ export default {
     onSave(saveText) {
       console.log(saveText);
       this.signUp_modal = false;
-    }, 
+    },
     //Forget Password Cancel Button
     cancelButtonAction() {
       this.login_modal = !this.login_modal;
@@ -445,10 +445,10 @@ export default {
       this.pwdErr = null;
       try {
         const response = await axios.get(
-          `http://localhost:5001/users/${email}`
+          `http://localhost:5000/users/${email}`
         );
         console.log(
-          `Got response, url: ${`http://localhost:5001/users/${email}`}`
+          `Got response, url: ${`http://localhost:5000/users/${email}`}`
         );
         // Check if user with entered email exists
         if (response.data.Password != null) {
@@ -495,10 +495,10 @@ export default {
       try {
         // Get user that has this email
         const response = await axios.get(
-          `http://localhost:5001/users/${email}`
+          `http://localhost:5000/users/${email}`
         );
         console.log(
-          `Got response, url: ${`http://localhost:5001/users/${email}`}`
+          `Got response, url: ${`http://localhost:5000/users/${email}`}`
         );
         // If user exists
         if (response.data.UserID != null) {
@@ -506,14 +506,14 @@ export default {
           // Check if a request already exists, if so just change the key to a new one
           // If not, create a new one
           const requestExistsResponse = await axios.get(
-            `http://localhost:5001/passwordresetrequest/${response.data.UserID}`
+            `http://localhost:5000/passwordresetrequest/${response.data.UserID}`
           );
           const newKey = makeKey(6);
           if (requestExistsResponse.data.UserID != null) {
             console.log(`Request already exists for this user, updating key`);
             // Update preexisting request
             await axios.put(
-              `http://localhost:5001/passwordresetrequest/${requestExistsResponse.data.UserID}`,
+              `http://localhost:5000/passwordresetrequest/${requestExistsResponse.data.UserID}`,
               {
                 Key: newKey,
                 Email: email,
@@ -522,7 +522,7 @@ export default {
           } else {
             console.log(`Request does not exist for this user, making new key`);
             // Create new request
-            await axios.post(`http://localhost:5001/passwordresetrequest/`, {
+            await axios.post(`http://localhost:5000/passwordresetrequest/`, {
               UserID: response.data.UserID,
               Key: newKey,
               Email: email,
@@ -543,13 +543,13 @@ export default {
       try {
         // Get UserID of the User with that Email
         const response = await axios.get(
-          `http://localhost:5001/users/${email}`
+          `http://localhost:5000/users/${email}`
         );
         if (response.data.UserID != null) {
           console.log(`Retrieved user ID: ${response.data.UserID}`);
           // Get passwordresetrequest for that UserID
           const requestResponse = await axios.get(
-            `http://localhost:5001/passwordresetrequest/${response.data.UserID}`
+            `http://localhost:5000/passwordresetrequest/${response.data.UserID}`
           );
 
           if (requestResponse.data.UserID != null) {
@@ -587,12 +587,12 @@ export default {
       try {
         // Get the User with that Email
         const response = await axios.get(
-          `http://localhost:5001/users/${email}`
+          `http://localhost:5000/users/${email}`
         );
         if (response.data.UserID != null) {
           // Update User's password
           await axios.put(
-            `http://localhost:5001/users/${response.data.UserID}`,
+            `http://localhost:5000/users/${response.data.UserID}`,
             {
               Password: password,
             }
@@ -601,7 +601,7 @@ export default {
           this.login_modal = !this.login_modal;
           // Delete password reset request
           await axios.delete(
-            `http://localhost:5001/passwordresetrequest/${response.data.UserID}`
+            `http://localhost:5000/passwordresetrequest/${response.data.UserID}`
           );
         }
       } catch (err) {

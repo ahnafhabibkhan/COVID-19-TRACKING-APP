@@ -520,14 +520,14 @@ extend("double", {
   ...double,
   message: "Please enter a number",
 });
-// end 
+// end
 export default {
   name: "Patient",
   // register as component
   components: { ValidationProvider, ValidationObserver, Chatbox },
   data() {
     return {
-      url: "http://localhost:5001/",
+      url: "http://localhost:5000/",
       edit_mode: false,
       show_more: false,
       date_dialoge: false,
@@ -707,7 +707,7 @@ export default {
       const did = this.doctorId;
       const pid = this.userId;
       const covidStatusInt = await axios.get(
-        `http://localhost:5001/healthstatus/${pid}`
+        `http://localhost:5000/healthstatus/${pid}`
       );
       var levelOfEmergency = 0;
       if (this.emergencyLevel == "High") {
@@ -852,7 +852,7 @@ export default {
     async getDoctorAppointmentRequests() {
       try {
         const res = await axios.post(
-          `http://localhost:5001/appointmentrequests`,
+          `http://localhost:5000/appointmentrequests`,
           {
             DID: this.doctorId,
             PID: this.userId,
@@ -896,7 +896,7 @@ export default {
     async approveAppointment(PID, DID, Date, Time, LevelOfEmergency, Priority) {
       try {
         this.cancelAppointmentRequest(PID, DID, Date, Time);
-        await axios.post(`http://localhost:5001/appointment`, {
+        await axios.post(`http://localhost:5000/appointment`, {
           PID: PID,
           DID: DID,
           Date: Date,
@@ -915,7 +915,7 @@ export default {
     // Cancel an appointment from the doctor
     async cancelAppointmentRequest(PID, DID, Date, Time) {
       try {
-        await axios.post(`http://localhost:5001/deleteappointmentrequest`, {
+        await axios.post(`http://localhost:5000/deleteappointmentrequest`, {
           PID: PID,
           DID: DID,
           Date: Date,
@@ -935,7 +935,7 @@ export default {
         const ct = true;
         var count = 0;
         while (ct) {
-          const userResponse = await axios.post(`http://localhost:5001/users`, {
+          const userResponse = await axios.post(`http://localhost:5000/users`, {
             UserID: this.$store.state.user.UserID,
           });
 
@@ -949,7 +949,7 @@ export default {
               idToUse
           );
           const messagesResponse = await axios.get(
-            `http://localhost:5001/messages/${this.$store.state.user.UserID}/${idToUse}`
+            `http://localhost:5000/messages/${this.$store.state.user.UserID}/${idToUse}`
           );
 
           //Getting the array of message exchange between Docter and patient
@@ -977,7 +977,7 @@ export default {
               //when the chatbox is open change the flag to false
               if (this.chatbox_modal == true && count > 0) {
                 await axios.put(
-                  `http://localhost:5001/message/${
+                  `http://localhost:5000/message/${
                     this.messages[this.messages.length - 1].ID
                   }`,
                   {
