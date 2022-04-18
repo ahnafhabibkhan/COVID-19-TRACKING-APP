@@ -37,7 +37,10 @@
           v-for="(item, UserID) in filteredPatients"
           :key="UserID"
         >
-          <v-card :title="item.title" class="pa-2" @click="onPatientClick()"
+          <v-card
+            :title="item.title"
+            class="pa-2"
+            @click="onPatientClick(item.UserID)"
             ><h2 class="my-2">{{ item.FirstName }} {{ item.LastName }}</h2>
             <p>
               Contact:<br />
@@ -64,7 +67,7 @@
           <v-card
             :title="item.title"
             class="pa-2"
-            @click="onPatientClick()"
+            @click="onPatientClick(item.patientsList.UserID)"
             :color="item.covidStatus === 'Positive' ? '#FF4933' : 'white'"
             ><h2 class="my-2">
               {{ item.patientsList.FirstName }} {{ item.patientsList.LastName }}
@@ -438,10 +441,9 @@ export default {
     },
 
     // Go to patient's profile
-    onPatientClick() {
-      if (this.userRole == "admin") {
-        return;
-      }
+    onPatientClick(UserID) {
+      console.log("onPatientCLick called with user id: " + UserID);
+
       this.$store.commit("setSelectedUser", UserID);
 
       if (this.userRole == "doctor") {
@@ -449,7 +451,10 @@ export default {
         this.notification = true;
         this.getMessages();
       }
-      this.$router.push("/");
+      if (this.userRole == "admin") {
+        return;
+      }
+      // this.$router.push("/");
     },
     async listOfCovidPatients(patientsList) {
       if (
