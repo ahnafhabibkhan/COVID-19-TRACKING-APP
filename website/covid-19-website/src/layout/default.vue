@@ -85,7 +85,7 @@ export default {
     // get notifs
     async getNotifs() {
       try {
-        const res = await axios.post(`http://localhost:5001/notifications`, {
+        const res = await axios.post(`http://localhost:5000/notifications`, {
           Recipient: this.userId,
         });
         this.notifs = res.data;
@@ -99,7 +99,7 @@ export default {
     // delete notifs
     async del(id) {
       try {
-        await axios.post(`http://localhost:5001/deletenotifications`, {
+        await axios.post(`http://localhost:5000/deletenotifications`, {
           ID: id,
         });
         //delete imiidate notifications
@@ -127,7 +127,7 @@ export default {
     this.getNotifs();
     setInterval(() => {
       this.getNotifs();
-    }, 5001);
+    }, 5000);
   },
 };
 </script>

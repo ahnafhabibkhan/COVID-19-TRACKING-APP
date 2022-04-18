@@ -81,7 +81,7 @@ export default {
         return;
       }
 
-      const userResponse = await axios.post(`http://localhost:5001/users`, {
+      const userResponse = await axios.post(`http://localhost:5000/users`, {
         UserID: this.$store.state.user.UserID,
       });
       const user = userResponse.data[0];
@@ -121,7 +121,7 @@ export default {
       try {
         const ct = true;
         while (ct) {
-          const userResponse = await axios.post(`http://localhost:5001/users`, {
+          const userResponse = await axios.post(`http://localhost:5000/users`, {
             UserID: this.$store.state.user.UserID,
           });
           const user = userResponse.data[0];
@@ -137,7 +137,7 @@ export default {
               idToUse
           );
           const messagesResponse = await axios.get(
-            `http://localhost:5001/messages/${this.$store.state.user.UserID}/${idToUse}`
+            `http://localhost:5000/messages/${this.$store.state.user.UserID}/${idToUse}`
           );
           this.messages = messagesResponse.data;
 
@@ -163,7 +163,7 @@ export default {
     async sentMessages(message) {
       console.log(message.ReceiveUserID);
       try {
-        await axios.post(`http://localhost:5001/message/`, message);
+        await axios.post(`http://localhost:5000/message/`, message);
       } catch (err) {
         console.log(err);
       }
