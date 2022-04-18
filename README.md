@@ -100,7 +100,7 @@ This will install dependencies, run the frontend, then the backend server.
      - run "npm run test-unit" at "**\COVID-19-TRACKING-APP\website\covid-19-website"
      - for intergration testing, follow the instruction of "for backend" to run the backend
      - run "npm run test-intergraion" at "**\COVID-19-TRACKING-APP\website\covid-19-website"
-     - for intergration testing, follow the instruction of "for frontend" to run the frontend
+     - for system testing, follow the instruction of "for frontend" to run the frontend
      - open localhost:8080 and start testing different features 
      
     ## Note: make sure the ports specified in the run command are free.
