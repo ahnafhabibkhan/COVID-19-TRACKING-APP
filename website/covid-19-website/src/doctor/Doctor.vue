@@ -5,129 +5,126 @@
       <Chatbox />
     </v-dialog>
     <!-- end of ChatBox modal -->
-  <v-row>
-    <!-- date modal start -->
-    <v-dialog v-model="date_dialog" width="600px">
-      <v-card>
-        <v-container>
-          <v-row>
-            <v-col cols="12" class="pa-5">
-              <h1>Book an Appointment</h1>
-              <v-date-picker
-                v-model="date"
-                :allowed-dates="allowedDates"
-                full-width
-                @change="onDateClick()"
-              ></v-date-picker>
-            </v-col>
-            <!-- list -->
-            <v-col cols="12">
-              <v-autocomplete
-                :items="allAvailabilities"
-                v-model="available"
-                multiple
-                label="select "
-                small-chips
-                clearable
-                deletable-chips
-              />
-            </v-col>
-            <v-col cols="6">
-              <v-btn
-                color="error"
-                block
-                @click="date_dialog = false"
-                elevation="0"
-              >
-                cancel
-              </v-btn>
-            </v-col>
-            <v-col cols="6">
-              <v-btn
-                block
-                color="success"
-                elevation="0"
-                @click="setAvailabilities()"
-              >
-                Set
-              </v-btn>
-            </v-col>
-          </v-row>
-        </v-container>
-      </v-card>
-    </v-dialog>
-    <!-- date modal end -->
+    <v-row>
+      <!-- date modal start -->
+      <v-dialog v-model="date_dialog" width="600px">
+        <v-card>
+          <v-container>
+            <v-row>
+              <v-col cols="12" class="pa-5">
+                <h1>Book an Appointment</h1>
+                <v-date-picker
+                  v-model="date"
+                  :allowed-dates="allowedDates"
+                  full-width
+                  @change="onDateClick()"
+                ></v-date-picker>
+              </v-col>
+              <!-- list -->
+              <v-col cols="12">
+                <v-autocomplete
+                  :items="allAvailabilities"
+                  v-model="available"
+                  multiple
+                  label="select "
+                  small-chips
+                  clearable
+                  deletable-chips
+                />
+              </v-col>
+              <v-col cols="6">
+                <v-btn
+                  color="error"
+                  block
+                  @click="date_dialog = false"
+                  elevation="0"
+                >
+                  cancel
+                </v-btn>
+              </v-col>
+              <v-col cols="6">
+                <v-btn
+                  block
+                  color="success"
+                  elevation="0"
+                  @click="setAvailabilities()"
+                >
+                  Set
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card>
+      </v-dialog>
+      <!-- date modal end -->
 
-    <v-col cols="12" md="6">
-      <div>
-        <v-btn
-          class="white--text"
-          style="font-size: 18px"
-          color="blue lighten-2"
-          block
-          height="75px"
-          @click="onPatientsClick()"
-          >List Of Patients</v-btn
-        >
-      </div>
-      <div class="my-6">
-        <v-btn
-          class="white--text"
-          style="font-size: 18px"
-          color="blue lighten-2"
-          block
-          height="75px"
-          @click="listOfAppointments()"
-          >List of Appointments</v-btn
-        >
-      </div>
-      <div class="my-6">
-        <v-btn
-          class="white--text"
-          style="font-size: 18px"
-          color="blue lighten-2"
-          block
-          height="75px"
-          @click="date_dialog = !date_dialog"
-          >Update Availabilities</v-btn
-        >
-      </div>
-
-      <apexchart
-     
-        :options="chartOptions"
-        :series="series"
-      ></apexchart>
-    </v-col>
-    <v-col cols="12" md="6">
-      <div
-        style="background-color: rgba(256, 256, 256, 0.9)"
-        class="pa-4 rounded-lg"
-      >
-        <h2>Availabilites:</h2>
-        <div v-for="(item, i) in fetchAvailabilities" :key="i">
-          {{
-            item.SpecificDay.substr(0, 10) +
-            " -- " +
-            item.StartTime +
-            "-" +
-            item.EndTime
-          }}
-
-          <v-btn x-small @click="deleteAvailability(item)"> Delete </v-btn>
+      <v-col cols="12" md="6">
+        <div>
+          <v-btn
+            class="white--text"
+            style="font-size: 18px"
+            color="blue lighten-2"
+            block
+            height="75px"
+            @click="onPatientsClick()"
+            >List Of Patients</v-btn
+          >
         </div>
-      </div>
-      <div style="margin-top: 50%; margin-left: 75%">
-        <!-- <v-badge v-if="" class="mx-6" color="red" content="7" overlap> -->
-        <v-btn @click="onChatBoxClick()" icon height="80px" width="80px">
-          <v-icon color="blue darken-3" style="font-size: 80px">
-            mdi-message-text
-          </v-icon>
-        </v-btn>
-        <!-- </v-badge> -->
-      </div>
-    </v-col>
-  </v-row>
+        <div class="my-6">
+          <v-btn
+            class="white--text"
+            style="font-size: 18px"
+            color="blue lighten-2"
+            block
+            height="75px"
+            @click="listOfAppointments()"
+            >List of Appointments</v-btn
+          >
+        </div>
+        <div class="my-6">
+          <v-btn
+            class="white--text"
+            style="font-size: 18px"
+            color="blue lighten-2"
+            block
+            height="75px"
+            @click="date_dialog = !date_dialog"
+            >Update Availabilities</v-btn
+          >
+        </div>
+
+        <apexchart :options="chartOptions" :series="series"></apexchart>
+      </v-col>
+      <v-col cols="12" md="6">
+        <div
+          style="background-color: rgba(256, 256, 256, 0.9)"
+          class="pa-4 rounded-lg"
+        >
+          <h2>Availabilites:</h2>
+          <div v-for="(item, i) in fetchAvailabilities" :key="i">
+            {{
+              item.SpecificDay.substr(0, 10) +
+              " -- " +
+              item.StartTime +
+              "-" +
+              item.EndTime
+            }}
+
+            <v-btn x-small @click="deleteAvailability(item)"> Delete </v-btn>
+          </div>
+        </div>
+        <div style="margin-top: 50%; margin-left: 75%">
+          <!-- <v-badge v-if="" class="mx-6" color="red" content="7" overlap> -->
+          <v-btn @click="onChatBoxClick()" icon height="80px" width="80px">
+            <v-icon color="blue darken-3" style="font-size: 80px">
+              mdi-message-text
+            </v-icon>
+          </v-btn>
+          <!-- </v-badge> -->
+        </div>
+      </v-col>
+    </v-row>
+  </div>
 </template>
 
 <script>
@@ -135,6 +132,7 @@ import moment from "moment";
 import axios from "axios";
 import Chatbox from "../components/ChatBox.vue";
 
+import Swal from "sweetalert2";
 export default {
   name: "Doctor",
 
@@ -180,8 +178,6 @@ export default {
     this.$emit("img", "doctor");
   },
 
-  
-    
   methods: {
     chatBox() {
       this.chatbox_modal = !this.chatbox_modal;
@@ -234,7 +230,7 @@ export default {
       }
     },
 
-    // Get all messages between this doctor and their patients
+    // Get all messages to and from this doctor's botchat
     async getMessages() {
       try {
         const ct = true;
@@ -434,4 +430,3 @@ export default {
   },
 };
 </script>
-
