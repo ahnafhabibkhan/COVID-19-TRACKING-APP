@@ -34,7 +34,7 @@
           <v-col cols="12" md="6">
             <apexchart
               type="pie"
-              width="480"
+              width="515"
               :options="accountChartOptions"
               :series="accountSeries"
             ></apexchart>
@@ -116,7 +116,7 @@ export default {
     async getChartData() {
       try {
         // Get all patients
-        const response = await axios.post(`http://localhost:5001/users`, {
+        const response = await axios.post(`http://localhost:5000/users`, {
           Role: "Patient",
         });
         const patientList = response.data;
@@ -132,7 +132,7 @@ export default {
         // For each ID get their latest health status and check if they have covid and calculate count;
         for (let i = 0; i < patientIDs.length; ++i) {
           const latestHSResponse = await axios.get(
-            `http://localhost:5001/healthstatus/${patientIDs[i]}`
+            `http://localhost:5000/healthstatus/${patientIDs[i]}`
           );
           const infected = latestHSResponse.data.Covid == 1;
           if (infected) {
@@ -152,29 +152,29 @@ export default {
     },
     async getNumberOfUsers() {
       //Get number of patients
-      const patients = await axios.post(`http://localhost:5001/users`, {
+      const patients = await axios.post(`http://localhost:5000/users`, {
         Role: "Patient",
       });
       this.numberOfPatients = patients.data.length;
       //Get number of doctors
-      const doctors = await axios.post(`http://localhost:5001/users`, {
+      const doctors = await axios.post(`http://localhost:5000/users`, {
         Role: "Doctor",
       });
       this.numberOfDoctors = doctors.data.length;
       //Get number of immigration officers
-      const IOs = await axios.post(`http://localhost:5001/users`, {
+      const IOs = await axios.post(`http://localhost:5000/users`, {
         Role: "ImmigrationOfficer",
       });
       this.numberOfIOs = IOs.data.length;
       //Get number of health officials
-      const HOs = await axios.post(`http://localhost:5001/users`, {
+      const HOs = await axios.post(`http://localhost:5000/users`, {
         Role: "HealthOfficial",
       });
       this.numberOfHOs = HOs.data.length;
 
       //Calculating number of pending accounts
       const accountRequestResponse = await axios.get(
-        `http://localhost:5001/accountrequests`
+        `http://localhost:5000/accountrequests`
       );
 
       this.accountSeries = [
