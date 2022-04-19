@@ -87,7 +87,7 @@ export default {
   methods: {
     async logout() {
       this.$store.commit("delUser");
-      this.$router.push('/')
+      this.$router.push("/");
     },
     // get notifs
     async getNotifs() {

@@ -1,5 +1,10 @@
 <template>
   <div>
+    <!-- ChatBox modal -->
+    <v-dialog v-model="chatbox_modal" width="350px">
+      <Chatbox />
+    </v-dialog>
+    <!-- end of ChatBox modal -->
     <h1
       style="
         margin-top: 50px;
@@ -32,7 +37,10 @@
           v-for="(item, UserID) in filteredPatients"
           :key="UserID"
         >
-          <v-card :title="item.title" class="pa-2" @click="onPatientClick()"
+          <v-card
+            :title="item.title"
+            class="pa-2"
+            @click="onPatientClick(item.UserID)"
             ><h2 class="my-2">{{ item.FirstName }} {{ item.LastName }}</h2>
             <p>
               Contact:<br />
@@ -59,7 +67,7 @@
           <v-card
             :title="item.title"
             class="pa-2"
-            @click="onPatientClick()"
+            @click="onPatientClick(item.patientsList.UserID)"
             :color="item.covidStatus === 'Positive' ? '#FF4933' : 'white'"
             ><h2 class="my-2">
               {{ item.patientsList.FirstName }} {{ item.patientsList.LastName }}
@@ -132,11 +140,12 @@
 </template>
 <script>
 import axios from "axios";
+import Chatbox from "../components/ChatBox.vue";
 import Swal from "sweetalert2";
 export default {
   name: "ListOfPatients",
 
-  components: {},
+  components: { Chatbox },
   props: {
     user: String,
     title: String,
@@ -147,13 +156,28 @@ export default {
       search: "",
       userRole: this.user,
       covidPatientsList: [],
+      chatbox_modal: false,
+      notification: false,
+      flag: false,
+      senderID: -1,
     };
   },
   created() {
     // Call all these on page creation
     this.getPatients();
+    this.getMessages();
+
+    //this.notification;
   },
   methods: {
+    setSenderIDNotification(ID) {
+      this.senderID = ID;
+    },
+    getSenderIDNotification() {
+      console.log("userIDVAlue ******", this.senderID);
+      return this.senderID;
+    },
+    // Get all patients assigned to this doctor
     async getDoctorName(doctorID, user) {
       var doctorName = "";
 
@@ -245,6 +269,104 @@ export default {
       }
     },
 
+    // Get all messages between this user any other user
+    async getMessages() {
+      try {
+        var count = 0;
+        const ct = true;
+        let messages = [];
+        while (ct) {
+          console.log("GetMessages called");
+          // Get all messages sent to and from this user
+          const messagesResponse = await axios.get(
+            `http://localhost:5000/messages/${this.$store.state.user.UserID}/`
+          );
+          messages = messagesResponse.data;
+          //console.log("message value", messages);
+          if (messages) {
+            let messagesByUser = {};
+
+            for (let i = 0; i < messages.length; ++i) {
+              let otherUserID = 0;
+              const currentMessage = messages[i];
+              if (
+                currentMessage.ReceiveUserID == this.$store.state.user.UserID
+              ) {
+                otherUserID = currentMessage.SendUserID;
+              } else {
+                otherUserID = currentMessage.ReceiveUserID;
+              }
+              if (!messagesByUser[otherUserID]) {
+                messagesByUser[otherUserID] = [];
+              }
+              messagesByUser[otherUserID].push(currentMessage);
+            }
+            for (var UserID in messagesByUser) {
+              if (messagesByUser[UserID] && messagesByUser[UserID].length > 0) {
+                // Check if latest is read or not
+
+                if (
+                  messagesByUser[UserID][messagesByUser[UserID].length - 1]
+                    .ReceiveUserID == this.$store.state.user.UserID &&
+                  messagesByUser[UserID][messagesByUser[UserID].length - 1]
+                    .State == "Sent"
+                ) {
+                  // TODO: Show that there is new message to read
+
+                  // console.log("There's a new message");
+                  // this.flag = !this.flag;
+                  //  console.log(this.messages);
+                  console.log("notification Value:", this.notification);
+                  if (messages[messages.length - 1].State != "Sent") {
+                    this.notification = false;
+                  } else if (messages[messages.length - 1].State == "Sent") {
+                    console.log(
+                      "sender ID",
+                      messages[messages.length - 1].SendUserID
+                    );
+
+                    this.notification = true;
+                    this.setSenderIDNotification(
+                      messages[messages.length - 1].SendUserID
+                    );
+                  }
+                  if (
+                    this.chatbox_modal == false &&
+                    this.notification == true
+                  ) {
+                    console.log("There's a new message");
+                    this.notification = false;
+                    this.flag = true;
+                    if (count == 0) {
+                      count++;
+                    }
+                  }
+                  if (this.chatbox_modal == true && count > 0) {
+                    await axios.put(
+                      `http://localhost:5000/message/${
+                        messages[messages.length - 1].ID
+                      }`,
+                      {
+                        State: "Read",
+                      }
+                    );
+
+                    this.setSenderIDNotification(-1);
+                    this.flag = false;
+                    count = 0;
+                  }
+                }
+              }
+            }
+          }
+
+          // Wait 2s before checking for new messages
+          await new Promise((r) => setTimeout(r, 2000));
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    },
     async getListOfDoctor(PID) {
       //Array for doctor with less than 10 patients
       let doctorLessThanTreshold = [];
@@ -319,11 +441,20 @@ export default {
     },
 
     // Go to patient's profile
-    onPatientClick() {
+    onPatientClick(UserID) {
+      console.log("onPatientCLick called with user id: " + UserID);
+
+      this.$store.commit("setSelectedUser", UserID);
+
+      if (this.userRole == "doctor") {
+        this.chatbox_modal = !this.chatbox_modal;
+        this.notification = true;
+        this.getMessages();
+      }
       if (this.userRole == "admin") {
         return;
       }
-      this.$router.push("/");
+      // this.$router.push("/");
     },
     async listOfCovidPatients(patientsList) {
       if (
@@ -415,6 +546,7 @@ export default {
       await axios.put(`http://localhost:5000/users/${PID}`, { Doctor: DID });
     },
   },
+
   computed: {
     // Filter patients list
     filteredPatients: function () {
@@ -482,5 +614,13 @@ export default {
   /* min-width: 100%;
   min-height: 100%; */
   text-align: center;
+}
+.blink {
+  /* text-decoration: blink;
+  -webkit-animation-name: blinker;
+  -webkit-animation-duration: 0.6s;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-timing-function: ease-in-out;
+  -webkit-animation-direction: alternate; */
 }
 </style>

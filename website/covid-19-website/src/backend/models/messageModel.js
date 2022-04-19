@@ -4,7 +4,7 @@ import {formatWhere} from "../config/db.js";
 
 // Get messages by receiverID
 export const getMessagesByID = (id, result) => {
-    db.query("SELECT * FROM message WHERE ReceiveUserID = ?", [id], (err, results) => {
+    db.query("SELECT * FROM message WHERE ReceiveUserID = ? or SendUserID = ? order by Date, Time asc", [id, id], (err, results) => {
         if(err) {
             console.log(err);
             result(err, null);
@@ -19,6 +19,18 @@ export const getMessages = (data, result) => {
     const where = formatWhere(data);
     const query = "SELECT * FROM message WHERE "+where;
     db.query(query, [where], (err, results) => {
+        if(err) {
+            console.log(err);
+            result(err, null);
+        } else {
+            result(null, results);
+        }
+    });
+}
+
+// Get messages between
+export const getMessagesBetween = (user0, user1, result) => {
+    db.query("SELECT * FROM message WHERE (SendUserID = ? or SendUserID = ?) and (ReceiveUserID = ? or ReceiveUserID = ?) order by Date, Time asc", [user0, user1, user0, user1], (err, results) => {
         if(err) {
             console.log(err);
             result(err, null);

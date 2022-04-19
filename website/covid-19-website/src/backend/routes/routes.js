@@ -9,7 +9,7 @@ import { createHealthStatus, deleteHealthStatus, deleteHealthStatuses, showHealt
 import { showAppointmentRequests, createAppointmentRequest, removeAppointmentRequest} from "../controllers/appointmentRequest.js";
 import { createAppointment, removeAppointment, showAppointments} from "../controllers/appointment.js";
 import { createAvailability, removeAvailability, showAvailabilities} from "../controllers/doctorAvailability.js";
-import { createMessage, removeMessage, showMessagesByID, showMessagesByData, updateMessage} from "../controllers/message.js";
+import { createMessage,showMessagesBetween, removeMessage, showMessagesByID, showMessagesByData, updateMessage} from "../controllers/message.js";
 import { showNotifications, createNotification, removeNotification, updateNotification} from "../controllers/notification.js";
 
 // init express router
@@ -54,7 +54,10 @@ router.get('/messages/:id', showMessagesByID);
 // Get messages by data
 router.post('/messages', showMessagesByData);
 
-// Create New availability
+// Get messages between
+router.get('/messages/:user0/:user1', showMessagesBetween);
+
+// Create New message
 router.post('/message', createMessage);
 
 // Delete messages by data

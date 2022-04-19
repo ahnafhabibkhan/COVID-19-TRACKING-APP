@@ -2,7 +2,7 @@
 var chai = require('chai')
   , chaiHttp = require('chai-http');
 var assert = chai.assert;
-var step= require('mocha-steps');
+var step = require("mocha-steps");
 
 chai.use(chaiHttp);
 
@@ -44,6 +44,14 @@ describe('User related API intergration test',async function(){
         });
         
     });
+  }
+  async function checkAfterAdding() {
+    chai
+      .request(url)
+      .get("/users/testAPIOnly@gmail.com")
+      .end((err, res) => {
+        //console.log(res);
+        assert.equal(res["body"]["FirstName"], "testFirst");
 
     
     var id;

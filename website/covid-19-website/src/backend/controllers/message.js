@@ -1,9 +1,20 @@
 // Import function from message Model
-import { getMessagesByID, getMessages, insertMessage, deleteMessage, modifyMessage } from "../models/messageModel.js";
+import { getMessagesByID, getMessagesBetween, getMessages, insertMessage, deleteMessage, modifyMessage } from "../models/messageModel.js";
 
 // Get messages by receiver ID
 export const showMessagesByID = (req, res) => {
     getMessagesByID(req.params.id, (err, results) => {
+        if (err){
+            res.send(err);
+        }else{
+            res.json(results);
+        }
+    });
+}
+
+// Get messages between
+export const showMessagesBetween = (req, res) => {
+    getMessagesBetween(req.params.user0, req.params.user1, (err, results) => {
         if (err){
             res.send(err);
         }else{

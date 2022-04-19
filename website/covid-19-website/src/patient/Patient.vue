@@ -1,5 +1,10 @@
 <template>
   <v-container>
+    <!-- ChatBox modal -->
+    <v-dialog v-model="chatbox_modal" width="350px">
+      <Chatbox />
+    </v-dialog>
+
     <v-row>
       <!-- book modal start -->
       <v-dialog v-model="date_dialoge" width="500px">
@@ -84,6 +89,7 @@
           </v-container>
         </v-card>
       </v-dialog>
+
       <!-- book modal end -->
 
       <!-- status modal start -->
@@ -288,41 +294,22 @@
       <!-- status modal end -->
       <v-col cols="12" md="6">
         <!-- buttons -->
-      
-          <div class="my-2 mx-3">
-            <v-btn
-              dark
-              
-              color="blue lighten-2"
-              block
-              large
-              @click="myInfo"
-              >My Info</v-btn
-            >
-          </div>
-          <div class="mx-3">
-            <v-btn
-              dark
-              
-              color="blue lighten-2"
-             block
-              large
-              @click="onAppointment"
-              >Book an Appointment</v-btn
-            >
-          </div>
-          <div class="my-2 mx-3">
-            <v-btn
-              dark
-              
-              color="blue lighten-2"
-              block
-              large
-              @click="onUpdateStatus"
-              >Update Status</v-btn
-            >
-          </div>
-     
+
+        <div class="my-2 mx-3">
+          <v-btn dark color="blue lighten-2" block large @click="myInfo"
+            >My Info</v-btn
+          >
+        </div>
+        <div class="mx-3">
+          <v-btn dark color="blue lighten-2" block large @click="onAppointment"
+            >Book an Appointment</v-btn
+          >
+        </div>
+        <div class="my-2 mx-3">
+          <v-btn dark color="blue lighten-2" block large @click="onUpdateStatus"
+            >Update Status</v-btn
+          >
+        </div>
 
         <!-- status rows -->
         <v-row>
@@ -461,7 +448,7 @@
       <v-col cols="12" md="6" class="p2-6 mt-2">
         <!-- requested apppointments -->
         <div
-          style="; background-color: rgba(256, 256, 256, 0.5)"
+          style="background-color: rgba(256, 256, 256, 0.5)"
           class="pa-4 rounded-lg mb-5"
         >
           <h2>Requested Appointments :</h2>
@@ -473,7 +460,7 @@
         </div>
         <!-- approved apppointments -->
         <div
-          style="; background-color: rgba(256, 256, 256, 0.5)"
+          style="background-color: rgba(256, 256, 256, 0.5)"
           class="pa-4 rounded-lg mt-5"
         >
           <h2>Approved Appointments :</h2>
@@ -485,7 +472,7 @@
         </div>
         <!-- Doctor's Requested apppointments -->
         <div
-          style="; background-color: rgba(256, 256, 256, 0.5)"
+          style="background-color: rgba(256, 256, 256, 0.5)"
           class="pa-4 rounded-lg mt-5"
         >
           <h2>Doctor's Requested Appointments:</h2>
@@ -500,11 +487,22 @@
         </div>
       </v-col>
     </v-row>
+    <!-- To open the chatbox but also to mark red if there is a notification  -->
+    <div class="chatbox-css">
+      <v-badge :value="flag" class="mx-6" color="red" overlap>
+        <v-btn @click="openChatBoxModal()" icon height="80px" width="80px">
+          <v-icon color="blue darken-3" style="font-size: 80px">
+            mdi-message-text
+          </v-icon>
+        </v-btn>
+      </v-badge>
+    </div>
   </v-container>
 </template>
 <script>
 import axios from "axios";
 import Swal from "sweetalert2";
+import Chatbox from "../components/ChatBox.vue";
 //import validation
 import { ValidationProvider, extend, ValidationObserver } from "vee-validate";
 // import needed rules for validate
@@ -522,11 +520,11 @@ extend("double", {
   ...double,
   message: "Please enter a number",
 });
-// end 
+// end
 export default {
   name: "Patient",
   // register as component
-  components: { ValidationProvider, ValidationObserver },
+  components: { ValidationProvider, ValidationObserver, Chatbox },
   data() {
     return {
       url: "http://localhost:5000/",
@@ -562,9 +560,22 @@ export default {
       emergencyLevel: "Low",
       approved: [],
       doctorRequestedAppointments: [],
+      chatbox_modal: false,
+      notification: false,
+      flag: false,
     };
   },
+  created() {
+    this.getMessages();
+    this.notification;
+  },
+
   methods: {
+    openChatBoxModal() {
+      this.chatbox_modal = !this.chatbox_modal;
+      //console.log(event);
+      this.notification = true;
+    },
     disAvail(item) {
       const found = this.appointments.findIndex((a) => {
         return a.Time == item.StartTime && a.Date == item.SpecificDay;
@@ -661,7 +672,7 @@ export default {
         console.log("err", err);
         // alert("Failed ; add new status");
       }
-    }, 
+    },
     async deleteStatus(status) {
       Swal.fire({
         title: "Are you sure?",
@@ -918,6 +929,76 @@ export default {
         console.log(err);
       }
     },
+    async getMessages() {
+      // updating the messages in patient side
+      try {
+        const ct = true;
+        var count = 0;
+        while (ct) {
+          const userResponse = await axios.post(`http://localhost:5000/users`, {
+            UserID: this.$store.state.user.UserID,
+          });
+
+          // Getting users ID
+          const user = userResponse.data[0];
+          let idToUse = user.Doctor;
+          console.log(
+            "Getting messages between " +
+              this.$store.state.user.UserID +
+              " and " +
+              idToUse
+          );
+          const messagesResponse = await axios.get(
+            `http://localhost:5000/messages/${this.$store.state.user.UserID}/${idToUse}`
+          );
+
+          //Getting the array of message exchange between Docter and patient
+          this.messages = messagesResponse.data;
+          if (this.messages && this.messages.length > 0) {
+            // Check if latest is read or not
+            if (
+              this.messages[this.messages.length - 1].ReceiveUserID ==
+                this.$store.state.user.UserID &&
+              this.messages[this.messages.length - 1].State == "Sent" &&
+              this.notification
+            ) {
+              // if there's a new message flag will be true
+              console.log("There's a new message");
+              this.flag = true;
+              if (count == 0) {
+                count++;
+              }
+
+              // verifying the state of the message
+              if (this.messages[this.messages.length - 1].State != "Sent") {
+                this.notification = false;
+              }
+
+              //when the chatbox is open change the flag to false
+              if (this.chatbox_modal == true && count > 0) {
+                await axios.put(
+                  `http://localhost:5000/message/${
+                    this.messages[this.messages.length - 1].ID
+                  }`,
+                  {
+                    State: "Read",
+                  }
+                );
+                this.flag = false;
+                count = 0;
+              }
+              //console.log("Value inside:", this.flag);
+              // TODO: Show that there is new message to read
+            }
+          }
+
+          // Wait 2s before checking for new messages
+          await new Promise((r) => setTimeout(r, 2000));
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    },
     init() {
       this.getApproved();
       this.getStatuses();
@@ -963,10 +1044,20 @@ export default {
       }
       return false;
     },
+    getNotificationValue() {
+      return this.notification;
+    },
   },
+
   mounted() {
     this.init();
-    this.$emit('img','patient')
+    this.$emit("img", "patient");
   },
 };
 </script>
+
+<style>
+.chatbox-css {
+  float: right;
+}
+</style>
