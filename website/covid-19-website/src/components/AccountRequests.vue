@@ -44,7 +44,7 @@ export default {
     async getAccountRequests() {
       try {
         const requestResponse = await axios.get(
-          `http://localhost:5000/accountrequests`
+          `http://localhost:5001/accountrequests`
         );
         this.requestList = requestResponse.data;
       } catch (err) {
@@ -66,7 +66,7 @@ export default {
         .then((result) => {
           if (result.isConfirmed) {
             // Create new account
-            axios.post(`http://localhost:5000/user`, {
+            axios.post(`http://localhost:5001/user`, {
               Email: item.Email,
               FirstName: item.FirstName,
               LastName: item.LastName,
@@ -80,7 +80,7 @@ export default {
         })
         .then(() => {
           // Delete account request
-          axios.delete(`http://localhost:5000/accountrequest/${item.Email}`);
+          axios.delete(`http://localhost:5001/accountrequest/${item.Email}`);
         })
         .then(() => {
           // Reload account requests
@@ -108,7 +108,7 @@ export default {
         .then((result) => {
           if (result.isConfirmed) {
             // Delete account request
-            axios.delete(`http://localhost:5000/accountrequest/${item.Email}`);
+            axios.delete(`http://localhost:5001/accountrequest/${item.Email}`);
 
             // Reload account requests
             this.getAccountRequests();

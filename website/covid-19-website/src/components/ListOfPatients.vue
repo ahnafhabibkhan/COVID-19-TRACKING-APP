@@ -187,7 +187,7 @@ export default {
         return;
       }
       // Get all doctors
-      const response = await axios.post("http://localhost:5000/users", {
+      const response = await axios.post("http://localhost:5001/users", {
         Role: "Doctor",
       });
 
@@ -224,20 +224,20 @@ export default {
           const DID = this.$store.state.user.UserID;
           console.log("logged in doctor ID: " + DID);
           // Get users assigned to this doctor ID
-          const response = await axios.post(`http://localhost:5000/users`, {
+          const response = await axios.post(`http://localhost:5001/users`, {
             Doctor: DID,
           });
           this.patientList = response.data;
           this.listOfCovidPatients(this.patientList);
         } else if (this.userRole == "admin") {
           // Get all users
-          const response = await axios.get(`http://localhost:5000/users`);
+          const response = await axios.get(`http://localhost:5001/users`);
           this.patientList = response.data;
           console.log(this.patientList);
           this.listOfCovidPatients(this.patientList);
         } else if (this.userRole == "health-official") {
           // Get all patients
-          const response = await axios.post(`http://localhost:5000/users`, {
+          const response = await axios.post(`http://localhost:5001/users`, {
             Role: "Patient",
           });
           this.patientList = response.data;
@@ -245,11 +245,11 @@ export default {
         } else if (this.userRole == "immigration-officer") {
           // Get all patients who were covid positive in their latest health status
           const response = await axios.get(
-            `http://localhost:5000/usersByCovid`
+            `http://localhost:5001/usersByCovid`
           );
           var pList = response.data;
           const travelResponse = await axios.post(
-            `http://localhost:5000/users`,
+            `http://localhost:5001/users`,
             { Role: "Patient", Travelled: 1 }
           );
           var travelledList = travelResponse.data;
@@ -279,7 +279,7 @@ export default {
           console.log("GetMessages called");
           // Get all messages sent to and from this user
           const messagesResponse = await axios.get(
-            `http://localhost:5000/messages/${this.$store.state.user.UserID}/`
+            `http://localhost:5001/messages/${this.$store.state.user.UserID}/`
           );
           messages = messagesResponse.data;
           //console.log("message value", messages);
@@ -343,7 +343,7 @@ export default {
                   }
                   if (this.chatbox_modal == true && count > 0) {
                     await axios.put(
-                      `http://localhost:5000/message/${
+                      `http://localhost:5001/message/${
                         messages[messages.length - 1].ID
                       }`,
                       {
@@ -374,7 +374,7 @@ export default {
         //Empty array
         this.doctorList = [];
         // Get all doctors
-        const doctorResponse = await axios.post("http://localhost:5000/users", {
+        const doctorResponse = await axios.post("http://localhost:5001/users", {
           Role: "Doctor",
         });
         // looping through all the doctors and getting their names and number of patient
@@ -385,7 +385,7 @@ export default {
         for (var i = 0; i < this.doctorList.length; i++) {
           // Get users assigned to this doctor ID
           const Patientresponse = await axios.post(
-            "http://localhost:5000/users",
+            "http://localhost:5001/users",
             {
               Doctor: this.doctorList[i].UserID,
             }
@@ -464,7 +464,7 @@ export default {
       ) {
         for (var i = 0; i < patientsList.length; i++) {
           const covidStatusInt = await axios.get(
-            `http://localhost:5000/healthstatus/${patientsList[i].UserID}`
+            `http://localhost:5001/healthstatus/${patientsList[i].UserID}`
           );
           var covidStatus = "";
           if (covidStatusInt.data.Covid == 1) {
@@ -480,7 +480,7 @@ export default {
       } else if (this.userRole == "immigration-officer") {
         for (var j = 0; j < patientsList.length; j++) {
           const covidStatusInt = await axios.get(
-            `http://localhost:5000/healthstatus/${patientsList[j].UserID}`
+            `http://localhost:5001/healthstatus/${patientsList[j].UserID}`
           );
           if (covidStatusInt.data.Covid == 1) {
             this.patientList.push(patientsList[j]);
@@ -500,7 +500,7 @@ export default {
       })
         .then((result) => {
           if (result.isConfirmed) {
-            axios.delete(`http://localhost:5000/users/${ID}`);
+            axios.delete(`http://localhost:5001/users/${ID}`);
 
             Swal.fire("Deleted!", "The account has been deleted", "success");
           }
@@ -517,7 +517,7 @@ export default {
         return;
       }
       // Verify existence of both and correct roles
-      const patientResponse = await axios.post("http://localhost:5000/users/", {
+      const patientResponse = await axios.post("http://localhost:5001/users/", {
         UserID: PID,
       });
       if (
@@ -532,7 +532,7 @@ export default {
         );
         return;
       }
-      const doctorResponse = await axios.post("http://localhost:5000/users/", {
+      const doctorResponse = await axios.post("http://localhost:5001/users/", {
         UserID: DID,
       });
       if (
@@ -543,7 +543,7 @@ export default {
         return;
       }
       // Assign doctor
-      await axios.put(`http://localhost:5000/users/${PID}`, { Doctor: DID });
+      await axios.put(`http://localhost:5001/users/${PID}`, { Doctor: DID });
     },
   },
 
